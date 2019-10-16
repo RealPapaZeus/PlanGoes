@@ -32,6 +32,13 @@ class _MyLogInPageState extends State<MyLogInPage> {
         centerTitle: true,
         title: Text('LogIn'),
       ),
+      body: new Center(
+        child: new FlatButton(
+          onPressed: (){},
+          textColor: Theme.of(context).accentColor,
+          child: new Text('Create Account?'),
+        )
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){},
         tooltip: 'Increment',
