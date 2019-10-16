@@ -21,7 +21,7 @@ class _UserNameState extends State<UserName>{
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text('Initialise UserName'),
+        title: Text('Initialise new UserName'),
       ),
       body: new Center(
         child: new FlatButton(

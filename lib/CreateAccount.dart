@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plan_go_software_project/UserName.dart';
 
 class CreateAccount extends StatefulWidget {
 
@@ -25,7 +26,12 @@ class _CreateAccountState extends State<CreateAccount>{
       ),
       body: new Center(
         child: new FlatButton(
-          onPressed: (){},
+          onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => UserName()),
+            );
+          },
           textColor: Theme.of(context).accentColor,
           child: new Text('Apply'),
         )
