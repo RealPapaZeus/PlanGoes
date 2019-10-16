@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plan_go_software_project/ItemList.dart';
 
 class EventList extends StatefulWidget {
 
@@ -32,14 +33,20 @@ class _EventListState extends State<EventList>{
               ),
               new Container(
                 decoration: BoxDecoration(
-                  color: Colors.deepOrange,
+                  color: Colors.blue,
                   borderRadius: BorderRadius.circular(10.0)
                 ),
                 padding: const EdgeInsets.all(8.0),
-                child: Text('900')
+                child: Text('999')
               )
             ],
-          )
+          ),
+          // onTap: (){
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => ItemList()),
+          //   );
+          // },
         ),
       )
     );
