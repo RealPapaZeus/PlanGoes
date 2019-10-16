@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plan_go_software_project/EventList.dart';
 
 class UserName extends StatefulWidget {
 
@@ -25,7 +26,12 @@ class _UserNameState extends State<UserName>{
       ),
       body: new Center(
         child: new FlatButton(
-          onPressed: (){},
+          onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => EventList()),
+            );
+          },
           textColor: Theme.of(context).accentColor,
           child: new Text('Apply'),
         )
