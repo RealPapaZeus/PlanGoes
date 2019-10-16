@@ -24,22 +24,24 @@ class _EventListState extends State<EventList>{
         title: Text('Events'),
       ),
       body: new Center(
-        child: new ListView(
-          scrollDirection: Axis.vertical,
-          children: <Widget>[
-            new Container(
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 8.0,
-                ),
+        child: new ListTile(
+          title: Row(
+            children: <Widget>[
+              Expanded(
+                child: Text('Größter Kai Fan'),
               ),
-            )
-          ],
-        )
-      ),
+              new Container(
+                decoration: BoxDecoration(
+                  color: Colors.deepOrange,
+                  borderRadius: BorderRadius.circular(10.0)
+                ),
+                padding: const EdgeInsets.all(8.0),
+                child: Text('900')
+              )
+            ],
+          )
+        ),
+      )
     );
   }
 }
