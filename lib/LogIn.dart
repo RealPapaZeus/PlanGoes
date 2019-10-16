@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plan_go_software_project/CreateAccount.dart';
 
 class LogIn extends StatelessWidget {
 
@@ -34,14 +35,18 @@ class _MyLogInPageState extends State<MyLogInPage> {
       ),
       body: new Center(
         child: new FlatButton(
-          onPressed: (){},
+          onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CreateAccount()),
+            );
+          },
           textColor: Theme.of(context).accentColor,
           child: new Text('Create Account?'),
         )
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){},
-        tooltip: 'Increment',
         child: Icon(Icons.add),
       )
     );
