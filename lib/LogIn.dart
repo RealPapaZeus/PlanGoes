@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/CreateAccount.dart';
+import 'package:plan_go_software_project/EventList.dart';
 
 class LogIn extends StatelessWidget {
 
@@ -38,16 +39,18 @@ class _MyLogInPageState extends State<MyLogInPage> {
           onPressed: (){
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CreateAccount()),
-            );
+              MaterialPageRoute(builder: (context) => CreateAccount()));
           },
           textColor: Theme.of(context).accentColor,
           child: new Text('Create Account?'),
         )
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
-        child: Icon(Icons.add),
+        onPressed: (){
+          Navigator.push(context,
+          MaterialPageRoute(builder: (context) => EventList()));
+        },
+        child: Icon(Icons.accessible),
       )
     );
   }
