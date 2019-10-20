@@ -23,32 +23,42 @@ class _EventListState extends State<EventList>{
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text('Events'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.create),
+            onPressed: (){},
+          )
+        ],
       ),
-      body: new Center(
-        child: new ListTile(
-          title: Row(
-            children: <Widget>[
-              Expanded(
-                child: Text('Größter Kai Fan'),
+      body: buildBody(),
+    );
+  }
+
+  Widget buildBody(){
+    return new Center(
+      child: new ListTile(
+        title: Row(
+          children: <Widget>[
+            Expanded(
+              child: Text('Größter Kai Fan'),
+            ),
+            new Container(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(10.0)
               ),
-              new Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(10.0)
-                ),
-                padding: const EdgeInsets.all(8.0),
-                child: Text('999')
-              )
-            ],
-          ),
-          // onTap: (){
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(builder: (context) => ItemList()),
-          //   );
-          // },
+              padding: const EdgeInsets.all(8.0),
+              child: Text('999')
+            )
+          ],
         ),
-      )
+        // onTap: (){
+        //   Navigator.push(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => ItemList()),
+        //   );
+        // },
+      ),
     );
   }
 }
