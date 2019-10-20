@@ -7,25 +7,30 @@ class LogIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'LogIn',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyLogInPage(title: 'Flutter Demo Home Page'),
+      home: MyLogInPage(),
     );
   }
 }
 
 class MyLogInPage extends StatefulWidget {
-  MyLogInPage({Key key, this.title}) : super(key: key);
+  MyLogInPage({Key key}) : super(key: key);
 
-  final String title;
 
   @override
   _MyLogInPageState createState() => _MyLogInPageState();
-}
+} 
 
 class _MyLogInPageState extends State<MyLogInPage> {
+
+  //variables for LogIn Page
+  String _email;
+  String _password;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +39,51 @@ class _MyLogInPageState extends State<MyLogInPage> {
         centerTitle: true,
         title: Text('LogIn'),
       ),
-      body: new Center(
-        child: new FlatButton(
-          onPressed: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CreateAccount()));
-          },
-          textColor: Theme.of(context).accentColor,
-          child: new Text('Create Account?'),
+      body: new Form(
+        key: _formKey,
+        child: new Center(
+          child: new Column(
+            children: <Widget>[
+              TextFormField(
+                validator: (input) {
+                  if(input.isEmpty){
+                    return 'Please enter an Email';
+                  }
+                },
+                onSaved: (input) => _email == input,
+                decoration: InputDecoration(
+                  labelText: 'Email'
+                ),
+              ),
+              TextFormField(
+                validator: (input) {
+                  if(input.length < 6){
+                    return 'Password is too short';
+                  }
+                },
+                onSaved: (input) => _password == input,
+                decoration: InputDecoration(
+                  labelText: 'Password'
+                ),
+                obscureText: true,
+              ),
+              FloatingActionButton(
+                onPressed: (){},
+                child: Text('Sign in')
+              ),
+              FlatButton(
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CreateAccount()));
+                },
+                textColor: Theme.of(context).accentColor,
+                child: new Text('Create Account?'),
+              )
+            ],
+          )
         )
-      ),
+      ), 
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           Navigator.push(context,
@@ -54,4 +93,19 @@ class _MyLogInPageState extends State<MyLogInPage> {
       )
     );
   }
+
+  void _signIn(){
+    final _formState = _formKey.currentState;
+
+    if(_formState.validate()){
+      
+    }
+  }
+
+  // Widget buildForm(){
+  //   return Form(
+  //     child: 
+  //   )
+
+  // }
 }
