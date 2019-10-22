@@ -34,6 +34,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  AuthResult user;
+
   @override 
   void dispose(){
     _emailController.dispose();
@@ -48,13 +50,60 @@ class _MyLogInPageState extends State<MyLogInPage> {
       _formState.save();
 
       try{
-        AuthResult user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+        user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
         Navigator.push(context, MaterialPageRoute(builder: (context) => EventList())); 
-        print(_email);
+
+        // if(user == null){
+        //   setState(() {
+        //     _logInSuccess = false;
+        //   });
+        // }
+        
+
       }catch(e){
         print(e.message);
       }
     }
+  }
+
+  List<Widget> navigateWidgets() {
+    return[
+      RaisedButton(
+        onPressed: signIn,
+        child: Text('Sign in')
+      ),
+      FlatButton(
+        onPressed: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateAccount()));
+        },
+        textColor: Theme.of(context).accentColor,
+        child: new Text('Create Account?'),
+      ),
+    ];
+  }
+  
+  List<Widget> submitWidgets() {
+    return[
+      TextFormField(
+        controller: _emailController,
+        decoration: InputDecoration(
+          labelText: 'Email'
+        ),
+        validator: (value) => value.isEmpty ? 'Please enter Email' : null,
+        onSaved: (value) => _email == value,
+      ),
+      TextFormField(
+        controller: _passwordController,
+        decoration: InputDecoration(
+          labelText: 'Enter Password'
+        ),
+        obscureText: true,
+        validator: (value) => value.isEmpty ? 'Please enter Password' : null,
+        onSaved: (value) => _password == value,
+      ),
+    ];
   }
 
   @override
@@ -68,38 +117,9 @@ class _MyLogInPageState extends State<MyLogInPage> {
       body: new Form(
         key: _formKey,
         child: new Column(
-          children: <Widget>[
-            TextFormField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'Email'
-              ),
-              validator: (value) => value.isEmpty ? 'Please enter Email' : null,
-              onSaved: (value) => _email == value,
-            ),
-            TextFormField(
-              controller: _passwordController,
-              decoration: InputDecoration(
-                labelText: 'Enter Password'
-              ),
-              obscureText: true,
-              validator: (value) => value.isEmpty ? 'Please enter Password' : null,
-              onSaved: (value) => _password == value,
-            ),
-            RaisedButton(
-              onPressed: signIn,
-              child: Text('Sign in')
-            ),
-            FlatButton(
-              onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CreateAccount()));
-              },
-              textColor: Theme.of(context).accentColor,
-              child: new Text('Create Account?'),
-            ), 
-          ],
+          children: 
+            submitWidgets() +
+            navigateWidgets(),
         )
       ), 
     );
