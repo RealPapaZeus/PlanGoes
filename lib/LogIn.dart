@@ -50,7 +50,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
       _formState.save();
 
       try{
-        user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+        user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.toString().trim(),
+                                                                      password: _passwordController.text);
         Navigator.push(context, MaterialPageRoute(builder: (context) => EventList())); 
 
         // if(user == null){
@@ -83,7 +84,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
       ),
     ];
   }
-  
+
   List<Widget> submitWidgets() {
     return[
       TextFormField(
