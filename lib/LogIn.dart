@@ -30,6 +30,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
   String _email;
   String _password;
   String _authHint = '';
+  bool _isLoading = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -45,6 +46,10 @@ class _MyLogInPageState extends State<MyLogInPage> {
   void signIn() async{
     final _formState = _formKey.currentState;
 
+    setState(() {
+     _isLoading = true; 
+    });
+
     if(_formState.validate()){
       _formState.save();
 
@@ -53,23 +58,29 @@ class _MyLogInPageState extends State<MyLogInPage> {
                                                                       password: _passwordController.text);
         Navigator.push(context, MaterialPageRoute(builder: (context) => EventList())); 
         setState(() {
+          _isLoading = false;
           _authHint = '';
         });
       }catch(e){
         setState(() {
-            _authHint = 'Email or password is invalid';
-          });
+          _isLoading = false; 
+          _authHint = 'Email or password is invalid';
+        });
         print(e.message);
       }
     }
   }
-
+  
   List<Widget> navigateWidgets() {
     return[
-      RaisedButton(
-        onPressed: signIn,
-        child: Text('Sign in')
-      ),
+      _isLoading
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : RaisedButton(
+            onPressed: signIn,
+            child: Text('Sign in')
+          ),  
       FlatButton(
         onPressed: (){
           Navigator.push(
