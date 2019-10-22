@@ -29,12 +29,11 @@ class _MyLogInPageState extends State<MyLogInPage> {
 
   String _email;
   String _password;
+  String _authHint = '';
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  AuthResult user;
 
   @override 
   void dispose(){
@@ -50,18 +49,16 @@ class _MyLogInPageState extends State<MyLogInPage> {
       _formState.save();
 
       try{
-        user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.toString().trim(),
+        AuthResult user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.toString().trim(),
                                                                       password: _passwordController.text);
         Navigator.push(context, MaterialPageRoute(builder: (context) => EventList())); 
-
-        // if(user == null){
-        //   setState(() {
-        //     _logInSuccess = false;
-        //   });
-        // }
-        
-
+        setState(() {
+          _authHint = '';
+        });
       }catch(e){
+        setState(() {
+            _authHint = 'Email or password is invalid';
+          });
         print(e.message);
       }
     }
@@ -107,6 +104,18 @@ class _MyLogInPageState extends State<MyLogInPage> {
     ];
   }
 
+  Widget signInSuccess() {
+    return new Container(
+      child: Text(
+        _authHint,
+        style: TextStyle(
+          color: Colors.red
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,13 +124,33 @@ class _MyLogInPageState extends State<MyLogInPage> {
         centerTitle: true,
         title: Text('Events'),
       ),
-      body: new Form(
-        key: _formKey,
-        child: new Column(
-          children: 
-            submitWidgets() +
-            navigateWidgets(),
-        )
+      body: new SingleChildScrollView(
+        child: new Container(
+          padding: const EdgeInsets.all(15.0),
+          child: new Column(
+            children: <Widget>[
+              new Card(
+                child: new Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new Container(
+                      padding: new EdgeInsets.all(15.0),
+                      child: new Form(
+                        key: _formKey,
+                        child: new Column(
+                          children: 
+                            submitWidgets() +
+                            navigateWidgets()
+                        )
+                      )
+                    )
+                  ],
+                ),
+              ),
+              signInSuccess()
+            ],
+          ),
+        ),
       ), 
     );
   }
