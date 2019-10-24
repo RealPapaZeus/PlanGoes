@@ -88,7 +88,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
             MaterialPageRoute(builder: (context) => CreateAccount()));
         },
         textColor: Theme.of(context).accentColor,
-        child: new Text('Create Account?'),
+        child: new Text('Create account?'),
       ),
     ];
   }
@@ -100,16 +100,16 @@ class _MyLogInPageState extends State<MyLogInPage> {
         decoration: InputDecoration(
           labelText: 'Email'
         ),
-        validator: (value) => value.isEmpty ? 'Please enter Email' : null,
+        validator: (value) => value.isEmpty ? 'Please enter email' : null,
         onSaved: (value) => _email == value,
       ),
       TextFormField(
         controller: _passwordController,
         decoration: InputDecoration(
-          labelText: 'Enter Password'
+          labelText: 'Password'
         ),
         obscureText: true,
-        validator: (value) => value.isEmpty ? 'Please enter Password' : null,
+        validator: (value) => value.isEmpty ? 'Please enter password' : null,
         onSaved: (value) => _password == value,
       ),
     ];

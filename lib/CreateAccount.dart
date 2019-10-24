@@ -11,11 +11,50 @@ class CreateAccount extends StatefulWidget {
   
 class _CreateAccountState extends State<CreateAccount>{
 
+  //defining new variables to allow user create a new account
+  //with password he chooses
+
+  String _email;
+  String _password;
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   void initState(){
     super.initState();
   }
 
+  List<Widget> submitWidgets() {
+    return[
+      TextFormField(
+        controller: _emailController,
+        decoration: InputDecoration(
+          labelText: 'Email'
+        ),
+        validator: (value) => value.isEmpty ? 'Please enter an email' : null,
+        onSaved: (value) => _email == value,
+      ),
+      TextFormField(
+        controller: _passwordController,
+        decoration: InputDecoration(
+          labelText: 'Password'
+        ),
+        obscureText: true,
+        validator: (value) => value.isEmpty ? 'Please enter a password' : null,
+        onSaved: (value) => _password == value,
+      ),
+      TextFormField(
+        controller: _passwordController,
+        decoration: InputDecoration(
+          labelText: 'Confirm password'
+        ),
+        obscureText: true,
+        validator: (value) => value.isEmpty ? 'Please enter a password' : null,
+        onSaved: (value) => _password == value,
+      ),
+    ];
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,15 +64,17 @@ class _CreateAccountState extends State<CreateAccount>{
         title: Text('CreateAccount'),
       ),
       body: new Center(
-        child: new FlatButton(
-          onPressed: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => UserName()),
-            );
-          },
-          textColor: Theme.of(context).accentColor,
-          child: new Text('Apply'),
+        child: new Column(
+          children: submitWidgets(),
+        // child: new FlatButton(
+        //   onPressed: (){
+        //     Navigator.push(
+        //       context,
+        //       MaterialPageRoute(builder: (context) => UserName()),
+        //     );
+        //   },
+        //   textColor: Theme.of(context).accentColor,
+        //   child: new Text('Apply'),
         )
       ),
     );
