@@ -47,9 +47,9 @@ class _MyLogInPageState extends State<MyLogInPage> {
     final _formState = _formKey.currentState;
 
     setState(() {
-     _isLoading = true; 
+      _isLoading = true;  
     });
-
+    
     if(_formState.validate()){
       _formState.save();
 
@@ -70,7 +70,41 @@ class _MyLogInPageState extends State<MyLogInPage> {
       }
     }
   }
-  
+
+  //gets called when user tries to call signIn, but input for email 
+  //and password is empty. _isLoading gets set to false, so the 
+  //Indicator does not get called 
+  String messageNotifier(String message) {
+    _isLoading = false;
+    return '$message';
+  }
+
+  //it only returns the TextFormField Widget
+  //we have to fill the parameters, so only this method needs to get called
+  //whenever a new TextFormField gets created
+  Widget textFormFieldExtension(TextEditingController _controller,
+                                 String _inputLabelText,
+                                  bool _obscureText,
+                                   String _message,
+                                    String _typeOfInput) {
+    return TextFormField(
+      controller: _controller,
+      decoration: InputDecoration(
+        labelText: '$_inputLabelText'
+      ),
+      obscureText: _obscureText,
+      validator: (value) => value.isEmpty ? messageNotifier('$_message') : null,
+      onSaved: (value) => _typeOfInput == value,
+    );
+  }
+
+  List<Widget> submitWidgets() {
+    return[
+      textFormFieldExtension(_emailController , 'Email', false, 'Please enter an email', _email),
+      textFormFieldExtension(_passwordController , 'Password', true,'Please enter a password', _password)
+    ];
+  }
+
   List<Widget> navigateWidgets() {
     return[
       _isLoading
@@ -88,29 +122,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
             MaterialPageRoute(builder: (context) => CreateAccount()));
         },
         textColor: Theme.of(context).accentColor,
-        child: new Text('Create Account?'),
-      ),
-    ];
-  }
-
-  List<Widget> submitWidgets() {
-    return[
-      TextFormField(
-        controller: _emailController,
-        decoration: InputDecoration(
-          labelText: 'Email'
-        ),
-        validator: (value) => value.isEmpty ? 'Please enter Email' : null,
-        onSaved: (value) => _email == value,
-      ),
-      TextFormField(
-        controller: _passwordController,
-        decoration: InputDecoration(
-          labelText: 'Enter Password'
-        ),
-        obscureText: true,
-        validator: (value) => value.isEmpty ? 'Please enter Password' : null,
-        onSaved: (value) => _password == value,
+        child: new Text('Create account?'),
       ),
     ];
   }
@@ -133,7 +145,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text('Events'),
+        title: Text('LogIn'),
       ),
       body: new SingleChildScrollView(
         child: new Container(
