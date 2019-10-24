@@ -23,21 +23,35 @@ class _CreateAccountState extends State<CreateAccount>{
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _passwordConfirmController = TextEditingController();
 
-  @override
-  void initState(){
-    super.initState();
+  @override 
+  void dispose(){
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  //gets called whenever a user tries to call signIn, but input for email 
+  //and password is empty. _isLoading gets set to false, so the 
+  //CircularIndicator does not get called 
+  String messageNotifier(String message) {
+    _isLoading = false;
+    return '$message';
+  }
+
+  Widget textFormFieldExtension(TextEditingController _controller, String _inputLabelText, String _message, String _typeOfInput) {
+    return TextFormField(
+      controller: _controller,
+      decoration: InputDecoration(
+        labelText: '$_inputLabelText'
+      ),
+      validator: (value) => value.isEmpty ? messageNotifier('$_message') : null,
+      onSaved: (value) => _typeOfInput == value,
+    );
   }
 
   List<Widget> submitWidgets() {
     return[
-      TextFormField(
-        controller: _emailController,
-        decoration: InputDecoration(
-          labelText: 'Email'
-        ),
-        validator: (value) => value.isEmpty ? 'Please enter an email' : null,
-        onSaved: (value) => _email == value,
-      ),
+      textFormFieldExtension(_emailController, 'Email', 'Please enter an email', _email),
       TextFormField(
         controller: _passwordController,
         decoration: InputDecoration(
