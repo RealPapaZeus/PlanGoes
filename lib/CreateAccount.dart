@@ -16,6 +16,7 @@ class _CreateAccountState extends State<CreateAccount>{
 
   String _email;
   String _password;
+  String _passwordConfirm; 
   bool _isLoading = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -38,38 +39,32 @@ class _CreateAccountState extends State<CreateAccount>{
     return '$message';
   }
 
-  Widget textFormFieldExtension(TextEditingController _controller, String _inputLabelText, String _message, String _typeOfInput) {
+  //it only returns the TextFormField Widget
+  //we have to fill the parameters, so only this method needs to get called
+  //whenever a new TextFormField gets created
+  Widget textFormFieldExtension(TextEditingController _controller,
+                                 String _inputLabelText,
+                                  bool _obscureText,
+                                   String _message,
+                                    String _typeOfInput) {
     return TextFormField(
       controller: _controller,
       decoration: InputDecoration(
         labelText: '$_inputLabelText'
       ),
+      obscureText: _obscureText,
       validator: (value) => value.isEmpty ? messageNotifier('$_message') : null,
       onSaved: (value) => _typeOfInput == value,
     );
   }
 
+  //calls the method which builds TextFormField with given parameters
+  //it helps to read the code more efficient
   List<Widget> submitWidgets() {
     return[
-      textFormFieldExtension(_emailController, 'Email', 'Please enter an email', _email),
-      TextFormField(
-        controller: _passwordController,
-        decoration: InputDecoration(
-          labelText: 'Password'
-        ),
-        obscureText: true,
-        validator: (value) => value.isEmpty ? 'Please enter a password' : null,
-        onSaved: (value) => _password == value,
-      ),
-      TextFormField(
-        controller: _passwordConfirmController,
-        decoration: InputDecoration(
-          labelText: 'Confirm password'
-        ),
-        obscureText: true,
-        validator: (value) => value.isEmpty ? 'Please enter a password' : null,
-        onSaved: (value) => _password == value,
-      ),
+      textFormFieldExtension(_emailController, 'Email', false,'Please enter an email', _email),
+      textFormFieldExtension(_passwordController, 'Password', true, 'Please enter a password', _password),
+      textFormFieldExtension(_passwordConfirmController, 'Confirm Password', true, 'Please confirm password', _passwordConfirm)
     ];
   }
 

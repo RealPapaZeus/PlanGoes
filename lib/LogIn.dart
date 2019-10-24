@@ -79,6 +79,32 @@ class _MyLogInPageState extends State<MyLogInPage> {
     return '$message';
   }
 
+  //it only returns the TextFormField Widget
+  //we have to fill the parameters, so only this method needs to get called
+  //whenever a new TextFormField gets created
+  Widget textFormFieldExtension(TextEditingController _controller,
+                                 String _inputLabelText,
+                                  bool _obscureText,
+                                   String _message,
+                                    String _typeOfInput) {
+    return TextFormField(
+      controller: _controller,
+      decoration: InputDecoration(
+        labelText: '$_inputLabelText'
+      ),
+      obscureText: _obscureText,
+      validator: (value) => value.isEmpty ? messageNotifier('$_message') : null,
+      onSaved: (value) => _typeOfInput == value,
+    );
+  }
+
+  List<Widget> submitWidgets() {
+    return[
+      textFormFieldExtension(_emailController , 'Email', false, 'Please enter an email', _email),
+      textFormFieldExtension(_passwordController , 'Password', true,'Please enter a password', _password)
+    ];
+  }
+
   List<Widget> navigateWidgets() {
     return[
       _isLoading
@@ -97,28 +123,6 @@ class _MyLogInPageState extends State<MyLogInPage> {
         },
         textColor: Theme.of(context).accentColor,
         child: new Text('Create account?'),
-      ),
-    ];
-  }
-
-  List<Widget> submitWidgets() {
-    return[
-      TextFormField(
-        controller: _emailController,
-        decoration: InputDecoration(
-          labelText: 'Email'
-        ),
-        validator: (value) => value.isEmpty ? messageNotifier('Please enter email') : null,
-        onSaved: (value) => _email == value,
-      ),
-      TextFormField(
-        controller: _passwordController,
-        decoration: InputDecoration(
-          labelText: 'Password'
-        ),
-        obscureText: true,
-        validator: (value) => value.isEmpty ? messageNotifier('Please enter password') : null,
-        onSaved: (value) => _password == value,
       ),
     ];
   }
