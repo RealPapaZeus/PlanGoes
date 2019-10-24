@@ -16,10 +16,12 @@ class _CreateAccountState extends State<CreateAccount>{
 
   String _email;
   String _password;
+  bool _isLoading = false;
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _passwordConfirmController = TextEditingController();
 
   @override
   void initState(){
@@ -46,7 +48,7 @@ class _CreateAccountState extends State<CreateAccount>{
         onSaved: (value) => _password == value,
       ),
       TextFormField(
-        controller: _passwordController,
+        controller: _passwordConfirmController,
         decoration: InputDecoration(
           labelText: 'Confirm password'
         ),
@@ -56,6 +58,21 @@ class _CreateAccountState extends State<CreateAccount>{
       ),
     ];
   }
+
+  List<Widget> userViewConfirmNewAccount() {
+    return [
+      Padding(
+        padding: EdgeInsets.all(15.0),
+        child: _isLoading
+                  ? Center(child: new CircularProgressIndicator())
+                  : RaisedButton(
+                      onPressed: (){},
+                      child: Text('Create new Account'),
+                  )
+        )
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +96,7 @@ class _CreateAccountState extends State<CreateAccount>{
                         key: _formKey,
                         child: new Column(
                           children: 
-                            submitWidgets() 
+                            submitWidgets() + userViewConfirmNewAccount()
                         )
                       )
                     )

@@ -133,7 +133,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text('Events'),
+        title: Text('LogIn'),
       ),
       body: new SingleChildScrollView(
         child: new Container(
