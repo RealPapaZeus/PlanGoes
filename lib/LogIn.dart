@@ -47,9 +47,9 @@ class _MyLogInPageState extends State<MyLogInPage> {
     final _formState = _formKey.currentState;
 
     setState(() {
-     _isLoading = true; 
+      _isLoading = true;  
     });
-
+    
     if(_formState.validate()){
       _formState.save();
 
@@ -70,7 +70,12 @@ class _MyLogInPageState extends State<MyLogInPage> {
       }
     }
   }
-  
+
+  String messageNotifier(String message) {
+    _isLoading = false;
+    return '$message';
+  }
+
   List<Widget> navigateWidgets() {
     return[
       _isLoading
@@ -100,7 +105,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
         decoration: InputDecoration(
           labelText: 'Email'
         ),
-        validator: (value) => value.isEmpty ? 'Please enter email' : null,
+        validator: (value) => value.isEmpty ? messageNotifier('Please enter email') : null,
         onSaved: (value) => _email == value,
       ),
       TextFormField(
@@ -109,7 +114,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
           labelText: 'Password'
         ),
         obscureText: true,
-        validator: (value) => value.isEmpty ? 'Please enter password' : null,
+        validator: (value) => value.isEmpty ? messageNotifier('Please enter password') : null,
         onSaved: (value) => _password == value,
       ),
     ];
