@@ -71,6 +71,9 @@ class _MyLogInPageState extends State<MyLogInPage> {
     }
   }
 
+  //gets called when user tries to call signIn, but input for email 
+  //and password is empty. _isLoading gets set to false, so the 
+  //Indicator does not get called 
   String messageNotifier(String message) {
     _isLoading = false;
     return '$message';
