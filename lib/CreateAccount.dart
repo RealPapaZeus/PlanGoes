@@ -19,6 +19,7 @@ class _CreateAccountState extends State<CreateAccount>{
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState(){
@@ -63,20 +64,32 @@ class _CreateAccountState extends State<CreateAccount>{
         centerTitle: true,
         title: Text('CreateAccount'),
       ),
-      body: new Center(
-        child: new Column(
-          children: submitWidgets(),
-        // child: new FlatButton(
-        //   onPressed: (){
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(builder: (context) => UserName()),
-        //     );
-        //   },
-        //   textColor: Theme.of(context).accentColor,
-        //   child: new Text('Apply'),
-        )
-      ),
+      body: new SingleChildScrollView(
+        child: new Container(
+          padding: const EdgeInsets.all(15.0),
+          child: new Column(
+            children: <Widget>[
+              new Card(
+                child: new Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new Container(
+                      padding: new EdgeInsets.all(15.0),
+                      child: new Form(
+                        key: _formKey,
+                        child: new Column(
+                          children: 
+                            submitWidgets() 
+                        )
+                      )
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ), 
     );
   }
 }
