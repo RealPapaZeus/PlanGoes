@@ -91,6 +91,7 @@ class _CreateAccountState extends State<CreateAccount>{
     return TextFormField(
       controller: _emailController,
       decoration: InputDecoration(
+        prefixIcon: Icon(Icons.email),
         labelText: 'Email'
       ),
       obscureText: false,
@@ -105,6 +106,7 @@ class _CreateAccountState extends State<CreateAccount>{
       obscureText: _obscurePassword,
       decoration: InputDecoration(
         labelText: 'Password',
+        prefixIcon: Icon(Icons.lock),
         suffixIcon: IconButton(
           icon: Icon(
             _obscurePassword

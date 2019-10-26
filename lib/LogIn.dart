@@ -85,6 +85,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
     return TextFormField(
       controller: _emailController,
       decoration: InputDecoration(
+        prefixIcon: Icon(Icons.email),
         labelText: 'Email'
       ),
       obscureText: false,
@@ -99,6 +100,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
       obscureText: _obscurePassword,
       decoration: InputDecoration(
         labelText: 'Password',
+        prefixIcon: Icon(Icons.lock),
         suffixIcon: IconButton(
           icon: Icon(
             _obscurePassword
