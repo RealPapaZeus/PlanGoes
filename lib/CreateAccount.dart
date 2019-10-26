@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/UserName.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CreateAccount extends StatefulWidget {
 
@@ -29,6 +30,34 @@ class _CreateAccountState extends State<CreateAccount>{
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void createNewAccount() async{
+    final _formState = _formKey.currentState;
+
+    setState(() {
+      _isLoading = true;  
+    });
+    
+    if(_formState.validate()){
+      _formState.save();
+
+      try{
+        AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.toString().trim(),
+                                                                      password: _passwordController.text);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => UserName())); 
+        setState(() {
+          _isLoading = false;
+          //_authHint = '';
+        });
+      }catch(e){
+        setState(() {
+          _isLoading = false; 
+         // _authHint = 'Email or password is invalid';
+        });
+        print(e.message);
+      }
+    }
   }
 
   //gets called whenever a user tries to call signIn, but input for email 
@@ -75,8 +104,8 @@ class _CreateAccountState extends State<CreateAccount>{
         child: _isLoading
                   ? Center(child: new CircularProgressIndicator())
                   : RaisedButton(
-                      onPressed: (){},
-                      child: Text('Create new Account'),
+                      onPressed: createNewAccount,
+                      child: Text('Create new account'),
                   )
         )
     ];
