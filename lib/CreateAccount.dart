@@ -18,6 +18,7 @@ class _CreateAccountState extends State<CreateAccount>{
   String _email;
   String _password;
   String _passwordConfirm; 
+  String _authHint = '';
   bool _isLoading = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -48,24 +49,36 @@ class _CreateAccountState extends State<CreateAccount>{
         Navigator.push(context, MaterialPageRoute(builder: (context) => UserName())); 
         setState(() {
           _isLoading = false;
-          //_authHint = '';
+          _authHint = '';
         });
       }catch(e){
         setState(() {
           _isLoading = false; 
-         // _authHint = 'Email or password is invalid';
+         _authHint = 'The email address is already in use by another account';
         });
         print(e.message);
       }
     }
   }
-
+  
   //gets called whenever a user tries to call signIn, but input for email 
   //and password is empty. _isLoading gets set to false, so the 
   //CircularIndicator does not get called 
   String messageNotifier(String message) {
     _isLoading = false;
     return '$message';
+  }
+
+  Widget registrationSucessMessage() {
+    return new Container(
+      child: Text(
+        _authHint,
+        style: TextStyle(
+          color: Colors.red
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
   }
 
   //it only returns the TextFormField Widget
@@ -141,6 +154,7 @@ class _CreateAccountState extends State<CreateAccount>{
                   ],
                 ),
               ),
+              registrationSucessMessage()
             ],
           ),
         ),
