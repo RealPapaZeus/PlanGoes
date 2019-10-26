@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/UserName.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,14 +19,13 @@ class _CreateAccountState extends State<CreateAccount>{
 
   String _email;
   String _password;
-  String _passwordConfirm; 
   String _authHint = '';
   bool _isLoading = false;
+  bool _obscurePassword = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _passwordConfirmController = TextEditingController();
 
   @override 
   void dispose(){
@@ -68,7 +69,10 @@ class _CreateAccountState extends State<CreateAccount>{
     _isLoading = false;
     return '$message';
   }
-
+  
+  //it gives the user a notification if 
+  //a mistake appeared. For instance if an email 
+  //is already in use by another user
   Widget registrationSucessMessage() {
     return new Container(
       child: Text(
@@ -81,32 +85,37 @@ class _CreateAccountState extends State<CreateAccount>{
     );
   }
 
-  //it only returns the TextFormField Widget
-  //we have to fill the parameters, so only this method needs to get called
+  //Widgets do only return a TextFormField 
   //whenever a new TextFormField gets created
-  Widget textFormFieldExtension(TextEditingController _controller,
-                                 String _inputLabelText,
-                                  bool _obscureText,
-                                   String _message,
-                                    String _typeOfInput) {
+  Widget emailTextFormField() {
     return TextFormField(
-      controller: _controller,
+      controller: _emailController,
       decoration: InputDecoration(
-        labelText: '$_inputLabelText'
+        labelText: 'Email'
       ),
-      obscureText: _obscureText,
-      validator: (value) => value.isEmpty ? messageNotifier('$_message') : null,
-      onSaved: (value) => _typeOfInput == value,
+      obscureText: false,
+      validator: (value) => value.isEmpty ? messageNotifier('Please enter an email') : null,
+      onSaved: (value) => _email == value,
     );
   }
 
+  Widget passwordTextFormField() {
+    return TextFormField(
+      controller: _passwordController,
+      decoration: InputDecoration(
+        labelText: 'Password'
+      ),
+      obscureText: true,
+      validator: (value) => value.isEmpty ? messageNotifier('Please enter a password') : null,
+      onSaved: (value) => _password == value,
+    );
+  }
   //calls the method which builds TextFormField with given parameters
   //it helps to read the code more efficient
   List<Widget> submitWidgets() {
     return[
-      textFormFieldExtension(_emailController, 'Email', false,'Please enter an email', _email),
-      textFormFieldExtension(_passwordController, 'Password', true, 'Please enter a password', _password),
-      textFormFieldExtension(_passwordConfirmController, 'Confirm Password', true, 'Please confirm password', _passwordConfirm)
+      emailTextFormField(),
+      passwordTextFormField()
     ];
   }
 
