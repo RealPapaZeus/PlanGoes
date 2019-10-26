@@ -31,6 +31,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
   String _password;
   String _authHint = '';
   bool _isLoading = false;
+  bool _obscurePassword = true;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -80,41 +81,63 @@ class _MyLogInPageState extends State<MyLogInPage> {
   }
 
   //it only returns the TextFormField Widget
-  //we have to fill the parameters, so only this method needs to get called
-  //whenever a new TextFormField gets created
-  Widget textFormFieldExtension(TextEditingController _controller,
-                                 String _inputLabelText,
-                                  bool _obscureText,
-                                   String _message,
-                                    String _typeOfInput) {
+  Widget emailTextFormField() {
     return TextFormField(
-      controller: _controller,
+      controller: _emailController,
       decoration: InputDecoration(
-        labelText: '$_inputLabelText'
+        prefixIcon: Icon(Icons.email),
+        labelText: 'Email'
       ),
-      obscureText: _obscureText,
-      validator: (value) => value.isEmpty ? messageNotifier('$_message') : null,
-      onSaved: (value) => _typeOfInput == value,
+      obscureText: false,
+      validator: (value) => value.isEmpty ? messageNotifier('Please enter an email') : null,
+      onSaved: (value) => _email == value,
     );
   }
 
+  Widget passwordTextFormField() {
+    return TextFormField(
+      controller: _passwordController,
+      obscureText: _obscurePassword,
+      decoration: InputDecoration(
+        labelText: 'Password',
+        prefixIcon: Icon(Icons.lock),
+        suffixIcon: IconButton(
+          icon: Icon(
+            _obscurePassword
+              ? Icons.visibility
+              : Icons.visibility_off
+          ),
+          onPressed: (){
+            setState(() {
+              _obscurePassword = !_obscurePassword;  
+            });
+          },
+        ),
+      ),
+      validator: (value) => value.isEmpty ? messageNotifier('Please enter a password') : null,
+      onSaved: (value) => _password == value,
+    );
+  }
   List<Widget> submitWidgets() {
     return[
-      textFormFieldExtension(_emailController , 'Email', false, 'Please enter an email', _email),
-      textFormFieldExtension(_passwordController , 'Password', true,'Please enter a password', _password)
+      emailTextFormField(),
+      passwordTextFormField()
     ];
   }
 
   List<Widget> navigateWidgets() {
     return[
-      _isLoading
+      Padding(
+        padding: EdgeInsets.all(15.0),
+        child: _isLoading
         ? Center(
             child: CircularProgressIndicator(),
           )
         : RaisedButton(
             onPressed: signIn,
             child: Text('Sign in')
-          ),  
+          ), 
+      ),
       FlatButton(
         onPressed: (){
           Navigator.push(
