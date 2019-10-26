@@ -21,7 +21,7 @@ class _CreateAccountState extends State<CreateAccount>{
   String _password;
   String _authHint = '';
   bool _isLoading = false;
-  bool _obscurePassword = false;
+  bool _obscurePassword = true;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -102,10 +102,22 @@ class _CreateAccountState extends State<CreateAccount>{
   Widget passwordTextFormField() {
     return TextFormField(
       controller: _passwordController,
+      obscureText: _obscurePassword,
       decoration: InputDecoration(
-        labelText: 'Password'
+        labelText: 'Password',
+        suffixIcon: IconButton(
+          icon: Icon(
+            _obscurePassword
+              ? Icons.visibility
+              : Icons.visibility_off
+          ),
+          onPressed: (){
+            setState(() {
+              _obscurePassword = !_obscurePassword;  
+            });
+          },
+        ),
       ),
-      obscureText: true,
       validator: (value) => value.isEmpty ? messageNotifier('Please enter a password') : null,
       onSaved: (value) => _password == value,
     );
