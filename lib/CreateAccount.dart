@@ -20,6 +20,7 @@ class _CreateAccountState extends State<CreateAccount>{
 
   String _email;
   String _password;
+  String _username;
   String _authHint = '';
   bool _isLoading = false;
   bool _obscurePassword = true;
@@ -27,6 +28,7 @@ class _CreateAccountState extends State<CreateAccount>{
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
 
   @override 
   void dispose(){
@@ -129,12 +131,26 @@ class _CreateAccountState extends State<CreateAccount>{
       onSaved: (value) => _password == value,
     );
   }
+  Widget userNameField() {
+    return TextFormField(
+      controller: _usernameController,
+      decoration: InputDecoration(
+        prefixIcon: Icon(Icons.verified_user),
+        labelText: 'Username'
+      ),
+      obscureText: false,
+      validator: (value) => value.isEmpty ? messageNotifier('Please enter an username') : null,
+      onSaved: (value) => _password == value,
+    );
+  }
+
   //calls the method which builds TextFormField with given parameters
   //it helps to read the code more efficient
   List<Widget> submitWidgets() {
     return[
       emailTextFormField(),
-      passwordTextFormField()
+      passwordTextFormField(),
+      userNameField()
     ];
   }
 
