@@ -13,9 +13,6 @@ class CreateAccount extends StatefulWidget {
   
 class _CreateAccountState extends State<CreateAccount>{
 
-  //defining new variables to allow user create a new account
-  //with password he chooses
-
   String _email;
   String _password;
   String _username;
@@ -35,7 +32,7 @@ class _CreateAccountState extends State<CreateAccount>{
     super.dispose();
   }
 
-  void createUserInCollection(String userID, String email,String username) async {
+  void createUserInCollection(String userID, String email, String username) async {
   final databaseReference = Firestore.instance;
 
   await databaseReference.collection("users")
@@ -43,7 +40,6 @@ class _CreateAccountState extends State<CreateAccount>{
       .setData({
         'email': '$email',
         'username': '$username'
-        
       });
   }
 
@@ -144,13 +140,14 @@ class _CreateAccountState extends State<CreateAccount>{
       ),
       
       validator: (value){ 
-          if (value.isEmpty) {
-            return messageNotifier('Please enter a password');
-        } else if (value.length < 8){ 
+        if (value.isEmpty)
+          return messageNotifier('Please enter a password');
+        else {
+          if (value.toString().length <= 8)
             return messageNotifier('Password has to be 8 digits long');
-        }else {
-          return null;
-        }
+          else
+            return null;
+        } 
       },
       onSaved: (value) => _password == value,
     );
