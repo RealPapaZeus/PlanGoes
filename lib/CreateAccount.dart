@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/LogIn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,13 +35,15 @@ class _CreateAccountState extends State<CreateAccount>{
     super.dispose();
   }
 
-  void createUserInCollection(String userID, String email) async {
+  void createUserInCollection(String userID, String email,String username) async {
   final databaseReference = Firestore.instance;
 
   await databaseReference.collection("users")
       .document('$userID')
       .setData({
         'email': '$email',
+        'username': '$username'
+        
       });
   }
 
@@ -61,7 +61,7 @@ class _CreateAccountState extends State<CreateAccount>{
         AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.toString().trim(),
                                                                       password: _passwordController.text);
         
-        createUserInCollection(user.user.uid, _emailController.text);
+        createUserInCollection(user.user.uid, _emailController.text, _usernameController.text);
         
         user.user.sendEmailVerification();
 
@@ -77,6 +77,8 @@ class _CreateAccountState extends State<CreateAccount>{
           _isLoading = false; 
          _authHint = 'The email address is already in use by another account';
         });
+
+
         print(e.message);
       }
     }
@@ -140,7 +142,16 @@ class _CreateAccountState extends State<CreateAccount>{
           },
         ),
       ),
-      validator: (value) => value.isEmpty ? messageNotifier('Please enter a password') : null,
+      
+      validator: (value){ 
+          if (value.isEmpty) {
+            return messageNotifier('Please enter a password');
+        } else if (value.length < 8){ 
+            return messageNotifier('Password has to be 8 digits long');
+        }else {
+          return null;
+        }
+      },
       onSaved: (value) => _password == value,
     );
   }
@@ -153,7 +164,7 @@ class _CreateAccountState extends State<CreateAccount>{
       ),
       obscureText: false,
       validator: (value) => value.isEmpty ? messageNotifier('Please enter an username') : null,
-      onSaved: (value) => _password == value,
+      onSaved: (value) => _username == value,
     );
   }
 
