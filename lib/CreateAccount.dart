@@ -52,11 +52,14 @@ class _CreateAccountState extends State<CreateAccount>{
           _isLoading = false;
           _authHint = '';
         });
+       
       }catch(e){
         setState(() {
           _isLoading = false; 
          _authHint = 'The email address is already in use by another account';
         });
+
+
         print(e.message);
       }
     }
