@@ -44,6 +44,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
     super.dispose();
   }
 
+
   void signIn() async{
     final _formState = _formKey.currentState;
 
@@ -57,11 +58,19 @@ class _MyLogInPageState extends State<MyLogInPage> {
       try{
         AuthResult user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.toString().trim(),
                                                                       password: _passwordController.text);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => EventList())); 
-        setState(() {
-          _isLoading = false;
-          _authHint = '';
-        });
+
+        if(user.user.isEmailVerified) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => EventList())); 
+          setState(() {
+            _isLoading = false;
+            _authHint = '';
+          });
+        } else {
+          setState(() {
+            _isLoading = false;
+            _authHint = 'Please verify your email';
+          });
+        }
       }catch(e){
         setState(() {
           _isLoading = false; 
