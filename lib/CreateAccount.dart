@@ -178,7 +178,7 @@ class _CreateAccountState extends State<CreateAccount>{
     return TextFormField(
       controller: _usernameController,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.verified_user),
+        prefixIcon: Icon(Icons.person),
         labelText: 'Username'
       ),
       obscureText: false,
