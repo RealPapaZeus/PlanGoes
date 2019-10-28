@@ -13,9 +13,6 @@ class CreateAccount extends StatefulWidget {
   
 class _CreateAccountState extends State<CreateAccount>{
 
-  //defining new variables to allow user create a new account
-  //with password he chooses
-
   String _email;
   String _password;
   String _username;
@@ -35,7 +32,7 @@ class _CreateAccountState extends State<CreateAccount>{
     super.dispose();
   }
 
-  void createUserInCollection(String userID, String email,String username) async {
+  void createUserInCollection(String userID, String email, String username) async {
   final databaseReference = Firestore.instance;
 
   await databaseReference.collection("users")
@@ -43,7 +40,6 @@ class _CreateAccountState extends State<CreateAccount>{
       .setData({
         'email': '$email',
         'username': '$username'
-        
       });
   }
 
@@ -62,10 +58,10 @@ class _CreateAccountState extends State<CreateAccount>{
                                                                       password: _passwordController.text);
         
         createUserInCollection(user.user.uid, _emailController.text, _usernameController.text);
-        
+       
         user.user.sendEmailVerification();
-
-        Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn())); 
+        
+        showAlterDialogVerification(context, _emailController.text);
 
         setState(() {
           _isLoading = false;
@@ -92,6 +88,27 @@ class _CreateAccountState extends State<CreateAccount>{
     return '$message';
   }
   
+
+  Future<void> showAlterDialogVerification(BuildContext context, String _email) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Verify Your Email Address'),
+          content: Text('We like you to verify your email address. We have sent an email to $_email to verify your address. Please click the link in that email to continue.'),
+          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
+          actions: <Widget>[
+            FlatButton(
+              onPressed:(){
+                 Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn()));
+              },
+              child: Text('Okay, got it'),
+            )
+          ],
+        );
+      }
+    );
+  }
   //it gives the user a notification if 
   //a mistake appeared. For instance if an email 
   //is already in use by another user
@@ -144,13 +161,14 @@ class _CreateAccountState extends State<CreateAccount>{
       ),
       
       validator: (value){ 
-          if (value.isEmpty) {
-            return messageNotifier('Please enter a password');
-        } else if (value.length < 8){ 
+        if (value.isEmpty)
+          return messageNotifier('Please enter a password');
+        else {
+          if (value.toString().length <= 8)
             return messageNotifier('Password has to be 8 digits long');
-        }else {
-          return null;
-        }
+          else
+            return null;
+        } 
       },
       onSaved: (value) => _password == value,
     );
