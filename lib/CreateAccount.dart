@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/LogIn.dart';
-import 'package:plan_go_software_project/UserName.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CreateAccount extends StatefulWidget {
 
@@ -37,6 +37,16 @@ class _CreateAccountState extends State<CreateAccount>{
     super.dispose();
   }
 
+  void createUserInCollection(String userID, String email) async {
+  final databaseReference = Firestore.instance;
+
+  await databaseReference.collection("users")
+      .document('$userID')
+      .setData({
+        'email': '$email',
+      });
+  }
+
   void createNewAccount() async{
     final _formState = _formKey.currentState;
 
@@ -50,8 +60,11 @@ class _CreateAccountState extends State<CreateAccount>{
       try{
         AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.toString().trim(),
                                                                       password: _passwordController.text);
-
+        
+        createUserInCollection(user.user.uid, _emailController.text);
+        
         user.user.sendEmailVerification();
+
         Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn())); 
 
         setState(() {
