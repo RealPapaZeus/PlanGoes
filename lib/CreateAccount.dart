@@ -88,7 +88,8 @@ class _CreateAccountState extends State<CreateAccount>{
     return '$message';
   }
   
-
+  //gives user a hint to verify email before he can continue 
+  //login process
   Future<void> showAlterDialogVerification(BuildContext context, String _email) {
     return showDialog<void>(
       context: context,
@@ -177,7 +178,7 @@ class _CreateAccountState extends State<CreateAccount>{
     return TextFormField(
       controller: _usernameController,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.verified_user),
+        prefixIcon: Icon(Icons.person),
         labelText: 'Username'
       ),
       obscureText: false,
