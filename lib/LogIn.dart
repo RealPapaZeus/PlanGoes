@@ -44,7 +44,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
     super.dispose();
   }
 
-
+  
   void signIn() async{
     final _formState = _formKey.currentState;
 
@@ -55,6 +55,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
     if(_formState.validate()){
       _formState.save();
 
+    //.trim() leaves no space at the end of the email
+    //so a bad formatting exception wont be thrown
       try{
         AuthResult user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.toString().trim(),
                                                                       password: _passwordController.text);
@@ -81,9 +83,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
     }
   }
 
-  //gets called when user tries to call signIn, but input for email 
-  //and password is empty. _isLoading gets set to false, so the 
-  //Indicator does not get called 
+  //gets called when user tries to call signIn
   String messageNotifier(String message) {
     _isLoading = false;
     return '$message';
