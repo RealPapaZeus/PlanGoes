@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:plan_go_software_project/LogIn.dart';
 import 'package:plan_go_software_project/UserName.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -47,11 +48,15 @@ class _CreateAccountState extends State<CreateAccount>{
       try{
         AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.toString().trim(),
                                                                       password: _passwordController.text);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => UserName())); 
+
+        user.user.sendEmailVerification();
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn())); 
+
         setState(() {
           _isLoading = false;
           _authHint = '';
         });
+        
       }catch(e){
         setState(() {
           _isLoading = false; 
