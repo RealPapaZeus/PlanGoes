@@ -44,6 +44,7 @@ class _CreateAccountState extends State<CreateAccount>{
       .document('$userID')
       .setData({
         'email': '$email',
+        
       });
   }
 
