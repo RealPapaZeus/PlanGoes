@@ -58,10 +58,10 @@ class _CreateAccountState extends State<CreateAccount>{
                                                                       password: _passwordController.text);
         
         createUserInCollection(user.user.uid, _emailController.text, _usernameController.text);
-        
+       
         user.user.sendEmailVerification();
-
-        Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn())); 
+        
+        showAlterDialogVerification(context, _emailController.text);
 
         setState(() {
           _isLoading = false;
@@ -88,6 +88,27 @@ class _CreateAccountState extends State<CreateAccount>{
     return '$message';
   }
   
+
+  Future<void> showAlterDialogVerification(BuildContext context, String _email) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Verify Your Email Address'),
+          content: Text('We like you to verify your email address. We have sent an email to $_email to verify your address. Please click the link in that email to continue.'),
+          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
+          actions: <Widget>[
+            FlatButton(
+              onPressed:(){
+                 Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn()));
+              },
+              child: Text('Okay, got it'),
+            )
+          ],
+        );
+      }
+    );
+  }
   //it gives the user a notification if 
   //a mistake appeared. For instance if an email 
   //is already in use by another user
