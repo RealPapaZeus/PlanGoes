@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'LogIn.dart';
+import 'package:plan_go_software_project/Verification/LogIn.dart';
 
 void main() => runApp(LogIn());
 

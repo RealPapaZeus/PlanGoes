@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plan_go_software_project/LogIn.dart';
+import 'package:plan_go_software_project/Verification/LogIn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -96,7 +96,19 @@ class _CreateAccountState extends State<CreateAccount>{
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Verify Your Email Address'),
-          content: Text('We like you to verify your email address. We have sent an email to $_email to verify your address. Please click the link in that email to continue.'),
+          content: RichText(
+            text: new TextSpan(
+              style: new TextStyle(
+                fontSize: 14.0,
+                color: Colors.black,
+              ),
+              children: <TextSpan>[
+                new TextSpan(text: 'We like you to verify your email address. We have sent an email to '),
+                new TextSpan(text: '$_email', style: new TextStyle(fontWeight: FontWeight.bold)),
+                new TextSpan(text: ' to verify your address. Please click the link in that email to continue.')
+              ]
+            )
+          ),
           shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
           actions: <Widget>[
             FlatButton(
@@ -217,7 +229,7 @@ class _CreateAccountState extends State<CreateAccount>{
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text('CreateAccount'),
+        title: Text('Create Account'),
       ),
       body: new SingleChildScrollView(
         child: new Container(
