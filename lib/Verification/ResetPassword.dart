@@ -73,9 +73,7 @@ class _ResetPasswordState extends State<ResetPassword> {
           shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
           actions: <Widget>[
             FlatButton(
-              onPressed:(){
-                 Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn()));
-              },
+              onPressed:(){Navigator.of(context).pop();},
               child: Text('Okay'),
             )
           ],
