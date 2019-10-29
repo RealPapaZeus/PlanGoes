@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/Verification/CreateAccount.dart';
 import 'package:plan_go_software_project/EventList.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:plan_go_software_project/Verification/ResetPassword.dart';
 
 class LogIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'LogIn',
+      title: 'Sign In',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -154,7 +155,16 @@ class _MyLogInPageState extends State<MyLogInPage> {
             MaterialPageRoute(builder: (context) => CreateAccount()));
         },
         textColor: Theme.of(context).accentColor,
-        child: new Text('Create account?'),
+        child: new Text('Create Account?'),
+      ),
+      FlatButton(
+        onPressed: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ResetPassword()));
+        },
+        textColor: Theme.of(context).accentColor,
+        child: new Text('Reset Password'),
       ),
     ];
   }

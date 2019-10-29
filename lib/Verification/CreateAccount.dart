@@ -217,7 +217,7 @@ class _CreateAccountState extends State<CreateAccount>{
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text('CreateAccount'),
+        title: Text('Create Account'),
       ),
       body: new SingleChildScrollView(
         child: new Container(
