@@ -69,7 +69,19 @@ class _ResetPasswordState extends State<ResetPassword> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Email Reset'),
-          content: Text('We just sent you a link to $_email to reset your password. Please click the link in that email to continue.'),
+          content: RichText(
+            text: new TextSpan(
+              style: new TextStyle(
+                fontSize: 14.0,
+                color: Colors.black,
+              ),
+              children: <TextSpan>[
+                new TextSpan(text: 'We just sent you a link to '),
+                new TextSpan(text: '$_email', style: new TextStyle(fontWeight: FontWeight.bold)),
+                new TextSpan(text: ' to reset your password. Please click the link in that email to continue.')
+              ]
+            ),
+          ),
           shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
           actions: <Widget>[
             FlatButton(
