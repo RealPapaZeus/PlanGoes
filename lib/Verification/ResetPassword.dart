@@ -93,15 +93,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                       child: Text('Submit'),
                   )
       ),
-      FlatButton(
-        onPressed: (){
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LogIn()));
-        },
-        textColor: Theme.of(context).accentColor,
-        child: new Text('Return to Sign In'),
-      ),
     ];
   }
 
@@ -109,7 +100,6 @@ class _ResetPasswordState extends State<ResetPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text('Reset Password'),
       ),
