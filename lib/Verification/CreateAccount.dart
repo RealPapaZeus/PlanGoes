@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plan_go_software_project/LogIn.dart';
+import 'package:plan_go_software_project/Verification/LogIn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plan_go_software_project/CreateAccount.dart';
+import 'package:plan_go_software_project/Verification/CreateAccount.dart';
 import 'package:plan_go_software_project/EventList.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
