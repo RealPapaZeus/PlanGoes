@@ -47,6 +47,8 @@ class _ResetPasswordState extends State<ResetPassword> {
         
         await resetPassword(_emailController.text.toString().trim());
 
+        showAlterDialogVerification(context, _emailController.text);
+
         setState(() {
           _isLoading = false;
         });
@@ -59,6 +61,27 @@ class _ResetPasswordState extends State<ResetPassword> {
           print(e.message);
       }
     }
+  }
+
+  Future<void> showAlterDialogVerification(BuildContext context, String _email) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Email Reset'),
+          content: Text('We just sent you a link to $_email to reset your password. Please click the link in that email to continue.'),
+          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
+          actions: <Widget>[
+            FlatButton(
+              onPressed:(){
+                 Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn()));
+              },
+              child: Text('Okay'),
+            )
+          ],
+        );
+      }
+    );
   }
 
   String messageNotifier(String message) {
