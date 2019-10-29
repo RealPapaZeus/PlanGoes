@@ -26,6 +26,9 @@ class _ResetPasswordState extends State<ResetPassword> {
     super.dispose();
   }
 
+  //method is important because otherwise, calling "sendPasswordResetEmail"
+  //throws an error, because of TypeException. It says it should consist of 
+  //void. Therefore you have to call "resetPassword" inside "sendPasswordReset"
   Future resetPassword(String email) async {
     return FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
@@ -76,6 +79,9 @@ class _ResetPasswordState extends State<ResetPassword> {
     );
   }
 
+  //has to be inside a List because otherwise we can not 
+  //call this method inside our build(). The reason is inside our
+  //build() it is looking for a List of Widgets. 
   List<Widget> submitWidgets() {
     return [
       emailTextFormField()
