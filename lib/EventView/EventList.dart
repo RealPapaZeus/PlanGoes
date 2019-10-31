@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plan_go_software_project/ItemList.dart';
+import 'package:plan_go_software_project/EventView/RegisterEvent.dart';
 
 class EventList extends StatefulWidget {
 
@@ -62,7 +62,7 @@ class _EventListState extends State<EventList>{
       ],
       leading: IconButton(
         icon: Icon(Icons.add_circle),
-        onPressed: (){},
+        onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterEvent()));},
       ),
       centerTitle: true,
     );
