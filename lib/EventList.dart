@@ -16,24 +16,6 @@ class _EventListState extends State<EventList>{
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Text('Events'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.create),
-            onPressed: (){},
-          )
-        ],
-      ),
-      body: buildBody(),
-    );
-  }
-
   Widget buildBody(){
     return new Center(
       child: new ListTile(
@@ -59,6 +41,30 @@ class _EventListState extends State<EventList>{
         //   );
         // },
       ),
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: createAppBar(),
+      body: buildBody(),
+    );
+  }
+
+  Widget createAppBar() {
+    return AppBar(
+      title: Text('Your Events'),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.person),
+          onPressed: (){},
+        )
+      ],
+      leading: IconButton(
+        icon: Icon(Icons.add_circle),
+        onPressed: (){},
+      ),
+      centerTitle: true,
     );
   }
 }
