@@ -14,6 +14,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   
   String _email;
   bool _isLoading = false;
+  String _authHint = '';
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -49,11 +50,14 @@ class _ResetPasswordState extends State<ResetPassword> {
 
         setState(() {
           _isLoading = false;
+          _authHint = '';
         });
 
       } catch(e) {
           setState(() {
             _isLoading = false; 
+            _authHint = 'unknown Email';
+            
           });
 
           print(e.message);
@@ -89,6 +93,18 @@ class _ResetPasswordState extends State<ResetPassword> {
           ],
         );
       }
+    );
+  }
+
+Widget answerResetPassword() {
+    return new Container(
+      child: Text(
+        _authHint,
+        style: TextStyle(
+          color: Colors.red
+        ),
+        textAlign: TextAlign.center,
+      ),
     );
   }
 
@@ -162,6 +178,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   ],
                 ),
               ),
+              answerResetPassword()
             ],
           ),
         ),
