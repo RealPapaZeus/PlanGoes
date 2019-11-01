@@ -16,12 +16,15 @@ class RegisterEvent extends StatefulWidget {
 class _RegisterEventState extends State<RegisterEvent> {
 
   String _eventName;
+  String _location;
   String _description;
   bool _isLoading = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _eventNameController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+
  
   Future<void> createEvent(String eventName, String description, String userID) async {
     final databaseReference = Firestore.instance;
@@ -55,7 +58,7 @@ class _RegisterEventState extends State<RegisterEvent> {
         });
 
       } catch(e) {
-        
+
         setState(() {
           _isLoading = false;  
         });
@@ -69,7 +72,6 @@ class _RegisterEventState extends State<RegisterEvent> {
     return TextFormField(
       controller: _eventNameController,
       decoration: InputDecoration(
-        border: OutlineInputBorder(),
         labelText: 'Eventname'
       ),
       obscureText: false,
@@ -93,6 +95,18 @@ class _RegisterEventState extends State<RegisterEvent> {
     );
   }
 
+  Widget eventLocation() {
+    return TextFormField(
+      controller: _locationController,
+      decoration: InputDecoration(
+        labelText: 'Location'
+      ),
+      obscureText: false,
+      validator: (value) => value.isEmpty ? 'Please enter a location' : null,
+      onSaved: (value) => _location == value,
+    );
+  }
+
   List<Widget> userViewConfirmNewAccount() {
     return [
       Padding(
@@ -110,6 +124,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   List<Widget> inputWidgets() {
     return [
       eventNameTextField(),
+      eventLocation(),
       eventDescriptionTextField(),
     ];
   }
