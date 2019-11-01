@@ -22,7 +22,6 @@ class _RegisterEventState extends State<RegisterEvent> {
       controller: _eventNameController,
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        icon: Icon(Icons.event_note),
         labelText: 'Eventname'
       ),
       obscureText: false,
@@ -30,6 +29,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       onSaved: (value) => _eventName == value,
     );
   }
+
   Widget eventDescriptionTextField() {
     return TextFormField(
       keyboardType: TextInputType.multiline,
@@ -44,10 +44,11 @@ class _RegisterEventState extends State<RegisterEvent> {
       onSaved: (value) => _description == value,
     );
   }
+
   List<Widget> inputWidgets() {
     return [
       eventNameTextField(),
-      eventDescriptionTextField()
+      eventDescriptionTextField(),
     ];
   }
   
