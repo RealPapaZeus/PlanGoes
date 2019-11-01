@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:plan_go_software_project/EventView/EventList.dart';
 
 class RegisterEvent extends StatefulWidget {
 
@@ -26,15 +27,16 @@ class _RegisterEventState extends State<RegisterEvent> {
   final TextEditingController _descriptionController = TextEditingController();
 
  
-  Future<void> createEvent(String eventName, String description, String userID) async {
+  void createEvent(String eventName, String location, String description, String userID) async {
     final databaseReference = Firestore.instance;
 
     await databaseReference.collection("events").
       document().
       setData({
+        'admins' : ["$userID"],
         'eventName': '$eventName',
+        'location' : '$location',
         'description': '$description',
-        'admins' : ["$userID"] 
       });
   }
   
@@ -51,11 +53,15 @@ class _RegisterEventState extends State<RegisterEvent> {
 
       try{
         createEvent(_eventNameController.text.toString(),
-                    _descriptionController.text.toString(), user.uid.toString());
+                    _locationController.text.toString(),
+                    _descriptionController.text.toString(),
+                    user.uid.toString());
 
         setState(() {
           _isLoading = false;  
         });
+
+        Navigator.push(context, MaterialPageRoute(builder: (context) => EventList()));
 
       } catch(e) {
 
@@ -80,21 +86,6 @@ class _RegisterEventState extends State<RegisterEvent> {
     );
   }
 
-  Widget eventDescriptionTextField() {
-    return TextFormField(
-      keyboardType: TextInputType.multiline,
-      maxLines: 4,
-      maxLength: 150,
-      controller: _descriptionController,
-      decoration: InputDecoration(
-        labelText: 'Description'
-      ),
-      obscureText: false,
-      validator: (value) => value.isEmpty ? 'Please enter some description' : null,
-      onSaved: (value) => _description == value,
-    );
-  }
-
   Widget eventLocation() {
     return TextFormField(
       controller: _locationController,
@@ -104,6 +95,21 @@ class _RegisterEventState extends State<RegisterEvent> {
       obscureText: false,
       validator: (value) => value.isEmpty ? 'Please enter a location' : null,
       onSaved: (value) => _location == value,
+    );
+  }
+
+  Widget eventDescriptionTextField() {
+    return TextFormField(
+      keyboardType: TextInputType.multiline,
+      maxLines: 4,
+      maxLength: 200,
+      controller: _descriptionController,
+      decoration: InputDecoration(
+        labelText: 'Description'
+      ),
+      obscureText: false,
+      validator: (value) => value.isEmpty ? 'Please enter some description' : null,
+      onSaved: (value) => _description == value,
     );
   }
 

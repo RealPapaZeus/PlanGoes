@@ -34,12 +34,6 @@ class _EventListState extends State<EventList>{
             )
           ],
         ),
-        // onTap: (){
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(builder: (context) => ItemList()),
-        //   );
-        // },
       ),
     );
   }
