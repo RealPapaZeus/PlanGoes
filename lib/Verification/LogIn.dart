@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/Verification/CreateAccount.dart';
-import 'package:plan_go_software_project/EventList.dart';
+import 'package:plan_go_software_project/EventView/EventList.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:plan_go_software_project/Verification/ResetPassword.dart';
 

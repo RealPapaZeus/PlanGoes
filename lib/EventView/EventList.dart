@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plan_go_software_project/ItemList.dart';
+import 'package:plan_go_software_project/EventView/RegisterEvent.dart';
 
 class EventList extends StatefulWidget {
 
@@ -14,24 +14,6 @@ class _EventListState extends State<EventList>{
   @override
   void initState(){
     super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Text('Events'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.create),
-            onPressed: (){},
-          )
-        ],
-      ),
-      body: buildBody(),
-    );
   }
 
   Widget buildBody(){
@@ -59,6 +41,30 @@ class _EventListState extends State<EventList>{
         //   );
         // },
       ),
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: createAppBar(),
+      body: buildBody(),
+    );
+  }
+
+  Widget createAppBar() {
+    return AppBar(
+      title: Text('Your Events'),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.person),
+          onPressed: (){},
+        )
+      ],
+      leading: IconButton(
+        icon: Icon(Icons.add_circle),
+        onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterEvent()));},
+      ),
+      centerTitle: true,
     );
   }
 }
