@@ -33,14 +33,14 @@ class _CreateAccountState extends State<CreateAccount>{
   }
 
   void createUserInCollection(String userID, String email, String username) async {
-  final databaseReference = Firestore.instance;
+    final databaseReference = Firestore.instance;
 
-  await databaseReference.collection("users")
-      .document('$userID')
-      .setData({
-        'email': '$email',
-        'username': '$username'
-      });
+    await databaseReference.collection("users")
+        .document('$userID')
+        .setData({
+          'email': '$email',
+          'username': '$username'
+        });
   }
 
   void createNewAccount() async{
