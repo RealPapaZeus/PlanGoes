@@ -27,6 +27,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   final TextEditingController _descriptionController = TextEditingController();
 
  
+  //fills firebase with parameters
   void createEvent(String eventName, String location, String description, String userID) async {
     final databaseReference = Firestore.instance;
 
@@ -74,6 +75,13 @@ class _RegisterEventState extends State<RegisterEvent> {
     }
   }
 
+  //whenever user tries to submit and all input strings 
+  //are empty, _isLoading gets set to false
+  String messageToDenyLoading(String message) {
+    _isLoading = false;
+    return '$message';
+  }
+
   Widget eventNameTextField() {
     return TextFormField(
       controller: _eventNameController,
@@ -81,7 +89,7 @@ class _RegisterEventState extends State<RegisterEvent> {
         labelText: 'Eventname'
       ),
       obscureText: false,
-      validator: (value) => value.isEmpty ? 'Please enter a name' : null,
+      validator: (value) => value.isEmpty ? messageToDenyLoading('Please enter a name') : null,
       onSaved: (value) => _eventName == value,
     );
   }
@@ -93,7 +101,7 @@ class _RegisterEventState extends State<RegisterEvent> {
         labelText: 'Location'
       ),
       obscureText: false,
-      validator: (value) => value.isEmpty ? 'Please enter a location' : null,
+      validator: (value) => value.isEmpty ? messageToDenyLoading('Please enter a location') : null,
       onSaved: (value) => _location == value,
     );
   }
@@ -108,7 +116,7 @@ class _RegisterEventState extends State<RegisterEvent> {
         labelText: 'Description'
       ),
       obscureText: false,
-      validator: (value) => value.isEmpty ? 'Please enter some description' : null,
+      validator: (value) => value.isEmpty ? messageToDenyLoading('Please enter some description') : null,
       onSaved: (value) => _description == value,
     );
   }
