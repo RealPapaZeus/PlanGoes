@@ -19,6 +19,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   String _eventName;
   String _location;
   String _description;
+  String _documentID;
   bool _isLoading = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -27,12 +28,24 @@ class _RegisterEventState extends State<RegisterEvent> {
   final TextEditingController _descriptionController = TextEditingController();
 
  
-  //fills firebase with parameters
+  // admin creates a new event and this gets stored 
+  //in a firebase collection 
   void createEvent(String eventName, String location, String description, String userID) async {
     final databaseReference = Firestore.instance;
+    
+    // needs to be initialized that way, because so 
+    //we get the documentID seperatly, which is important to add to firebase
+    //because otherwise we would have had a n:m relation between collection
+    //event and user. 
+    //the documentID is used for the usersEventCollection!
+    DocumentReference documentReference = databaseReference.
+                                          collection("events").
+                                          document();
 
-    await databaseReference.collection("events").
-      document().
+    _documentID = documentReference.documentID;
+
+
+    await documentReference.
       setData({
         'admins' : ["$userID"],
         'eventName': '$eventName',
@@ -41,6 +54,21 @@ class _RegisterEventState extends State<RegisterEvent> {
       });
   }
   
+  // in this method we create a subcollection whenever a 
+  //user creates an event. It is important, because now every user gets his 
+  //own eventList
+  void insertEventIdToUserCollection(String userID) async{
+    final databaseReference = Firestore.instance;
+
+    await databaseReference.collection("users").
+      document("$userID").
+      collection("usersEventList").
+      document().
+      setData({
+        'eventName' : "$_documentID"
+      });
+  }
+
   void registerEventByPress() async {
     final _formState = _formKey.currentState;
     final FirebaseUser user = await FirebaseAuth.instance.currentUser();
@@ -57,6 +85,8 @@ class _RegisterEventState extends State<RegisterEvent> {
                     _locationController.text.toString(),
                     _descriptionController.text.toString(),
                     user.uid.toString());
+        
+        insertEventIdToUserCollection(user.uid.toString());
 
         setState(() {
           _isLoading = false;  
