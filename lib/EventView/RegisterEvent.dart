@@ -27,17 +27,35 @@ class _RegisterEventState extends State<RegisterEvent> {
   final TextEditingController _descriptionController = TextEditingController();
 
  
-  //fills firebase with parameters
+  // admin creates a new event and this gets stored 
+  //in a firebase collection 
   void createEvent(String eventName, String location, String description, String userID) async {
     final databaseReference = Firestore.instance;
+    
+    // needs to be initialized that way, because so 
+    //we get the documentID seperatly, which is important to add to firebase
+    //because otherwise we would have had a n:m relation between collection
+    //event and user. 
+    //the documentID is used for the usersEventCollection!
+    DocumentReference documentReference = databaseReference.
+                                          collection("events").
+                                          document();
 
-    await databaseReference.collection("events").
-      document().
+    final documentID = documentReference.documentID;
+
+
+    await documentReference.
       setData({
         'admins' : ["$userID"],
         'eventName': '$eventName',
         'location' : '$location',
         'description': '$description',
+      });
+    
+    await databaseReference.collection("usersEventList").
+      document("$userID").
+      setData({
+        'eventID' : '$documentID'
       });
   }
   
@@ -57,7 +75,7 @@ class _RegisterEventState extends State<RegisterEvent> {
                     _locationController.text.toString(),
                     _descriptionController.text.toString(),
                     user.uid.toString());
-
+        
         setState(() {
           _isLoading = false;  
         });
