@@ -54,6 +54,9 @@ class _RegisterEventState extends State<RegisterEvent> {
       });
   }
   
+  // in this method we create a subcollection whenever a 
+  //user creates an event. It is important, because now every user gets his 
+  //own eventList
   void insertEventIdToUserCollection(String userID) async{
     final databaseReference = Firestore.instance;
 
@@ -65,6 +68,7 @@ class _RegisterEventState extends State<RegisterEvent> {
         'eventName' : "$_documentID"
       });
   }
+
   void registerEventByPress() async {
     final _formState = _formKey.currentState;
     final FirebaseUser user = await FirebaseAuth.instance.currentUser();
@@ -83,7 +87,7 @@ class _RegisterEventState extends State<RegisterEvent> {
                     user.uid.toString());
         
         insertEventIdToUserCollection(user.uid.toString());
-        
+
         setState(() {
           _isLoading = false;  
         });
