@@ -1,10 +1,8 @@
-import 'dart:isolate';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plan_go_software_project/EventView/EventList.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class RegisterEvent extends StatefulWidget {
 
@@ -19,7 +17,6 @@ class _RegisterEventState extends State<RegisterEvent> {
   String _eventName;
   String _location;
   String _description;
-  String _documentID;
   bool _isLoading = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -42,8 +39,6 @@ class _RegisterEventState extends State<RegisterEvent> {
                                           collection("events").
                                           document();
 
-    _documentID = documentReference.documentID;
-
 
     await documentReference.
       setData({
@@ -57,15 +52,16 @@ class _RegisterEventState extends State<RegisterEvent> {
   // in this method we create a subcollection whenever a 
   //user creates an event. It is important, because now every user gets his 
   //own eventList
-  void insertEventIdToUserCollection(String userID) async{
+  void insertEventIdToUserCollection(String eventName, String location, String description, String userID) async{
     final databaseReference = Firestore.instance;
 
     await databaseReference.collection("users").
       document("$userID").
       collection("usersEventList").
-      document().
-      setData({
-        'eventName' : "$_documentID"
+      add({
+        'eventname' : '$eventName',
+        'location'  : '$location',
+        'description' : '$description'
       });
   }
 
@@ -86,7 +82,10 @@ class _RegisterEventState extends State<RegisterEvent> {
                     _descriptionController.text.toString(),
                     user.uid.toString());
         
-        insertEventIdToUserCollection(user.uid.toString());
+        insertEventIdToUserCollection(_eventNameController.text.toString(),
+                                      _locationController.text.toString(),
+                                      _descriptionController.text.toString(),
+                                      user.uid.toString());
 
         setState(() {
           _isLoading = false;  
