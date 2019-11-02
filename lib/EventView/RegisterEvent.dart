@@ -19,6 +19,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   String _eventName;
   String _location;
   String _description;
+  String _documentID;
   bool _isLoading = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -41,7 +42,7 @@ class _RegisterEventState extends State<RegisterEvent> {
                                           collection("events").
                                           document();
 
-    final documentID = documentReference.documentID;
+    _documentID = documentReference.documentID;
 
 
     await documentReference.
@@ -51,14 +52,19 @@ class _RegisterEventState extends State<RegisterEvent> {
         'location' : '$location',
         'description': '$description',
       });
-    
-    await databaseReference.collection("usersEventList").
-      document("$userID").
-      setData({
-        'eventID' : '$documentID'
-      });
   }
   
+  void insertEventIdToUserCollection(String userID) async{
+    final databaseReference = Firestore.instance;
+
+    await databaseReference.collection("users").
+      document("$userID").
+      collection("usersEventList").
+      document().
+      setData({
+        'eventName' : "$_documentID"
+      });
+  }
   void registerEventByPress() async {
     final _formState = _formKey.currentState;
     final FirebaseUser user = await FirebaseAuth.instance.currentUser();
@@ -75,6 +81,8 @@ class _RegisterEventState extends State<RegisterEvent> {
                     _locationController.text.toString(),
                     _descriptionController.text.toString(),
                     user.uid.toString());
+        
+        insertEventIdToUserCollection(user.uid.toString());
         
         setState(() {
           _isLoading = false;  
