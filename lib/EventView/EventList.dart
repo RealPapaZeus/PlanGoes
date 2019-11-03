@@ -78,14 +78,29 @@ class _EventListState extends State<EventList>{
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Container(height: 4.0),
-                new Text(document['eventname']),
-                new Container(height: 10.0),
-                new Text(document['description'])
+                new Container(
+                  padding: const EdgeInsets.only(right: 8.00, left: 8.00,top: 8.00, bottom: 4.00),
+                  decoration: BoxDecoration(),
+                  child: Text(
+                    document['eventname'],
+                    style: TextStyle(fontSize: 16.0), 
+                    overflow: TextOverflow.ellipsis,),
+                ),
+                new Container(
+                  padding: const EdgeInsets.only(right: 8.00, left: 8.00,top: 4.00, bottom: 8.00),
+                  decoration: BoxDecoration(),
+                  child: Text(
+                    document['description'],
+                    maxLines: 1,
+                    style: TextStyle(fontSize: 12.0),
+                    overflow: TextOverflow.ellipsis, ),
+                ),
               ], 
             ),
           )
         )
+      
+      
       
       
     );
