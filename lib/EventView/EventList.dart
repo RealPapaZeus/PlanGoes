@@ -68,6 +68,7 @@ class _EventListState extends State<EventList>{
   Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
     return new SingleChildScrollView(
         child: new Container(
+
           child: new Card(
             semanticContainer: true,
             shape: RoundedRectangleBorder(
@@ -99,6 +100,7 @@ class _EventListState extends State<EventList>{
             ),
           )
         )
+        
       
       
       
