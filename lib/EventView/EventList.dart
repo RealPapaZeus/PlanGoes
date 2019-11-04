@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/EventView/RegisterEvent.dart';
+import 'package:plan_go_software_project/ItemList.dart';
 
 class EventList extends StatefulWidget {
 
@@ -78,6 +79,16 @@ class _EventListState extends State<EventList>{
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                new RaisedButton(
+                    padding: const EdgeInsets.all(8.0),
+                    textColor: Colors.white,
+                    color: Colors.blue,
+                    onPressed: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => ItemList())); 
+
+                    },
+                    child: new Text("Add"),
+                  ),
                 new Container(
                   padding: const EdgeInsets.only(right: 8.00, left: 8.00,top: 8.00, bottom: 4.00),
                   decoration: BoxDecoration(),
@@ -100,6 +111,8 @@ class _EventListState extends State<EventList>{
             ),
           )
         )
+      
+        
       
       
       

@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 ///CHANGE NAME OF CLASS 
 ///
 ///
-class UserName extends StatefulWidget {
+class ItemList extends StatefulWidget {
 
-  UserName({Key key,}) : super(key: key);
+  ItemList({Key key,}) : super(key: key);
 
   @override
   _UserNameState createState() => new _UserNameState();
 }
   
-class _UserNameState extends State<UserName>{
+class _UserNameState extends State<ItemList>{
 
   @override
   void initState(){
