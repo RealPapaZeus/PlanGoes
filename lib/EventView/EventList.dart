@@ -84,6 +84,7 @@ class _EventListState extends State<EventList>{
                   decoration: BoxDecoration(),
                   child: Text(
                     document['eventname'],
+                    maxLines: 1,
                     style: TextStyle(fontSize: 16.0), 
                     overflow: TextOverflow.ellipsis,),
                 ),
@@ -92,7 +93,7 @@ class _EventListState extends State<EventList>{
                   decoration: BoxDecoration(),
                   child: Text(
                     document['description'],
-                    maxLines: 1,
+                    maxLines: 2,
                     style: TextStyle(fontSize: 12.0),
                     overflow: TextOverflow.ellipsis, ),
                 ),
