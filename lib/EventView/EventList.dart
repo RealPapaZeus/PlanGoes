@@ -66,58 +66,39 @@ class _EventListState extends State<EventList>{
 
   //this widget actually builds the UI for the EventList. 
   //Changes need still to be applied 
-  Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
-    return new SingleChildScrollView(
-        child: new Container(
-          child: new Card(
-            semanticContainer: true,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0)
-            ),
-            elevation: 5.0,
-            margin: EdgeInsets.all(10.0),
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new RaisedButton(
-                    padding: const EdgeInsets.all(8.0),
-                    textColor: Colors.white,
-                    color: Colors.blue,
-                    onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => ItemList())); 
+  final kanbanCard = new Container(
+   height: 124.0,
+   margin: new EdgeInsets.only(left: 46.0),
+   decoration: new BoxDecoration(
+   color: new Color(0xFF333366),
+   shape: BoxShape.rectangle,
+   borderRadius: new BorderRadius.circular(8.0),
+   boxShadow: <BoxShadow>[
+    new BoxShadow(  
+     color: Colors.black12,
+     blurRadius: 10.0,
+     offset: new Offset(0.0, 10.0),
+          ),
+      ],
+    ),
+ );
 
-                    },
-                    child: new Text("Add"),
-                  ),
-                new Container(
-                  padding: const EdgeInsets.only(right: 8.00, left: 8.00,top: 8.00, bottom: 4.00),
-                  decoration: BoxDecoration(),
-                  child: Text(
-                    document['eventname'],
-                    maxLines: 1,
-                    style: TextStyle(fontSize: 16.0), 
-                    overflow: TextOverflow.ellipsis,),
-                ),
-                new Container(
-                  padding: const EdgeInsets.only(right: 8.00, left: 8.00,top: 4.00, bottom: 8.00),
-                  decoration: BoxDecoration(),
-                  child: Text(
-                    document['description'],
-                    maxLines: 2,
-                    style: TextStyle(fontSize: 12.0),
-                    overflow: TextOverflow.ellipsis, ),
-                ),
-              ], 
-            ),
-          )
-        )
-      
-        
-      
-      
-      
+  Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
+    return new Container(
+          height: 120.0,
+          margin: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+          child: new Stack(
+            children: <Widget>[
+              kanbanCard,
+              //kanbanThumbnail
+            ]
+            ,
+          ),
       
     );
+    
+    
+    
   }
   Widget createAppBar() {
     return AppBar(
