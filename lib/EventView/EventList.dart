@@ -84,8 +84,7 @@ class _EventListState extends State<EventList>{
                     textColor: Colors.white,
                     color: Colors.blue,
                     onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => ItemList())); 
-
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ItemList())); 
                     },
                     child: new Text("Add"),
                   ),
