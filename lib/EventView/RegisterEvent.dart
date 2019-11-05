@@ -18,12 +18,12 @@ class _RegisterEventState extends State<RegisterEvent> {
   String _location;
   String _description;
   bool _isLoading = false;
+  String _documentID;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _eventNameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-
  
   // admin creates a new event and this gets stored 
   //in a firebase collection 
@@ -39,6 +39,9 @@ class _RegisterEventState extends State<RegisterEvent> {
                                           collection("events").
                                           document();
 
+    // set before "await" command, otherwise _documentID
+    //would be null 
+    _documentID = documentReference.documentID.toString();
 
     await documentReference.
       setData({
@@ -47,18 +50,20 @@ class _RegisterEventState extends State<RegisterEvent> {
         'location' : '$location',
         'description': '$description',
       });
+    
   }
   
   // in this method we create a subcollection whenever a 
   //user creates an event. It is important, because now every user gets his 
   //own eventList
-  void insertEventIdToUserCollection(String eventName, String location, String description, String userID) async{
+  void insertEventIdToUserCollection(String eventName, String location, String description, String userID, String documentReference) async{
     final databaseReference = Firestore.instance;
 
     await databaseReference.collection("users").
       document("$userID").
       collection("usersEventList").
-      add({
+      document("$documentReference").
+      setData({
         'eventname' : '$eventName',
         'location'  : '$location',
         'description' : '$description'
@@ -85,7 +90,8 @@ class _RegisterEventState extends State<RegisterEvent> {
         insertEventIdToUserCollection(_eventNameController.text.toString(),
                                       _locationController.text.toString(),
                                       _descriptionController.text.toString(),
-                                      user.uid.toString());
+                                      user.uid.toString(),
+                                      _documentID.toString());
 
         setState(() {
           _isLoading = false;  
