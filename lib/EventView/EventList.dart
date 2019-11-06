@@ -89,7 +89,7 @@ class _EventListState extends State<EventList>{
   Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
     return new GestureDetector(
       onTap: (){
-           Navigator.push(context, MaterialPageRoute(builder: (context) => ItemList())); 
+           Navigator.push(context, MaterialPageRoute(builder: (context) => ItemList(documentID: document.documentID.toString()))); 
         },
       child:new Container(
           height: 120.0,
@@ -119,11 +119,12 @@ class _EventListState extends State<EventList>{
       centerTitle: true,
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: createAppBar(),
-      body: buildStream(context)
+      body: buildStream(context),
     );
   }
 }
