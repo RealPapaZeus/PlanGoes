@@ -119,11 +119,12 @@ class _EventListState extends State<EventList>{
       centerTitle: true,
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: createAppBar(),
-      body: buildStream(context)
+      body: buildStream(context),
     );
   }
 }
