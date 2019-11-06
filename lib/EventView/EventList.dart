@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/EventView/RegisterEvent.dart';
-import 'package:plan_go_software_project/ItemList.dart';
+import 'package:plan_go_software_project/ItemList/ItemList.dart';
 
 class EventList extends StatefulWidget {
 
@@ -15,23 +15,24 @@ class EventList extends StatefulWidget {
   
 class _EventListState extends State<EventList>{
   
-  FirebaseUser user;
-  String error;
+  FirebaseUser _user;
+  String _error;
+  String _documentId;
 
   // setUser and setError is very important to be declared.
   //they set the UserId before StreamBuilder gets called. That way
   //data gets loaded from Firestore. 
   void setUser(FirebaseUser user) {
     setState(() {
-      this.user = user;
-      this.error = null;
+      this._user = user;
+      this._error = null;
     });
   }
 
   void setError(e) {
     setState(() {
-      this.user = null;
-      this.error = e.toString();
+      this._user = null;
+      this._error = e.toString();
     });
   }
 
@@ -41,14 +42,16 @@ class _EventListState extends State<EventList>{
     FirebaseAuth.instance.currentUser().then(setUser).catchError(setError);
   }
 
+
   // builds a stream in which we connect to subcollection and 
   //get our data loaded into the EventList
   StreamBuilder buildStream(BuildContext context)  {
-    final databaseReference = Firestore.instance;
 
+    final databaseReference = Firestore.instance;
+    
     return new StreamBuilder(
       stream: databaseReference.collection("users").
-                                document(user.uid).
+                                document(_user.uid).
                                 collection("usersEventList").
                                 snapshots(),
       builder: (context, snapshot) {
@@ -95,16 +98,10 @@ class _EventListState extends State<EventList>{
             children: <Widget>[
               kanbanCard,
               //kanbanThumbnail
-            ]
-            ,
+            ],
           ),
-          
       )
-       
     );
-    
-    
-    
   }
   Widget createAppBar() {
     return AppBar(

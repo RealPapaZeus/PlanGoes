@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 
-///
-///
-///CHANGE NAME OF CLASS 
-///
-///
 class ItemList extends StatefulWidget {
 
-  ItemList({Key key,}) : super(key: key);
+  final String documentID;
+
+  ItemList({
+    Key key,
+    this.documentID
+    }) : super(key: key);
 
   @override
-  _UserNameState createState() => new _UserNameState();
+  _ItemListState createState() => new _ItemListState();
 }
   
-class _UserNameState extends State<ItemList>{
+class _ItemListState extends State<ItemList>{
 
+  ItemList itemList;
+
+  String _documentId;
+  
   @override
   void initState(){
     super.initState();
@@ -25,7 +29,7 @@ class _UserNameState extends State<ItemList>{
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Initialise new UserName'),
+        title: Text("${widget.documentID}"),
       ),
       body: new Center(
         child: new FlatButton(
