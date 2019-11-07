@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/EventView/RegisterEvent.dart';
+import 'package:plan_go_software_project/ItemList/AdminView.dart';
 import 'package:plan_go_software_project/ItemList/ItemList.dart';
 
 class EventList extends StatefulWidget {
@@ -89,7 +90,7 @@ class _EventListState extends State<EventList>{
   Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
     return new GestureDetector(
       onTap: (){
-           Navigator.push(context, MaterialPageRoute(builder: (context) => ItemList(documentID: document.documentID.toString()))); 
+           Navigator.push(context, MaterialPageRoute(builder: (context) => AdminView(documentID: document.documentID.toString()))); 
         },
       child:new Container(
           height: 120.0,
