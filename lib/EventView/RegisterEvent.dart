@@ -45,7 +45,7 @@ class _RegisterEventState extends State<RegisterEvent> {
 
     await documentReference.
       setData({
-        'admins' : ["$userID"],
+        //'admins' : ["$userID"],
         'eventName': '$eventName',
         'location' : '$location',
         'description': '$description',
@@ -56,7 +56,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   // in this method we create a subcollection whenever a 
   //user creates an event. It is important, because now every user gets his 
   //own eventList
-  void insertEventIdToUserCollection(String eventName, String location, String description, String userID, String documentReference) async{
+  void insertEventIdToUserCollection(String eventName, String location, String description, String userID, bool admin, String documentReference) async{
     final databaseReference = Firestore.instance;
 
     await databaseReference.collection("users").
@@ -64,6 +64,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       collection("usersEventList").
       document("$documentReference").
       setData({
+        'admin' : admin,
         'eventname' : '$eventName',
         'location'  : '$location',
         'description' : '$description'
@@ -91,6 +92,7 @@ class _RegisterEventState extends State<RegisterEvent> {
                                       _locationController.text.toString(),
                                       _descriptionController.text.toString(),
                                       user.uid.toString(),
+                                      true,
                                       _documentID.toString());
 
         setState(() {
