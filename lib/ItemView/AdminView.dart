@@ -53,22 +53,22 @@ class _AdminViewState extends State<AdminView>{
 
   Widget buildItemList(BuildContext context, DocumentSnapshot document) {
     return new Card(
-        elevation: 9.0,
-        margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-        child: Container(
-          decoration: BoxDecoration(color: Color.fromRGBO(74, 84, 99, .9)),
-          child: Container(  
-            padding: EdgeInsets.only(right: 12.0),
-            decoration: new BoxDecoration(
-              border: new Border(right: new BorderSide(width: 1.0, color: Colors.white24))),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text(document['value'].toString()),
-                  Text(document['name'])
-                ],
-              ),
+      elevation: 9.0,
+      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      child: Container(
+        decoration: BoxDecoration(color: Color.fromRGBO(74, 84, 99, .9)),
+        child: Container(  
+          padding: EdgeInsets.only(right: 12.0),
+          decoration: new BoxDecoration(
+            border: new Border(right: new BorderSide(width: 1.0, color: Colors.white24))),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text(document['value'].toString()),
+                Text(document['name'])
+              ],
             ),
+          ),
         ),
     );
   }
