@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:plan_go_software_project/CreateAccount.dart';
-import 'package:plan_go_software_project/EventList.dart';
+import 'package:plan_go_software_project/Verification/CreateAccount.dart';
+import 'package:plan_go_software_project/EventView/EventList.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:plan_go_software_project/Verification/ResetPassword.dart';
 
 class LogIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'LogIn',
+      title: 'Sign In',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -31,6 +32,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
   String _password;
   String _authHint = '';
   bool _isLoading = false;
+  bool _obscurePassword = true;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -43,6 +45,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
     super.dispose();
   }
 
+  
   void signIn() async{
     final _formState = _formKey.currentState;
 
@@ -53,14 +56,24 @@ class _MyLogInPageState extends State<MyLogInPage> {
     if(_formState.validate()){
       _formState.save();
 
+    //.trim() leaves no space at the end of the email
+    //so a bad formatting exception wont be thrown
       try{
         AuthResult user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text.toString().trim(),
                                                                       password: _passwordController.text);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => EventList())); 
-        setState(() {
-          _isLoading = false;
-          _authHint = '';
-        });
+
+        if(user.user.isEmailVerified) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => EventList())); 
+          setState(() {
+            _isLoading = false;
+            _authHint = '';
+          });
+        } else {
+          setState(() {
+            _isLoading = false;
+            _authHint = 'Please verify your email';
+          });
+        }
       }catch(e){
         setState(() {
           _isLoading = false; 
@@ -71,50 +84,70 @@ class _MyLogInPageState extends State<MyLogInPage> {
     }
   }
 
-  //gets called when user tries to call signIn, but input for email 
-  //and password is empty. _isLoading gets set to false, so the 
-  //Indicator does not get called 
+  //gets called when user tries to call signIn
   String messageNotifier(String message) {
     _isLoading = false;
     return '$message';
   }
 
   //it only returns the TextFormField Widget
-  //we have to fill the parameters, so only this method needs to get called
-  //whenever a new TextFormField gets created
-  Widget textFormFieldExtension(TextEditingController _controller,
-                                 String _inputLabelText,
-                                  bool _obscureText,
-                                   String _message,
-                                    String _typeOfInput) {
+  Widget emailTextFormField() {
     return TextFormField(
-      controller: _controller,
+      controller: _emailController,
       decoration: InputDecoration(
-        labelText: '$_inputLabelText'
+        prefixIcon: Icon(Icons.email),
+        labelText: 'Email'
       ),
-      obscureText: _obscureText,
-      validator: (value) => value.isEmpty ? messageNotifier('$_message') : null,
-      onSaved: (value) => _typeOfInput == value,
+      obscureText: false,
+      validator: (value) => value.isEmpty ? messageNotifier('Please enter an email') : null,
+      onSaved: (value) => _email == value,
     );
   }
 
+  Widget passwordTextFormField() {
+    return TextFormField(
+      controller: _passwordController,
+      obscureText: _obscurePassword,
+      decoration: InputDecoration(
+        labelText: 'Password',
+        prefixIcon: Icon(Icons.lock),
+        suffixIcon: IconButton(
+          icon: Icon(
+            _obscurePassword
+              ? Icons.visibility
+              : Icons.visibility_off
+          ),
+          onPressed: (){
+            setState(() {
+              _obscurePassword = !_obscurePassword;  
+            });
+          },
+        ),
+      ),
+      validator: (value) => value.isEmpty ? messageNotifier('Please enter a password') : null,
+      onSaved: (value) => _password == value,
+    );
+  }
   List<Widget> submitWidgets() {
     return[
-      textFormFieldExtension(_emailController , 'Email', false, 'Please enter an email', _email),
-      textFormFieldExtension(_passwordController , 'Password', true,'Please enter a password', _password)
+      emailTextFormField(),
+      passwordTextFormField()
     ];
   }
 
   List<Widget> navigateWidgets() {
     return[
-      _isLoading
+      Padding(
+        padding: EdgeInsets.all(15.0),
+        child: _isLoading
         ? Center(
             child: CircularProgressIndicator(),
           )
         : RaisedButton(
             onPressed: signIn,
             child: Text('Sign in')
-          ),  
+          ), 
+      ),
       FlatButton(
         onPressed: (){
           Navigator.push(
@@ -122,7 +155,16 @@ class _MyLogInPageState extends State<MyLogInPage> {
             MaterialPageRoute(builder: (context) => CreateAccount()));
         },
         textColor: Theme.of(context).accentColor,
-        child: new Text('Create account?'),
+        child: new Text('Create Account?'),
+      ),
+      FlatButton(
+        onPressed: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ResetPassword()));
+        },
+        textColor: Theme.of(context).accentColor,
+        child: new Text('Reset Password'),
       ),
     ];
   }
