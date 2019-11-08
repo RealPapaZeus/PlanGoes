@@ -37,7 +37,7 @@ class _AdminViewState extends State<AdminView>{
       onPressed: () {
         showDialog(
           context: context,
-          child: new ItemAlertView()
+          child: new ItemAlertView(documentID: widget.documentID)
         );
       },
     );
