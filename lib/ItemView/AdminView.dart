@@ -52,7 +52,10 @@ class _AdminViewState extends State<AdminView>{
   }
 
   Widget buildItemList(BuildContext context, DocumentSnapshot document) {
-    return new Card(
+    return new Container(
+      padding: new EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      height: 20.0,
+      child: Card(
       elevation: 9.0,
       margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
       child: Container(
@@ -70,6 +73,7 @@ class _AdminViewState extends State<AdminView>{
             ),
           ),
         ),
+      ),
     );
   }
 
