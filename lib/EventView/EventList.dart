@@ -56,10 +56,10 @@ class _EventListState extends State<EventList>{
                                 snapshots(),
       builder: (context, snapshot) {
         if(!snapshot.hasData) return const Text("No event found");
-        return ListView.builder(
+        return ListView.separated(
           padding: EdgeInsets.all(10.0),
-          itemExtent: 80.0,
           itemCount: snapshot.data.documents.length,
+          separatorBuilder: (context,index) => Divider(height:2.0,),
           itemBuilder: (context, index) =>
             buildCanbanList(context, snapshot.data.documents[index]),
         );
@@ -69,7 +69,8 @@ class _EventListState extends State<EventList>{
 
   //this widget actually builds the UI for the EventList. 
   //Changes need still to be applied 
-  final kanbanCard = new Container(
+  Widget canbanBuilder(BuildContext context, DocumentSnapshot document){
+  return new Container(
    height: 124.0,
    margin: new EdgeInsets.only(left: 46.0),
    decoration: new BoxDecoration(
@@ -83,7 +84,25 @@ class _EventListState extends State<EventList>{
         offset: new Offset(0.0, 10.0),
       ),],
     ),
+    child: new Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          document['eventname'],
+          maxLines: 1,
+          style: TextStyle(fontSize: 12.0),
+          overflow: TextOverflow.ellipsis,
+        ),
+        Text(
+          document['description'],
+          maxLines: 2,
+          style: TextStyle(fontSize: 10.0),
+          overflow: TextOverflow.ellipsis,
+        )
+      ],
+    )
  );
+  }
 
   Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
     return new GestureDetector(
@@ -91,17 +110,75 @@ class _EventListState extends State<EventList>{
       Navigator.push(context, MaterialPageRoute(builder: (context) => AdminView(documentId: document.documentID.toString(),
                                                                                 userId: _user.uid.toString()))); 
       },
-      child:new Container(
-          height: 120.0,
-          margin: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-          child: new Stack(
-            children: <Widget>[
-              kanbanCard,
-              //kanbanThumbnail
-            ],
-          ),
-      )
+        child: new Stack(
+          children: <Widget>[
+            new Container(
+              width: 400.0,
+              height: 106.0,
+              margin: const EdgeInsets.only(left: 46.0,bottom: 10),
+              decoration: new BoxDecoration(
+                color: new Color(0xFF333366),
+                shape: BoxShape.rectangle,
+                borderRadius: new BorderRadius.circular(8.0),
+                boxShadow: <BoxShadow>[
+                  new BoxShadow(  
+                  color: Colors.black12,
+                  blurRadius: 10.0,
+                  offset: new Offset(0.0, 10.0),
+                  ),
+                  ],
+                ),
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  new Container(
+                   padding: const EdgeInsets.only(right: 8.00, left: 20.00,top: 8.00),
+                   decoration: BoxDecoration(),
+                   child: new Row( 
+                     children: <Widget>[
+                        Text(
+                         document['location'],
+                          maxLines: 1,
+                          style: TextStyle(
+                           fontSize: 12.0,
+                            color: Colors.white), 
+                          overflow: TextOverflow.ellipsis,),                      
+                     ]
+                )
+                ),
+                new Container(
+                   padding: const EdgeInsets.only(right: 8.00, left: 20.00,top: 2.00, bottom: 4.00),
+                   decoration: BoxDecoration(),
+                   child: Text(
+                     document['eventname'],
+                     maxLines: 1,
+                     style: TextStyle(
+                       fontSize: 20.0,
+                       color: Colors.white), 
+                     overflow: TextOverflow.ellipsis,),
+                 ),
+                 new Container(
+                   padding: const EdgeInsets.only(right: 8.00, left: 20.00,top: 4.00, bottom: 8.00),
+                   decoration: BoxDecoration(),
+                   child: Text(
+                     document['description'],
+                     maxLines: 2,
+                     style: TextStyle(
+                       fontSize: 14.0,
+                       color: Colors.white),
+                     overflow: TextOverflow.ellipsis, ),
+                 ),
+               ], 
+             ),
+           )
+                ]
+            )
+      
     );
+    
+     
+
   }
   Widget createAppBar() {
     return AppBar(
