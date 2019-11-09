@@ -59,7 +59,7 @@ class _EventListState extends State<EventList> {
           padding: EdgeInsets.all(10.0),
           itemCount: snapshot.data.documents.length,
           separatorBuilder: (context, index) => Divider(
-            height: 2.0,
+            height: 15.0,
           ),
           itemBuilder: (context, index) =>
               buildCanbanList(context, snapshot.data.documents[index]),
@@ -69,8 +69,6 @@ class _EventListState extends State<EventList> {
   }
 
   //this widget actually builds the UI for the EventList.
-
-  
 
   Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
     return new GestureDetector(
@@ -85,7 +83,7 @@ class _EventListState extends State<EventList> {
       child: new Stack(children: <Widget>[
         new Container(
           width: 400.0,
-          height: 106.0,
+          height: 124.0,
           margin: const EdgeInsets.only(left: 46.0, bottom: 10),
           decoration: new BoxDecoration(
             color: new Color(0xFF333366),
@@ -111,28 +109,28 @@ class _EventListState extends State<EventList> {
                     Text(
                       document['location'],
                       maxLines: 1,
-                      style: TextStyle(fontSize: 12.0, color: Colors.white),
+                      style: TextStyle(fontSize: 10.0, color: Colors.white),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ])),
               new Container(
                 padding: const EdgeInsets.only(
-                    right: 8.00, left: 62.00, top: 2.00, bottom: 4.00),
+                    right: 8.00, left: 62.00, top: 2.00, bottom: 2.00),
                 decoration: BoxDecoration(),
                 child: Text(
                   document['eventname'],
                   maxLines: 1,
-                  style: TextStyle(fontSize: 20.0, color: Colors.white),
+                  style: TextStyle(fontSize: 25.0, color: Colors.white),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               new Container(
                 padding: const EdgeInsets.only(
-                    right: 8.00, left: 62.00, top: 4.00, bottom: 8.00),
+                    right: 8.00, left: 62.00, top: 2.00, bottom: 8.00),
                 decoration: BoxDecoration(),
                 child: Text(
                   document['description'],
-                  maxLines: 2,
+                  maxLines: 3,
                   style: TextStyle(fontSize: 14.0, color: Colors.white),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -143,7 +141,8 @@ class _EventListState extends State<EventList> {
         new Container(
           height: 106.0,
           width: 92.0,
-          alignment: FractionalOffset.centerLeft,
+          alignment: Alignment.centerLeft,
+          margin: const EdgeInsets.all(8),
           decoration: new BoxDecoration(
               shape: BoxShape.circle,
               image: new DecorationImage(
