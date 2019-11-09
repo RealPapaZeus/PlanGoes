@@ -144,6 +144,12 @@ class _EventListState extends State<EventList> {
           alignment: Alignment.centerLeft,
           margin: const EdgeInsets.all(8),
           decoration: new BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 6.0,
+                  spreadRadius: 1.0
+                 )
+              ],
               shape: BoxShape.circle,
               image: new DecorationImage(
                 fit: BoxFit.fill,
