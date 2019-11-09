@@ -133,7 +133,7 @@ class _EventListState extends State<EventList>{
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   new Container(
-                   padding: const EdgeInsets.only(right: 8.00, left: 20.00,top: 8.00),
+                   padding: const EdgeInsets.only(right: 8.00, left: 62.00,top: 8.00),
                    decoration: BoxDecoration(),
                    child: new Row( 
                      children: <Widget>[
@@ -148,7 +148,7 @@ class _EventListState extends State<EventList>{
                 )
                 ),
                 new Container(
-                   padding: const EdgeInsets.only(right: 8.00, left: 20.00,top: 2.00, bottom: 4.00),
+                   padding: const EdgeInsets.only(right: 8.00, left: 62.00,top: 2.00, bottom: 4.00),
                    decoration: BoxDecoration(),
                    child: Text(
                      document['eventname'],
@@ -159,7 +159,7 @@ class _EventListState extends State<EventList>{
                      overflow: TextOverflow.ellipsis,),
                  ),
                  new Container(
-                   padding: const EdgeInsets.only(right: 8.00, left: 20.00,top: 4.00, bottom: 8.00),
+                   padding: const EdgeInsets.only(right: 8.00, left: 62.00,top: 4.00, bottom: 8.00),
                    decoration: BoxDecoration(),
                    child: Text(
                      document['description'],
@@ -173,16 +173,23 @@ class _EventListState extends State<EventList>{
              ),
            ),
           new Container(
-           margin: new EdgeInsets.symmetric(
-           vertical: 16.0
-           ),
-           alignment: FractionalOffset.centerLeft,
-           child: new Image(
-            image: new AssetImage("assets/img/mars.png"),
-            height: 92.0,
+            height: 106.0,
             width: 92.0,
+            alignment: FractionalOffset.centerLeft,
+            decoration: new BoxDecoration(
+              shape: BoxShape.circle,
+              image: new DecorationImage(
+                fit: BoxFit.fill,
+                image: new AssetImage('images/gurkenPic.png'),
+             
+              )
+            ),
+            
+       
+              
+            
            ),
-         )
+         
         ]
             
    ),
