@@ -146,8 +146,8 @@ class _EventListState extends State<EventList> {
           decoration: new BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  blurRadius: 6.0,
-                  spreadRadius: 1.0
+                  blurRadius: 7.0,
+                  spreadRadius: 1.5
                  )
               ],
               shape: BoxShape.circle,
