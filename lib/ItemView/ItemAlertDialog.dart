@@ -28,6 +28,44 @@ class _ItemAlertViewState extends State<ItemAlertView>{
     super.initState();
   }
 
+  // same procedure as in other classes, to insert values into 
+  //database under given path 
+  void addNewItemToDatabase(String itemName, int value) async {
+    final databaseReference = Firestore.instance;
+
+    await databaseReference.collection("events").
+                            document(widget.documentID).
+                            collection("itemList").
+                            document().
+                            setData({
+                              'name' : '$itemName',
+                              'value' : value.toInt()
+                            });
+  }
+
+
+  // checks if everything is valid and sends after that values to
+  //database
+  void registerItemByPress() async {
+    final _formState = _formKey.currentState;
+    
+    if(_formState.validate()) {
+      _formState.save();
+
+      try{
+        
+        addNewItemToDatabase(_itemController.text.toString(),
+                            _value.toInt());
+        
+        Navigator.pop(context);
+
+      } catch(e) {
+        print(e);
+      }
+
+    }
+  }
+
   void incrementCounter() {
     setState(() {
       _value++;  
@@ -35,7 +73,7 @@ class _ItemAlertViewState extends State<ItemAlertView>{
   }
 
   void decrementCounter() {
-    if(_value >= 0) {
+    if(_value != 0) {
       setState(() {
         _value--;
       });
@@ -105,13 +143,13 @@ class _ItemAlertViewState extends State<ItemAlertView>{
 
   showItemCreatorDialog() {
     return AlertDialog(
-      title: Text('Add New Item To Your List'),
+      title: Center(child: Text('New Item')),
       content: itemGeneratorContent(),
       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
       actions: <Widget>[
         FlatButton(
-          onPressed:(){},
-          child: Text('Okay, got it'),
+          onPressed:(){registerItemByPress();},
+          child: Text('Create'),
         )
       ],
     );
