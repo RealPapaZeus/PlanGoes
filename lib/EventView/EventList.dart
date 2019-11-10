@@ -123,10 +123,10 @@ class _EventListState extends State<EventList> {
                           ),
                           itemBuilder: (context) => [
                             PopupMenuItem(
-                              child: Text("Bearbeiten"),
+                              child: Text("Edit"),
                             ),
                             PopupMenuItem(
-                              child: Text("Löschen"),
+                              child: Text("Delete"),
                             )
                           ],
                         )
