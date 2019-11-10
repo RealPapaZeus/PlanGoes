@@ -60,6 +60,7 @@ class _EventListState extends State<EventList> {
           itemCount: snapshot.data.documents.length,
           separatorBuilder: (context, index) => Divider(
             height: 15.0,
+            color: Colors.transparent,
           ),
           itemBuilder: (context, index) =>
               buildCanbanList(context, snapshot.data.documents[index]),
@@ -103,27 +104,47 @@ class _EventListState extends State<EventList> {
             children: <Widget>[
               new Container(
                   padding: const EdgeInsets.only(
-                      right: 8.00, left: 62.00, top: 8.00),
+                      right: 8.00, left: 62.00, top: 2.00),
+                  decoration: BoxDecoration(),
+                  child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
+                            child: Text(
+                          document['eventname'],
+                          maxLines: 1,
+                          style: TextStyle(fontSize: 25.0, color: Colors.white),
+                          overflow: TextOverflow.ellipsis,
+                        )),
+                        PopupMenuButton(
+                          child: Icon(
+                            Icons.more_vert,
+                            color: Colors.white,
+                          ),
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              child: Text("Bearbeiten"),
+                            ),
+                            PopupMenuItem(
+                              child: Text("Löschen"),
+                            )
+                          ],
+                        )
+                      ])),
+              new Container(
+                  padding: const EdgeInsets.only(
+                      right: 8.00, left: 62.00, bottom: 8),
                   decoration: BoxDecoration(),
                   child: new Row(children: <Widget>[
-                    Text(
+                    Icon(Icons.my_location, color: Colors.white, size: 10),
+                    Expanded(
+                        child: Text(
                       document['location'],
                       maxLines: 1,
                       style: TextStyle(fontSize: 10.0, color: Colors.white),
                       overflow: TextOverflow.ellipsis,
-                    ),
+                    )),
                   ])),
-              new Container(
-                padding: const EdgeInsets.only(
-                    right: 8.00, left: 62.00, top: 2.00, bottom: 2.00),
-                decoration: BoxDecoration(),
-                child: Text(
-                  document['eventname'],
-                  maxLines: 1,
-                  style: TextStyle(fontSize: 25.0, color: Colors.white),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
               new Container(
                 padding: const EdgeInsets.only(
                     right: 8.00, left: 62.00, top: 2.00, bottom: 8.00),
@@ -139,17 +160,12 @@ class _EventListState extends State<EventList> {
           ),
         ),
         new Container(
-          height: 106.0,
+          height: 92.0,
           width: 92.0,
           alignment: Alignment.centerLeft,
-          margin: const EdgeInsets.all(8),
+          margin: const EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 8),
           decoration: new BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 7.0,
-                  spreadRadius: 1.5
-                 )
-              ],
+              boxShadow: [BoxShadow(blurRadius: 7.0, spreadRadius: 1.5)],
               shape: BoxShape.circle,
               image: new DecorationImage(
                 fit: BoxFit.fill,
