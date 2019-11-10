@@ -122,6 +122,23 @@ class _RegisterEventState extends State<RegisterEvent> {
     return '$message';
   }
 
+  Widget eventImage() {
+    return CircleAvatar(
+      radius: 100,
+      backgroundColor: Color(0xff476cfb),
+      child: ClipOval(
+        child: SizedBox(
+          width: 180,
+          height: 180,
+          child: Image.network(
+            'https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=967&q=80',
+            fit: BoxFit.fill,
+          ),
+        ),
+        ),
+    );
+  }
+
   Widget eventNameTextField() {
     return TextFormField(
       controller: _eventNameController,
@@ -177,6 +194,7 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   List<Widget> inputWidgets() {
     return [
+      eventImage(),
       eventNameTextField(),
       eventLocation(),
       eventDescriptionTextField(),
