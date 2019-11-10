@@ -111,10 +111,10 @@ class _EventListState extends State<EventList> {
                       children: <Widget>[
                         Expanded(
                             child: Text(
-                          document['eventname'],
-                          maxLines: 1,
-                          style: TextStyle(fontSize: 25.0, color: Colors.white),
-                          overflow: TextOverflow.ellipsis,
+                              document['eventname'],
+                              maxLines: 1,
+                              style: TextStyle(fontSize: 25.0, color: Colors.white),
+                              overflow: TextOverflow.ellipsis,
                         )),
                         PopupMenuButton(
                           child: Icon(
@@ -139,11 +139,11 @@ class _EventListState extends State<EventList> {
                     Icon(Icons.my_location, color: Colors.white, size: 10),
                     Expanded(
                         child: Text(
-                      document['location'],
-                      maxLines: 1,
-                      style: TextStyle(fontSize: 10.0, color: Colors.white),
-                      overflow: TextOverflow.ellipsis,
-                    )),
+                          document['location'],
+                          maxLines: 1,
+                          style: TextStyle(fontSize: 10.0, color: Colors.white),
+                          overflow: TextOverflow.ellipsis,
+                        )),
                   ])),
               new Container(
                 padding: const EdgeInsets.only(
