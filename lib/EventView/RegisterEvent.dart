@@ -5,6 +5,7 @@ import 'package:plan_go_software_project/EventView/EventList.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 
 class RegisterEvent extends StatefulWidget {
 
