@@ -1,8 +1,15 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plan_go_software_project/EventView/EventList.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as p;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 
 class RegisterEvent extends StatefulWidget {
 
@@ -14,6 +21,7 @@ class RegisterEvent extends StatefulWidget {
 
 class _RegisterEventState extends State<RegisterEvent> {
 
+  File _image;
   String _eventName;
   String _location;
   String _description;
@@ -71,10 +79,11 @@ class _RegisterEventState extends State<RegisterEvent> {
       });
   }
 
+
   void registerEventByPress() async {
     final _formState = _formKey.currentState;
     final FirebaseUser user = await FirebaseAuth.instance.currentUser();
-
+    uploadImage(context);
     setState(() {
       _isLoading = true;  
     });
@@ -117,6 +126,59 @@ class _RegisterEventState extends State<RegisterEvent> {
   String messageToDenyLoading(String message) {
     _isLoading = false;
     return '$message';
+  }
+
+  Future getImage() async{
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image=image;
+      print('Image Path $_image');
+    });
+  }
+
+  Future uploadImage(BuildContext context) async{
+    String fileName=p.basename(_image.path);
+    StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(fileName);
+    StorageUploadTask uploadTask= firebaseStorageRef.putFile(_image);
+    StorageTaskSnapshot storageTaskSnapshot= await uploadTask.onComplete;
+  }
+
+  Widget eventImage() {
+    return Align(
+      alignment: Alignment.center,
+      child: CircleAvatar(
+      radius: 100,
+      backgroundColor: Color(0xff476cfb),
+      child: ClipOval(
+        child: SizedBox(
+          width: 180,
+          height: 180,
+          child: (_image!=null)? Image.file(_image,fit: BoxFit.fill)
+          :Image.network(
+            'https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=967&q=80',
+            fit: BoxFit.fill,
+          ),
+        ),
+        ),
+    ),
+    )
+    ;
+  }
+
+  Widget addPicturePadding() {
+    return Padding(
+      padding: EdgeInsets.only(top: 60),
+      child: IconButton(
+        icon: Icon(
+          FontAwesomeIcons.camera,
+          size: 30,
+        ),
+        onPressed: (){
+          getImage();
+        },
+      ),
+    );
   }
 
   Widget eventNameTextField() {
@@ -174,6 +236,8 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   List<Widget> inputWidgets() {
     return [
+      eventImage(),
+      addPicturePadding(),
       eventNameTextField(),
       eventLocation(),
       eventDescriptionTextField(),
