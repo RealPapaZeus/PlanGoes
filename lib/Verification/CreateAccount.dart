@@ -177,7 +177,7 @@ class _CreateAccountState extends State<CreateAccount>{
         if (value.isEmpty)
           return messageNotifier('Please enter a password');
         else {
-          if (value.toString().length <= 8)
+          if (value.toString().length <= 7)
             return messageNotifier('Password has to be 8 digits long');
           else
             return null;
