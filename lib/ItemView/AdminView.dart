@@ -39,10 +39,8 @@ class _AdminViewState extends State<AdminView>{
         if(!snapshot.hasData) return const Center(child: Text("Your ItemList is empty"));
         return ListView.builder(
             scrollDirection: Axis.vertical,
-            itemExtent: 300.0,
-           // shrinkWrap: true,
+            shrinkWrap: true,
             padding: EdgeInsets.all(10.0),
-            //itemExtent: 300.0,
             itemCount: snapshot.data.documents.length,
             itemBuilder: (context, index) =>
               buildItemList(context, snapshot.data.documents[index]),
@@ -52,27 +50,20 @@ class _AdminViewState extends State<AdminView>{
   }
 
   Widget buildItemList(BuildContext context, DocumentSnapshot document) {
-    return new Container(
-      padding: new EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      height: 20.0,
-      child: Card(
-      elevation: 9.0,
-      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-      child: Container(
-        decoration: BoxDecoration(color: Color.fromRGBO(74, 84, 99, .9)),
-        child: Container(  
+    return new Card(
+      elevation: 8.0,
+      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      child: ListTile(
+        leading: Container(
           padding: EdgeInsets.only(right: 12.0),
           decoration: new BoxDecoration(
-            border: new Border(right: new BorderSide(width: 1.0, color: Colors.white24))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text(document['value'].toString()),
-                Text(document['name'])
-              ],
-            ),
+            border: new Border(
+              right: new BorderSide(width: 1.0, color: Colors.black26)
+            )
           ),
+          child: Icon(Icons.person),
         ),
+        title: Text(document['name']),
       ),
     );
   }
