@@ -21,9 +21,24 @@ class AdminView extends StatefulWidget {
   
 class _AdminViewState extends State<AdminView>{
 
+  int _eventColor = 0;
+
   @override
   void initState(){
     super.initState();
+  }
+
+  // Method how to get one variable out of database, without using 
+  //StreamBuilder 
+  void getEventColor() async{
+    final databaseReference = Firestore.instance;
+    var documentReference = databaseReference.collection("events").document(widget.documentId);
+
+    documentReference.get().then((DocumentSnapshot document) {
+      setState(() {
+        _eventColor = document['eventColor'];
+      });
+    });
   }
 
   StreamBuilder buildItemStream(BuildContext context)  {
@@ -94,7 +109,10 @@ class _AdminViewState extends State<AdminView>{
   }
 
   Widget createAppBar() {
+    getEventColor();
     return new AppBar(
+      elevation: 0.1,
+      backgroundColor: Color(_eventColor),
       centerTitle: true,
       title: Text("${widget.documentId}"),
     );
@@ -134,6 +152,7 @@ class _AdminViewState extends State<AdminView>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(_eventColor),
       appBar: createAppBar(),
       body: buildItemStream(context),
       floatingActionButton: createItem(),
