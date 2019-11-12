@@ -170,11 +170,11 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   Widget addPicturePadding() {
     return Padding(
-      padding: EdgeInsets.only(top: 60),
+      padding: EdgeInsets.only(top: 20),
       child: IconButton(
         icon: Icon(
           FontAwesomeIcons.camera,
-          size: 30,
+          size: 20,
         ),
         onPressed: (){
           getImage();
