@@ -39,7 +39,7 @@ class _AdminViewState extends State<AdminView>{
         if(!snapshot.hasData) return const Center(child: Text("Your ItemList is empty"));
         return ListView.builder(
             scrollDirection: Axis.vertical,
-            shrinkWrap: true,
+            itemExtent: 100,
             padding: EdgeInsets.all(10.0),
             itemCount: snapshot.data.documents.length,
             itemBuilder: (context, index) =>
@@ -50,23 +50,71 @@ class _AdminViewState extends State<AdminView>{
   }
 
   Widget buildItemList(BuildContext context, DocumentSnapshot document) {
-    return new Card(
-      elevation: 8.0,
-      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-      child: ListTile(
-        leading: Container(
-          padding: EdgeInsets.only(right: 12.0),
-          decoration: new BoxDecoration(
-            border: new Border(
-              right: new BorderSide(width: 1.0, color: Colors.black26)
-            )
-          ),
-          child: Icon(Icons.person),
+    return new Container(
+      child: Card(
+        elevation: 10.0,
+        margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(right: 12.0, left: 12.0),
+                  decoration: new BoxDecoration(
+                    border: new Border(
+                      right: new BorderSide(width: 1.0, color: Colors.black26)
+                    )
+                  ),
+                  child: Icon(Icons.person),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 12.0),
+                  child: Text(document['name']),
+                ), 
+              ],
+            ),
+            Container(
+              child: Text(document['value'].toString()))
+          ]
         ),
-        title: Text(document['name']),
+        // Container(
+        //   decoration: BoxDecoration(color: Color.fromRGBO(74, 84, 99, .9)),
+        //   child: Container(  
+        //     padding: EdgeInsets.only(right: 12.0),
+        //     decoration: new BoxDecoration(
+        //       border: new Border(right: new BorderSide(width: 1.0, color: Colors.white24))),
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //         children: <Widget>[
+        //           Text(document['value'].toString()),
+        //           Text(document['name'])
+        //         ],
+        //       ),
+        //   ),
+        //),
       ),
     );
   }
+
+  // Widget buildItemList(BuildContext context, DocumentSnapshot document) {
+  //   return new Card(
+  //     elevation: 8.0,
+  //     margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+  //     child: ListTile(
+  //       leading: Container(
+  //         padding: EdgeInsets.only(right: 12.0),
+  //         decoration: new BoxDecoration(
+  //           border: new Border(
+  //             right: new BorderSide(width: 1.0, color: Colors.black26)
+  //           )
+  //         ),
+  //         child: Icon(Icons.person),
+  //       ),
+  //       title: Text(document['name']),
+  //     ),
+  //   );
+  // }
 
   Widget createAppBar() {
     return new AppBar(
