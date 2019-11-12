@@ -197,8 +197,7 @@ class _RegisterEventState extends State<RegisterEvent> {
     return Align(
       alignment: Alignment.center,
       child: CircleAvatar(
-      radius: 100,
-      backgroundColor: Color(0xff476cfb),
+      radius: 75,
       child: ClipOval(
         child: SizedBox(
           width: 180,
