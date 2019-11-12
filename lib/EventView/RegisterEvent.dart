@@ -29,7 +29,6 @@ class _RegisterEventState extends State<RegisterEvent> {
   String _documentID;
   ColorSwatch _tempMainColor;
   Color _tempShadeColor;
-  ColorSwatch _mainColor = Colors.blue;
   Color _shadeColor = Colors.blue[900];
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -167,7 +166,6 @@ class _RegisterEventState extends State<RegisterEvent> {
               child: Text('SUBMIT'),
               onPressed: () {
                 Navigator.of(context).pop();
-                setState(() => _mainColor = _tempMainColor);
                 setState(() => _shadeColor = _tempShadeColor);
               },
             ),
