@@ -27,7 +27,6 @@ class _RegisterEventState extends State<RegisterEvent> {
   String _description;
   bool _isLoading = false;
   String _documentID;
-  ColorSwatch _tempMainColor;
   Color _tempShadeColor;
   Color _shadeColor = Colors.blue[900];
 
@@ -180,7 +179,6 @@ class _RegisterEventState extends State<RegisterEvent> {
       MaterialColorPicker(
         selectedColor: _shadeColor,
         onColorChange: (color) => setState(() => _tempShadeColor = color),
-        onMainColorChange: (color) => setState(() => _tempMainColor = color),
         onBack: () => print("Back button pressed"),
       ),
     );
