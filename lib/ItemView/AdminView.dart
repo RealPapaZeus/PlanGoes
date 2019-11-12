@@ -75,46 +75,19 @@ class _AdminViewState extends State<AdminView>{
               ],
             ),
             Container(
-              child: Text(document['value'].toString()))
+              padding: EdgeInsets.only(right: 12.0),
+              child: Row(
+                children: <Widget>[
+                  Text('0'),
+                  Text('/'),
+                  Text(document['value'].toString())
+                ],)
+            )          
           ]
         ),
-        // Container(
-        //   decoration: BoxDecoration(color: Color.fromRGBO(74, 84, 99, .9)),
-        //   child: Container(  
-        //     padding: EdgeInsets.only(right: 12.0),
-        //     decoration: new BoxDecoration(
-        //       border: new Border(right: new BorderSide(width: 1.0, color: Colors.white24))),
-        //       child: Row(
-        //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //         children: <Widget>[
-        //           Text(document['value'].toString()),
-        //           Text(document['name'])
-        //         ],
-        //       ),
-        //   ),
-        //),
       ),
     );
   }
-
-  // Widget buildItemList(BuildContext context, DocumentSnapshot document) {
-  //   return new Card(
-  //     elevation: 8.0,
-  //     margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-  //     child: ListTile(
-  //       leading: Container(
-  //         padding: EdgeInsets.only(right: 12.0),
-  //         decoration: new BoxDecoration(
-  //           border: new Border(
-  //             right: new BorderSide(width: 1.0, color: Colors.black26)
-  //           )
-  //         ),
-  //         child: Icon(Icons.person),
-  //       ),
-  //       title: Text(document['name']),
-  //     ),
-  //   );
-  // }
 
   Widget createAppBar() {
     return new AppBar(
