@@ -39,7 +39,7 @@ class _RegisterEventState extends State<RegisterEvent> {
  
   // admin creates a new event and this gets stored 
   //in a firebase collection 
-  void createEvent(String eventName, String location, String description,int eventColor, String userID) async {
+  void createEvent(String eventName, String location, String description, int eventColor, String userID) async {
     final databaseReference = Firestore.instance;
     
     // needs to be initialized that way, because so 
@@ -61,7 +61,7 @@ class _RegisterEventState extends State<RegisterEvent> {
         'eventName': '$eventName',
         'location' : '$location',
         'description': '$description',
-        'eventColor':'$eventColor'
+        'eventColor': eventColor.toInt()
       });
     
   }
@@ -69,7 +69,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   // in this method we create a subcollection whenever a 
   //user creates an event. It is important, because now every user gets his 
   //own eventList
-  void insertEventIdToUserCollection(String eventName, String location, String description,int eventColor, String userID, bool admin, String documentReference) async{
+  void insertEventIdToUserCollection(String eventName, String location, String description, int eventColor, String userID, bool admin, String documentReference) async{
     final databaseReference = Firestore.instance;
 
     await databaseReference.collection("users").
@@ -81,7 +81,7 @@ class _RegisterEventState extends State<RegisterEvent> {
         'eventname' : '$eventName',
         'location'  : '$location',
         'description' : '$description',
-        'eventColor':'$eventColor'
+        'eventColor': eventColor.toInt()
       });
   }
 
@@ -103,13 +103,13 @@ class _RegisterEventState extends State<RegisterEvent> {
         createEvent(_eventNameController.text.toString(),
                     _locationController.text.toString(),
                     _descriptionController.text.toString(),
-                    _eventColor,
+                    _eventColor.toInt(),
                     user.uid.toString());
         
         insertEventIdToUserCollection(_eventNameController.text.toString(),
                                       _locationController.text.toString(),
                                       _descriptionController.text.toString(),
-                                      _eventColor,
+                                      _eventColor.toInt(),
                                       user.uid.toString(),
                                       true,
                                       _documentID.toString());
