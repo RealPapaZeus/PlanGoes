@@ -83,7 +83,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   void registerEventByPress() async {
     final _formState = _formKey.currentState;
     final FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    uploadImage(context);
+
     setState(() {
       _isLoading = true;  
     });
@@ -92,6 +92,8 @@ class _RegisterEventState extends State<RegisterEvent> {
       _formState.save();
 
       try{
+        uploadImage(context);
+
         createEvent(_eventNameController.text.toString(),
                     _locationController.text.toString(),
                     _descriptionController.text.toString(),
