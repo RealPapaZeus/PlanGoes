@@ -29,6 +29,8 @@ class _RegisterEventState extends State<RegisterEvent> {
   String _documentID;
   Color _tempShadeColor;
   Color _shadeColor = Colors.blue[900];
+  int _eventColor = Colors.blue[900].value;
+
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _eventNameController = TextEditingController();
@@ -37,7 +39,7 @@ class _RegisterEventState extends State<RegisterEvent> {
  
   // admin creates a new event and this gets stored 
   //in a firebase collection 
-  void createEvent(String eventName, String location, String description, String userID) async {
+  void createEvent(String eventName, String location, String description,int eventColor, String userID) async {
     final databaseReference = Firestore.instance;
     
     // needs to be initialized that way, because so 
@@ -59,6 +61,7 @@ class _RegisterEventState extends State<RegisterEvent> {
         'eventName': '$eventName',
         'location' : '$location',
         'description': '$description',
+        'eventColor':'$eventColor'
       });
     
   }
@@ -66,7 +69,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   // in this method we create a subcollection whenever a 
   //user creates an event. It is important, because now every user gets his 
   //own eventList
-  void insertEventIdToUserCollection(String eventName, String location, String description, String userID, bool admin, String documentReference) async{
+  void insertEventIdToUserCollection(String eventName, String location, String description,int eventColor, String userID, bool admin, String documentReference) async{
     final databaseReference = Firestore.instance;
 
     await databaseReference.collection("users").
@@ -77,7 +80,8 @@ class _RegisterEventState extends State<RegisterEvent> {
         'admin' : admin,
         'eventname' : '$eventName',
         'location'  : '$location',
-        'description' : '$description'
+        'description' : '$description',
+        'eventColor':'$eventColor'
       });
   }
 
@@ -99,11 +103,13 @@ class _RegisterEventState extends State<RegisterEvent> {
         createEvent(_eventNameController.text.toString(),
                     _locationController.text.toString(),
                     _descriptionController.text.toString(),
+                    _eventColor,
                     user.uid.toString());
         
         insertEventIdToUserCollection(_eventNameController.text.toString(),
                                       _locationController.text.toString(),
                                       _descriptionController.text.toString(),
+                                      _eventColor,
                                       user.uid.toString(),
                                       true,
                                       _documentID.toString());
@@ -165,7 +171,10 @@ class _RegisterEventState extends State<RegisterEvent> {
               child: Text('SUBMIT'),
               onPressed: () {
                 Navigator.of(context).pop();
-                setState(() => _shadeColor = _tempShadeColor);
+                setState(() {
+                  _shadeColor = _tempShadeColor;
+                  _eventColor = _shadeColor.value;
+                });
               },
             ),
           ],
