@@ -150,6 +150,44 @@ class _RegisterEventState extends State<RegisterEvent> {
     StorageTaskSnapshot storageTaskSnapshot= await uploadTask.onComplete;
   }
 
+  void _openDialog(Widget content) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.all(6.0),
+          title: Text('Pick Color'),
+          content: content,
+          actions: [
+            FlatButton(
+              child: Text('CANCEL'),
+              onPressed: Navigator.of(context).pop,
+            ),
+            FlatButton(
+              child: Text('SUBMIT'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() => _mainColor = _tempMainColor);
+                setState(() => _shadeColor = _tempShadeColor);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _openColorPicker() async {
+    _openDialog(
+      MaterialColorPicker(
+        selectedColor: _shadeColor,
+        onColorChange: (color) => setState(() => _tempShadeColor = color),
+        onMainColorChange: (color) => setState(() => _tempMainColor = color),
+        onBack: () => print("Back button pressed"),
+      ),
+    );
+  }
+
   Widget eventImage() {
     return Align(
       alignment: Alignment.center,
@@ -184,6 +222,26 @@ class _RegisterEventState extends State<RegisterEvent> {
           getImage();
         },
       ),
+    );
+  }
+
+  Widget pickColorRow() {
+    return Row(
+       mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              OutlineButton(
+                onPressed:(){
+                _openColorPicker();
+                },
+              child: const Text('Click here to pick Color for Event'),
+               ),
+              const SizedBox(width: 16.0),
+              CircleAvatar(
+                backgroundColor: _shadeColor,
+                radius: 35.0,
+                child: const Text("Event Color", textAlign: TextAlign.center,),
+              ),
+            ],
     );
   }
 
@@ -244,6 +302,7 @@ class _RegisterEventState extends State<RegisterEvent> {
     return [
       eventImage(),
       addPicturePadding(),
+      pickColorRow(),
       eventNameTextField(),
       eventLocation(),
       eventDescriptionTextField(),
