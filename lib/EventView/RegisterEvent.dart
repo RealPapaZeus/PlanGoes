@@ -27,6 +27,10 @@ class _RegisterEventState extends State<RegisterEvent> {
   String _description;
   bool _isLoading = false;
   String _documentID;
+  ColorSwatch _tempMainColor;
+  Color _tempShadeColor;
+  ColorSwatch _mainColor = Colors.blue;
+  Color _shadeColor = Colors.blue[900];
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _eventNameController = TextEditingController();
