@@ -60,7 +60,7 @@ class _AdminViewState extends State<AdminView>{
             Row(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.only(right: 12.0, left: 12.0),
+                  padding: const EdgeInsets.only(right: 12.0, left: 12.0),
                   decoration: new BoxDecoration(
                     border: new Border(
                       right: new BorderSide(width: 1.0, color: Colors.black26)
@@ -69,13 +69,17 @@ class _AdminViewState extends State<AdminView>{
                   child: Icon(Icons.person),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 12.0),
-                  child: Text(document['name']),
+                  constraints: BoxConstraints(maxWidth: 250),
+                  padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                  child: Text(
+                    document['name'],
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ), 
               ],
             ),
             Container(
-              padding: EdgeInsets.only(right: 12.0),
+              padding: const EdgeInsets.only(right: 12.0),
               child: Row(
                 children: <Widget>[
                   Text('0'),
