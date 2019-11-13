@@ -6,11 +6,13 @@ class ItemList extends StatefulWidget {
 
   final String documentId;
   final String userId;
+  final int eventColor;
 
   ItemList({
     Key key,
     this.documentId,
-    this.userId
+    this.userId,
+    this.eventColor
     }) : super(key: key);
 
   @override
@@ -55,7 +57,7 @@ class _ItemListState extends State<ItemList>{
 
   Widget buildItemList(BuildContext context, DocumentSnapshot document) {
     return new Container(
-      child: Card(
+        child: Card(
         elevation: 10.0,
         margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         child: Row(
@@ -100,6 +102,7 @@ class _ItemListState extends State<ItemList>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(widget.eventColor.toInt()),
       body: buildItemStream(context),
     );
   }
