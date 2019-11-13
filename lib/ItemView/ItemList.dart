@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:plan_go_software_project/ItemView/ItemPickDialog.dart';
 
 class ItemList extends StatefulWidget {
 
@@ -56,7 +57,15 @@ class _ItemListState extends State<ItemList>{
   }
 
   Widget buildItemList(BuildContext context, DocumentSnapshot document) {
-    return new Container(
+    return new GestureDetector(
+      onTap: (){
+        showDialog(
+          context: context,
+          child: new ItemPickDialog(documentId: widget.documentId,
+                                    userId: widget.userId)
+        );
+      },
+      child: Container(
         child: Card(
         elevation: 10.0,
         margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
@@ -96,7 +105,8 @@ class _ItemListState extends State<ItemList>{
           ]
         ),
       ),
-    );
+    ),
+   );
   }
 
   @override
