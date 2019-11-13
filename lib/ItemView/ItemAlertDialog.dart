@@ -82,6 +82,7 @@ class _ItemAlertViewState extends State<ItemAlertView>{
 
   Widget createNewItem() {
     return TextFormField(
+      maxLength: 100,
       controller: _itemController,
       decoration: InputDecoration(
         labelText: 'Item'

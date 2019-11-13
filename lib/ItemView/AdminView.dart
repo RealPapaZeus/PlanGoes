@@ -21,9 +21,24 @@ class AdminView extends StatefulWidget {
   
 class _AdminViewState extends State<AdminView>{
 
+  int _eventColor = 0;
+
   @override
   void initState(){
     super.initState();
+  }
+
+  // Method how to get one variable out of database, without using 
+  //StreamBuilder 
+  void getEventColor() async{
+    final databaseReference = Firestore.instance;
+    var documentReference = databaseReference.collection("events").document(widget.documentId);
+
+    documentReference.get().then((DocumentSnapshot document) {
+      setState(() {
+        _eventColor = document['eventColor'];
+      });
+    });
   }
 
   StreamBuilder buildItemStream(BuildContext context)  {
@@ -39,10 +54,8 @@ class _AdminViewState extends State<AdminView>{
         if(!snapshot.hasData) return const Center(child: Text("Your ItemList is empty"));
         return ListView.builder(
             scrollDirection: Axis.vertical,
-            itemExtent: 300.0,
-           // shrinkWrap: true,
+            itemExtent: 100,
             padding: EdgeInsets.all(10.0),
-            //itemExtent: 300.0,
             itemCount: snapshot.data.documents.length,
             itemBuilder: (context, index) =>
               buildItemList(context, snapshot.data.documents[index]),
@@ -53,32 +66,53 @@ class _AdminViewState extends State<AdminView>{
 
   Widget buildItemList(BuildContext context, DocumentSnapshot document) {
     return new Container(
-      padding: new EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      height: 20.0,
       child: Card(
-      elevation: 9.0,
-      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-      child: Container(
-        decoration: BoxDecoration(color: Color.fromRGBO(74, 84, 99, .9)),
-        child: Container(  
-          padding: EdgeInsets.only(right: 12.0),
-          decoration: new BoxDecoration(
-            border: new Border(right: new BorderSide(width: 1.0, color: Colors.white24))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        elevation: 10.0,
+        margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
               children: <Widget>[
-                Text(document['value'].toString()),
-                Text(document['name'])
+                Container(
+                  padding: const EdgeInsets.only(right: 12.0, left: 12.0),
+                  decoration: new BoxDecoration(
+                    border: new Border(
+                      right: new BorderSide(width: 1.0, color: Colors.black26)
+                    )
+                  ),
+                  child: Icon(Icons.person),
+                ),
+                Container(
+                  constraints: BoxConstraints(maxWidth: 250),
+                  padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                  child: Text(
+                    document['name'],
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ), 
               ],
             ),
-          ),
+            Container(
+              padding: const EdgeInsets.only(right: 12.0),
+              child: Row(
+                children: <Widget>[
+                  Text('0'),
+                  Text('/'),
+                  Text(document['value'].toString())
+                ],)
+            )          
+          ]
         ),
       ),
     );
   }
 
   Widget createAppBar() {
+    getEventColor();
     return new AppBar(
+      elevation: 0.1,
+      backgroundColor: Color(_eventColor),
       centerTitle: true,
       title: Text("${widget.documentId}"),
     );
@@ -118,6 +152,7 @@ class _AdminViewState extends State<AdminView>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(_eventColor),
       appBar: createAppBar(),
       body: buildItemStream(context),
       floatingActionButton: createItem(),
