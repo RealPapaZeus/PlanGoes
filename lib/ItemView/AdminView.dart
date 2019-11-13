@@ -84,12 +84,13 @@ class _AdminViewState extends State<AdminView>{
 
   buildStream() {
     return ItemList(documentId: widget.documentId,
-                    userId: widget.userId);
+                    userId: widget.userId,
+                    eventColor: _eventColor,
+                    );
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(_eventColor),
       appBar: createAppBar(),
       body: buildStream(),
       floatingActionButton: createItem(),
@@ -97,4 +98,4 @@ class _AdminViewState extends State<AdminView>{
       bottomNavigationBar: bottomNavigation(),
     );
   }
-}
+}   
