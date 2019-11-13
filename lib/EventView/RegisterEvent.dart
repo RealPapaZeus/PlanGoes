@@ -303,6 +303,38 @@ class _RegisterEventState extends State<RegisterEvent> {
     );
   }
 
+  Widget buildBody() {
+    return SingleChildScrollView(
+      child: new Container(
+        padding: const EdgeInsets.all(15.0),
+        child: new Column(
+          children: <Widget>[
+            new Card(
+              elevation: 4.0,
+              child: new Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  new Container(
+                    padding: new EdgeInsets.all(15.0),
+                    child: new Form(
+                      key: _formKey,
+                      child: new Column(
+                        children: 
+                          pickPicture()
+                          + inputWidgets() 
+                          + pickColor()
+                          + userViewConfirmNewAccount()
+                      )
+                    )
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
   List<Widget> userViewConfirmNewAccount() {
     return [
       Padding(
@@ -341,40 +373,14 @@ class _RegisterEventState extends State<RegisterEvent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(_eventColor),
       appBar: AppBar(
-        backgroundColor: Color(_eventColor) ,
+        backgroundColor: Color(_eventColor),
+        elevation: 0.1,
         centerTitle: true,
         title: Text('Register Event'),
       ),
-      body: new SingleChildScrollView(
-        child: new Container(
-          padding: const EdgeInsets.all(15.0),
-          child: new Column(
-            children: <Widget>[
-              new Card(
-                child: new Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    new Container(
-                      padding: new EdgeInsets.all(15.0),
-                      child: new Form(
-                        key: _formKey,
-                        child: new Column(
-                          children: 
-                            pickPicture()
-                            + inputWidgets() 
-                            + pickColor()
-                            + userViewConfirmNewAccount()
-                        )
-                      )
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ), 
+      body: buildBody(),
     );
   }
 }
