@@ -159,22 +159,22 @@ class _RegisterEventState extends State<RegisterEvent> {
       context: context,
       builder: (_) {
         return AlertDialog(
-          contentPadding: const EdgeInsets.all(6.0),
+          contentPadding: const EdgeInsets.all(12.0),
           title: Text('Pick Color'),
           content: content,
           actions: [
             FlatButton(
-              child: Text('CANCEL'),
+              child: Text('Cancel'),
               onPressed: Navigator.of(context).pop,
             ),
             FlatButton(
-              child: Text('SUBMIT'),
+              child: Text('Submit'),
               onPressed: () {
-                Navigator.of(context).pop();
                 setState(() {
                   _shadeColor = _tempShadeColor;
                   _eventColor = _shadeColor.value;
                 });
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -197,21 +197,20 @@ class _RegisterEventState extends State<RegisterEvent> {
     return Align(
       alignment: Alignment.center,
       child: CircleAvatar(
-      radius: 75,
-      child: ClipOval(
-        child: SizedBox(
-          width: 180,
-          height: 180,
-          child: (_image!=null)? Image.file(_image,fit: BoxFit.fill)
-          :Image.network(
-            'https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=967&q=80',
-            fit: BoxFit.fill,
+        radius: 75,
+        child: ClipOval(
+          child: SizedBox(
+            width: 180,
+            height: 180,
+            child: (_image!=null)? Image.file(_image,fit: BoxFit.fill)
+            :Image.network(
+              'https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=967&q=80',
+              fit: BoxFit.fill,
+            ),
           ),
         ),
-        ),
-    ),
-    )
-    ;
+      ),
+    );
   }
 
   Widget addPicturePadding() {
@@ -229,23 +228,39 @@ class _RegisterEventState extends State<RegisterEvent> {
     );
   }
 
+  // calls methods which allow user to pick from list of colors
   Widget pickColorRow() {
-    return Row(
-       mainAxisAlignment: MainAxisAlignment.end,
+    return Padding(
+      padding: EdgeInsets.only(top: 12.0),
+      child: Row(
+       mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              OutlineButton(
-                onPressed:(){
-                _openColorPicker();
-                },
-              child: const Text('Click here to pick Color for Event'),
-               ),
-              const SizedBox(width: 16.0),
-              CircleAvatar(
-                backgroundColor: _shadeColor,
-                radius: 35.0,
-                child: const Text("Event Color", textAlign: TextAlign.center,),
+              Container(
+                child: Text(
+                  'Event color:',
+                   style: new TextStyle(fontWeight: FontWeight.bold)
+                ),
               ),
+              Container(
+                child: FloatingActionButton(
+                  backgroundColor: _shadeColor,
+                  onPressed: () {_openColorPicker();},
+                ),
+              )
+              // OutlineButton(
+              //   onPressed:(){
+              //   _openColorPicker();
+              //   },
+              // child: const Text('Click here to pick Color for Event'),
+              //  ),
+              // const SizedBox(width: 16.0),
+              // CircleAvatar(
+              //   backgroundColor: _shadeColor,
+              //   radius: 35.0,
+              //   //child: const Text("Event Color", textAlign: TextAlign.center,),
+              // ),
             ],
+      )      
     );
   }
 
@@ -304,12 +319,22 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   List<Widget> inputWidgets() {
     return [
-      eventImage(),
-      addPicturePadding(),
-      pickColorRow(),
       eventNameTextField(),
       eventLocation(),
       eventDescriptionTextField(),
+    ];
+  }
+
+  List<Widget> pickPicture(){
+    return[
+      eventImage(),
+      addPicturePadding(),
+    ];
+  }
+
+  List<Widget> pickColor() {
+    return[
+      pickColorRow()
     ];
   }
   
@@ -335,8 +360,10 @@ class _RegisterEventState extends State<RegisterEvent> {
                         key: _formKey,
                         child: new Column(
                           children: 
-                            inputWidgets() + userViewConfirmNewAccount()
-                            
+                            pickPicture()
+                            + inputWidgets() 
+                            + pickColor()
+                            + userViewConfirmNewAccount()
                         )
                       )
                     )
