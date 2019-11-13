@@ -32,7 +32,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
     super.initState();
   }
 
-  void getEventColor() async{
+  void getItemName() async{
     final databaseReference = Firestore.instance;
     var documentReference = databaseReference.
                             collection("events").
@@ -42,7 +42,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
 
     documentReference.get().then((DocumentSnapshot document) {
       setState(() {
-        _itemName = document['eventColor'];
+        _itemName = document['name'];
       });
     });
   }
@@ -149,8 +149,9 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
   }
 
   showItemCreatorDialog() {
+    getItemName();
     return AlertDialog(
-      title: Center(child: Text('New Item')),
+      title: Center(child: Text(_itemName)),
       content: itemGeneratorContent(),
       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
       actions: <Widget>[
