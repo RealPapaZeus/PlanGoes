@@ -237,7 +237,7 @@ class _RegisterEventState extends State<RegisterEvent> {
             children: [
               Container(
                 child: Text(
-                  'Event color:',
+                  'Event color:', 
                    style: new TextStyle(fontWeight: FontWeight.bold)
                 ),
               ),
@@ -342,6 +342,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(_eventColor) ,
         centerTitle: true,
         title: Text('Register Event'),
       ),
