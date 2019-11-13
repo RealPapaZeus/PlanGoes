@@ -41,73 +41,6 @@ class _AdminViewState extends State<AdminView>{
     });
   }
 
-  StreamBuilder buildItemStream(BuildContext context)  {
-
-    final databaseReference = Firestore.instance;
-    
-    return new StreamBuilder(
-      stream: databaseReference.collection("events").
-                                document(widget.documentId).
-                                collection("itemList").
-                                snapshots(),
-      builder: (context, snapshot) {
-        if(!snapshot.hasData) return const Center(child: Text("Your ItemList is empty"));
-        return ListView.builder(
-            scrollDirection: Axis.vertical,
-            itemExtent: 100,
-            padding: EdgeInsets.all(10.0),
-            itemCount: snapshot.data.documents.length,
-            itemBuilder: (context, index) =>
-              buildItemList(context, snapshot.data.documents[index]),
-        );
-      },
-    );
-  }
-
-  Widget buildItemList(BuildContext context, DocumentSnapshot document) {
-    return new Container(
-      child: Card(
-        elevation: 10.0,
-        margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.only(right: 12.0, left: 12.0),
-                  decoration: new BoxDecoration(
-                    border: new Border(
-                      right: new BorderSide(width: 1.0, color: Colors.black26)
-                    )
-                  ),
-                  child: Icon(Icons.person),
-                ),
-                Container(
-                  constraints: BoxConstraints(maxWidth: 250),
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                  child: Text(
-                    document['name'],
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ), 
-              ],
-            ),
-            Container(
-              padding: const EdgeInsets.only(right: 12.0),
-              child: Row(
-                children: <Widget>[
-                  Text('0'),
-                  Text('/'),
-                  Text(document['value'].toString())
-                ],)
-            )          
-          ]
-        ),
-      ),
-    );
-  }
-
   Widget createAppBar() {
     getEventColor();
     return new AppBar(
@@ -149,12 +82,16 @@ class _AdminViewState extends State<AdminView>{
     );
   }
 
+  buildStream() {
+    return ItemList(documentId: widget.documentId,
+                    userId: widget.userId);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(_eventColor),
       appBar: createAppBar(),
-      body: buildItemStream(context),
+      body: buildStream(),
       floatingActionButton: createItem(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: bottomNavigation(),
