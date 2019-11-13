@@ -16,7 +16,13 @@ class ItemList extends StatefulWidget {
   @override
   _ItemListState createState() => new _ItemListState();
 }
-  
+  ///
+  /// This class is used to build the stream, which loads data 
+  /// into a scaffold, represented as the items. It is neccessary 
+  /// to use a class, because ItemList is needed in the admins view
+  /// and also in the user view. That way we can just call ItemList
+  /// to return Items
+  /// 
 class _ItemListState extends State<ItemList>{
 
   @override
@@ -34,53 +40,63 @@ class _ItemListState extends State<ItemList>{
                                 collection("itemList").
                                 snapshots(),
       builder: (context, snapshot) {
-        //if(snapshot.error) return const Center(child: Text("Your ItemList is empty"));
-        return Container(
-          child: ListView.builder(
+        if(!snapshot.hasData) return const Center(child: Text("Your ItemList is empty"));
+        return ListView.builder(
             scrollDirection: Axis.vertical,
-            shrinkWrap: true,
+            itemExtent: 100,
             padding: EdgeInsets.all(10.0),
-            //itemExtent: 300.0,
             itemCount: snapshot.data.documents.length,
             itemBuilder: (context, index) =>
               buildItemList(context, snapshot.data.documents[index]),
-          ),
         );
       },
     );
   }
 
   Widget buildItemList(BuildContext context, DocumentSnapshot document) {
-    return new GestureDetector(
-      onTap: () {},
+    return new Container(
       child: Card(
-        elevation: 9.0,
-        margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-        child: Container(
-          decoration: BoxDecoration(color: Color.fromRGBO(74, 84, 99, .9)),
-          child: ListTile(
-            contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            leading: Container(
-              padding: EdgeInsets.only(right: 12.0),
-              decoration: new BoxDecoration(
-                  border: new Border(
-                      right: new BorderSide(width: 1.0, color: Colors.white24))),
+        elevation: 10.0,
+        margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.only(right: 12.0, left: 12.0),
+                  decoration: new BoxDecoration(
+                    border: new Border(
+                      right: new BorderSide(width: 1.0, color: Colors.black26)
+                    )
+                  ),
+                  child: Icon(Icons.person),
+                ),
+                Container(
+                  constraints: BoxConstraints(maxWidth: 250),
+                  padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                  child: Text(
+                    document['name'],
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ), 
+              ],
+            ),
+            Container(
+              padding: const EdgeInsets.only(right: 12.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Text(document['value'].toString()),
-                ],
-              ),
-            ),
-            title: Text(document['name']),
-            trailing: Icon(
-              Icons.keyboard_arrow_right, color: Colors.white, size: 30.0
-              )
-            ),
-          ),
+                  Text('0'),
+                  Text('/'),
+                  Text(document['value'].toString())
+                ],)
+            )          
+          ]
         ),
-      );
+      ),
+    );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
