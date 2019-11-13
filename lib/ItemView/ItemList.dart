@@ -47,7 +47,7 @@ class _ItemListState extends State<ItemList>{
         return ListView.builder(
             scrollDirection: Axis.vertical,
             itemExtent: 100,
-            padding: EdgeInsets.all(10.0),
+            padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0, bottom: 50.0),
             itemCount: snapshot.data.documents.length,
             itemBuilder: (context, index) =>
               buildItemList(context, snapshot.data.documents[index]),
@@ -113,6 +113,7 @@ class _ItemListState extends State<ItemList>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       backgroundColor: Color(widget.eventColor.toInt()),
       body: buildItemStream(context),
     );

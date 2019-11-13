@@ -21,15 +21,15 @@ class ItemPickDialog extends StatefulWidget {
   
 class _ItemPickDialogState extends State<ItemPickDialog>{
 
-  String _itemName;
+  String _itemName = '';
   int _value = 0;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _itemController = TextEditingController();
   
   @override
   void initState(){
     super.initState();
+    getItemName();
   }
 
   void getItemName() async{
@@ -149,7 +149,6 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
   }
 
   showItemCreatorDialog() {
-    getItemName();
     return AlertDialog(
       title: Center(child: Text(_itemName)),
       content: itemGeneratorContent(),
