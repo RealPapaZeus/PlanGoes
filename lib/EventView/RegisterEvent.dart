@@ -9,7 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class RegisterEvent extends StatefulWidget {
 
@@ -27,6 +27,10 @@ class _RegisterEventState extends State<RegisterEvent> {
   String _description;
   bool _isLoading = false;
   String _documentID;
+  Color _tempShadeColor;
+  Color _shadeColor = Colors.blue[900];
+  int _eventColor = Colors.blue[900].value;
+
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _eventNameController = TextEditingController();
@@ -35,7 +39,7 @@ class _RegisterEventState extends State<RegisterEvent> {
  
   // admin creates a new event and this gets stored 
   //in a firebase collection 
-  void createEvent(String eventName, String location, String description, String userID) async {
+  void createEvent(String eventName, String location, String description, int eventColor, String userID) async {
     final databaseReference = Firestore.instance;
     
     // needs to be initialized that way, because so 
@@ -57,6 +61,7 @@ class _RegisterEventState extends State<RegisterEvent> {
         'eventName': '$eventName',
         'location' : '$location',
         'description': '$description',
+        'eventColor': eventColor.toInt()
       });
     
   }
@@ -64,7 +69,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   // in this method we create a subcollection whenever a 
   //user creates an event. It is important, because now every user gets his 
   //own eventList
-  void insertEventIdToUserCollection(String eventName, String location, String description, String userID, bool admin, String documentReference) async{
+  void insertEventIdToUserCollection(String eventName, String location, String description, int eventColor, String userID, bool admin, String documentReference) async{
     final databaseReference = Firestore.instance;
 
     await databaseReference.collection("users").
@@ -75,7 +80,8 @@ class _RegisterEventState extends State<RegisterEvent> {
         'admin' : admin,
         'eventname' : '$eventName',
         'location'  : '$location',
-        'description' : '$description'
+        'description' : '$description',
+        'eventColor': eventColor.toInt()
       });
   }
 
@@ -83,7 +89,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   void registerEventByPress() async {
     final _formState = _formKey.currentState;
     final FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    uploadImage(context);
+
     setState(() {
       _isLoading = true;  
     });
@@ -92,14 +98,18 @@ class _RegisterEventState extends State<RegisterEvent> {
       _formState.save();
 
       try{
+        uploadImage(context);
+
         createEvent(_eventNameController.text.toString(),
                     _locationController.text.toString(),
                     _descriptionController.text.toString(),
+                    _eventColor.toInt(),
                     user.uid.toString());
         
         insertEventIdToUserCollection(_eventNameController.text.toString(),
                                       _locationController.text.toString(),
                                       _descriptionController.text.toString(),
+                                      _eventColor.toInt(),
                                       user.uid.toString(),
                                       true,
                                       _documentID.toString());
@@ -144,12 +154,50 @@ class _RegisterEventState extends State<RegisterEvent> {
     StorageTaskSnapshot storageTaskSnapshot= await uploadTask.onComplete;
   }
 
+  void _openDialog(Widget content) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.all(6.0),
+          title: Text('Pick Color'),
+          content: content,
+          actions: [
+            FlatButton(
+              child: Text('CANCEL'),
+              onPressed: Navigator.of(context).pop,
+            ),
+            FlatButton(
+              child: Text('SUBMIT'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _shadeColor = _tempShadeColor;
+                  _eventColor = _shadeColor.value;
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _openColorPicker() async {
+    _openDialog(
+      MaterialColorPicker(
+        selectedColor: _shadeColor,
+        onColorChange: (color) => setState(() => _tempShadeColor = color),
+        onBack: () => print("Back button pressed"),
+      ),
+    );
+  }
+
   Widget eventImage() {
     return Align(
       alignment: Alignment.center,
       child: CircleAvatar(
-      radius: 100,
-      backgroundColor: Color(0xff476cfb),
+      radius: 75,
       child: ClipOval(
         child: SizedBox(
           width: 180,
@@ -168,16 +216,36 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   Widget addPicturePadding() {
     return Padding(
-      padding: EdgeInsets.only(top: 60),
+      padding: EdgeInsets.only(top: 20),
       child: IconButton(
         icon: Icon(
           FontAwesomeIcons.camera,
-          size: 30,
+          size: 20,
         ),
         onPressed: (){
           getImage();
         },
       ),
+    );
+  }
+
+  Widget pickColorRow() {
+    return Row(
+       mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              OutlineButton(
+                onPressed:(){
+                _openColorPicker();
+                },
+              child: const Text('Click here to pick Color for Event'),
+               ),
+              const SizedBox(width: 16.0),
+              CircleAvatar(
+                backgroundColor: _shadeColor,
+                radius: 35.0,
+                child: const Text("Event Color", textAlign: TextAlign.center,),
+              ),
+            ],
     );
   }
 
@@ -238,6 +306,7 @@ class _RegisterEventState extends State<RegisterEvent> {
     return [
       eventImage(),
       addPicturePadding(),
+      pickColorRow(),
       eventNameTextField(),
       eventLocation(),
       eventDescriptionTextField(),
@@ -248,7 +317,6 @@ class _RegisterEventState extends State<RegisterEvent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text('Register Event'),
       ),

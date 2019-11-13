@@ -92,9 +92,8 @@ class _EventListState extends State<EventList> {
             borderRadius: new BorderRadius.circular(8.0),
             boxShadow: <BoxShadow>[
               new BoxShadow(
-                color: Colors.black12,
                 blurRadius: 10.0,
-                offset: new Offset(0.0, 10.0),
+                spreadRadius: 2.0,
               ),
             ],
           ),
@@ -111,10 +110,10 @@ class _EventListState extends State<EventList> {
                       children: <Widget>[
                         Expanded(
                             child: Text(
-                          document['eventname'],
-                          maxLines: 1,
-                          style: TextStyle(fontSize: 25.0, color: Colors.white),
-                          overflow: TextOverflow.ellipsis,
+                              document['eventname'],
+                              maxLines: 1,
+                              style: TextStyle(fontSize: 25.0, color: Colors.white),
+                              overflow: TextOverflow.ellipsis,
                         )),
                         PopupMenuButton(
                           child: Icon(
@@ -123,10 +122,10 @@ class _EventListState extends State<EventList> {
                           ),
                           itemBuilder: (context) => [
                             PopupMenuItem(
-                              child: Text("Bearbeiten"),
+                              child: Text("Edit"),
                             ),
                             PopupMenuItem(
-                              child: Text("Löschen"),
+                              child: Text("Delete"),
                             )
                           ],
                         )
@@ -139,11 +138,11 @@ class _EventListState extends State<EventList> {
                     Icon(Icons.my_location, color: Colors.white, size: 10),
                     Expanded(
                         child: Text(
-                      document['location'],
-                      maxLines: 1,
-                      style: TextStyle(fontSize: 10.0, color: Colors.white),
-                      overflow: TextOverflow.ellipsis,
-                    )),
+                          document['location'],
+                          maxLines: 1,
+                          style: TextStyle(fontSize: 10.0, color: Colors.white),
+                          overflow: TextOverflow.ellipsis,
+                        )),
                   ])),
               new Container(
                 padding: const EdgeInsets.only(
