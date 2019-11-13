@@ -62,6 +62,7 @@ class _ItemListState extends State<ItemList>{
         showDialog(
           context: context,
           child: new ItemPickDialog(documentId: widget.documentId,
+                                    itemDocumentId: document.documentID.toString(),
                                     userId: widget.userId)
         );
       },

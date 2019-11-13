@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 class ItemPickDialog extends StatefulWidget {
 
   final String documentId;
+  final String itemDocumentId;
   final String userId;
 
   ItemPickDialog({
     Key key,
     this.documentId,
+    this.itemDocumentId,
     this.userId
     }) : super(key: key);
 
@@ -19,7 +21,7 @@ class ItemPickDialog extends StatefulWidget {
   
 class _ItemPickDialogState extends State<ItemPickDialog>{
 
-  String _item;
+  String _itemName;
   int _value = 0;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -28,6 +30,21 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
   @override
   void initState(){
     super.initState();
+  }
+
+  void getEventColor() async{
+    final databaseReference = Firestore.instance;
+    var documentReference = databaseReference.
+                            collection("events").
+                            document(widget.documentId).
+                            collection("itemList").
+                            document(widget.itemDocumentId);
+
+    documentReference.get().then((DocumentSnapshot document) {
+      setState(() {
+        _itemName = document['eventColor'];
+      });
+    });
   }
 
   // same procedure as in other classes, to insert values into 
