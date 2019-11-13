@@ -31,7 +31,7 @@ class _AdminViewState extends State<AdminView>{
   }
 
   // Method how to get one variable out of database, without using 
-  //StreamBuilder 
+  //StreamBuilder   
   void getEventInfo() async{
     final databaseReference = Firestore.instance;
     var documentReference = databaseReference.collection("events").document(widget.documentId);
