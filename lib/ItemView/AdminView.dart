@@ -22,11 +22,12 @@ class AdminView extends StatefulWidget {
 class _AdminViewState extends State<AdminView>{
 
   int _eventColor = 0;
-  String _eventName;
+  String _eventName = '';
 
   @override
   void initState(){
     super.initState();
+    getEventInfo();
   }
 
   // Method how to get one variable out of database, without using 
@@ -44,9 +45,6 @@ class _AdminViewState extends State<AdminView>{
   }
 
   Widget createAppBar() {
-
-    getEventInfo();
-
     return new AppBar(
       elevation: 0.1,
       backgroundColor: Color(_eventColor),
@@ -58,21 +56,23 @@ class _AdminViewState extends State<AdminView>{
   Widget createItem() {
     return new FloatingActionButton(
       elevation: 4.0,
-      child: const Icon(Icons.create),
+      child: Icon(Icons.add, color: Colors.black),
+      backgroundColor: Color(0xffdcd8e9),
       onPressed: () {
         showDialog(
           context: context,
           child: new ItemAlertView(documentID: widget.documentId)
         );
       },
+      
     );
   }
 
   Widget bottomNavigation() {
     return new BottomAppBar(
       shape: CircularNotchedRectangle(),
+      color: const Color(0xffdcd8e9),
       notchMargin: 4.0,
-      color: Colors.blue,
       child: new Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -80,8 +80,7 @@ class _AdminViewState extends State<AdminView>{
           IconButton(
             icon: Icon(Icons.import_export, color: Colors.white,),
             onPressed: () {},
-          )
-        ],
+          )],
       ),
     );
   }
@@ -89,12 +88,13 @@ class _AdminViewState extends State<AdminView>{
   buildStream() {
     return ItemList(documentId: widget.documentId,
                     userId: widget.userId,
-                    eventColor: _eventColor,
+                    eventColor: _eventColor.toInt(),
                     );
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       appBar: createAppBar(),
       body: buildStream(),
       floatingActionButton: createItem(),
