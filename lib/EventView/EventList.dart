@@ -44,17 +44,6 @@ class _EventListState extends State<EventList> {
     super.initState();
     FirebaseAuth.instance.currentUser().then(setUser).catchError(setError);
   }
-    //void getEventInfo() async{
-    //final databaseReference = Firestore.instance;
-    //var documentReference = databaseReference.collection("events").document(widget.documentId);
-
-    //documentReference.get().then((DocumentSnapshot document) {
-      //setState(() {
-        //_eventColor = document['eventColor'];
-        
-      //});
-    //});
-  //}
 
   // builds a stream in which we connect to subcollection and
   //get our data loaded into the EventList
