@@ -6,6 +6,8 @@ import 'package:plan_go_software_project/EventView/RegisterEvent.dart';
 import 'package:plan_go_software_project/ItemView/AdminView.dart';
 
 class EventList extends StatefulWidget {
+  
+
   EventList({
     Key key,
   }) : super(key: key);
@@ -16,6 +18,7 @@ class EventList extends StatefulWidget {
 
 class _EventListState extends State<EventList> {
   FirebaseUser _user;
+  int _eventColor=0;
   String _error;
   String _documentId;
 
@@ -41,6 +44,17 @@ class _EventListState extends State<EventList> {
     super.initState();
     FirebaseAuth.instance.currentUser().then(setUser).catchError(setError);
   }
+    //void getEventInfo() async{
+    //final databaseReference = Firestore.instance;
+    //var documentReference = databaseReference.collection("events").document(widget.documentId);
+
+    //documentReference.get().then((DocumentSnapshot document) {
+      //setState(() {
+        //_eventColor = document['eventColor'];
+        
+      //});
+    //});
+  //}
 
   // builds a stream in which we connect to subcollection and
   //get our data loaded into the EventList
@@ -87,7 +101,7 @@ class _EventListState extends State<EventList> {
           height: 124.0,
           margin: const EdgeInsets.only(left: 46.0, bottom: 10),
           decoration: new BoxDecoration(
-            color: new Color(0xFF333366),
+            color: Color(document['eventColor']),
             shape: BoxShape.rectangle,
             borderRadius: new BorderRadius.circular(8.0),
             boxShadow: <BoxShadow>[
