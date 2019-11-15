@@ -147,7 +147,7 @@ class _RegisterEventState extends State<RegisterEvent> {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      _image=image;
+      _image = image;
       print('Image Path $_image');
     });
   }
@@ -156,14 +156,15 @@ class _RegisterEventState extends State<RegisterEvent> {
     StorageUploadTask uploadTask;
 
     String fileName = p.basename(_image.path.toString());
+    print('Name is ' + '$fileName');
     StorageReference firebaseStorageRef = FirebaseStorage.
                                           instance.
                                           ref().
-                                          child('$fileName');
+                                          child(fileName.toString());
     
-    setState(() {
-      uploadTask = firebaseStorageRef.putFile(_image);
-    }); 
+    print('image: '  + '$_image');
+    
+    uploadTask = firebaseStorageRef.putFile(_image);
 
     uploadTask.onComplete.then((onValue) async{
       _url = (await firebaseStorageRef.getDownloadURL()).toString();
