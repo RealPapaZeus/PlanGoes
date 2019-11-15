@@ -30,7 +30,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   Color _tempShadeColor;
   Color _shadeColor = Colors.blue[900];
   int _eventColor = Colors.blue[900].value;
-  String	_url;
+  String _url = '';
 
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -107,14 +107,14 @@ class _RegisterEventState extends State<RegisterEvent> {
                     _locationController.text.toString(),
                     _descriptionController.text.toString(),
                     _eventColor.toInt(),
-                    _url,
+                    _url.toString(),
                     user.uid.toString());
         
         insertEventIdToUserCollection(_eventNameController.text.toString(),
                                       _locationController.text.toString(),
                                       _descriptionController.text.toString(),
                                       _eventColor.toInt(),
-                                      _url,
+                                      _url.toString(),
                                       user.uid.toString(),
                                       true,
                                       _documentID.toString());
@@ -153,18 +153,25 @@ class _RegisterEventState extends State<RegisterEvent> {
   }
 
   Future uploadImage(BuildContext context) async{
-    String fileName=p.basename(_image.path);
-    StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(fileName);
-    StorageUploadTask uploadTask= firebaseStorageRef.putFile(_image);
-    StorageTaskSnapshot storageTaskSnapshot= await uploadTask.onComplete;
-    var url = await firebaseStorageRef.getDownloadURL();
-    print(url);
+    StorageUploadTask uploadTask;
 
+    String fileName = p.basename(_image.path.toString());
+    StorageReference firebaseStorageRef = FirebaseStorage.
+                                          instance.
+                                          ref().
+                                          child('$fileName');
+    
     setState(() {
-      _url = url;
-      
+      uploadTask = firebaseStorageRef.putFile(_image);
+    }); 
+
+    uploadTask.onComplete.then((onValue) async{
+      _url = (await firebaseStorageRef.getDownloadURL()).toString();
+      print(_url);
     });
+    
     print(_url);
+
   }
 
   void _openDialog(Widget content) {
@@ -260,18 +267,6 @@ class _RegisterEventState extends State<RegisterEvent> {
                   onPressed: () {_openColorPicker();},
                 ),
               )
-              // OutlineButton(
-              //   onPressed:(){
-              //   _openColorPicker();
-              //   },
-              // child: const Text('Click here to pick Color for Event'),
-              //  ),
-              // const SizedBox(width: 16.0),
-              // CircleAvatar(
-              //   backgroundColor: _shadeColor,
-              //   radius: 35.0,
-              //   //child: const Text("Event Color", textAlign: TextAlign.center,),
-              // ),
             ],
       )      
     );
