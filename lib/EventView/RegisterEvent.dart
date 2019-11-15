@@ -30,6 +30,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   Color _tempShadeColor;
   Color _shadeColor = Colors.blue[900];
   int _eventColor = Colors.blue[900].value;
+  String	_url;
 
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -39,7 +40,7 @@ class _RegisterEventState extends State<RegisterEvent> {
  
   // admin creates a new event and this gets stored 
   //in a firebase collection 
-  void createEvent(String eventName, String location, String description, int eventColor, String userID) async {
+  void createEvent(String eventName, String location, String description, int eventColor,String imageUrl, String userID) async {
     final databaseReference = Firestore.instance;
     
     // needs to be initialized that way, because so 
@@ -61,7 +62,8 @@ class _RegisterEventState extends State<RegisterEvent> {
         'eventName': '$eventName',
         'location' : '$location',
         'description': '$description',
-        'eventColor': eventColor.toInt()
+        'eventColor': eventColor.toInt(),
+        'imageUrl': '$imageUrl'
       });
     
   }
@@ -69,9 +71,9 @@ class _RegisterEventState extends State<RegisterEvent> {
   // in this method we create a subcollection whenever a 
   //user creates an event. It is important, because now every user gets his 
   //own eventList
-  void insertEventIdToUserCollection(String eventName, String location, String description, int eventColor, String userID, bool admin, String documentReference) async{
+  void insertEventIdToUserCollection(String eventName, String location, String description, int eventColor,String imageUrl, String userID, bool admin, String documentReference) async{
     final databaseReference = Firestore.instance;
-
+    
     await databaseReference.collection("users").
       document("$userID").
       collection("usersEventList").
@@ -81,7 +83,8 @@ class _RegisterEventState extends State<RegisterEvent> {
         'eventname' : '$eventName',
         'location'  : '$location',
         'description' : '$description',
-        'eventColor': eventColor.toInt()
+        'eventColor': eventColor.toInt(),
+        'imageUrl': '$imageUrl'
       });
   }
 
@@ -104,12 +107,14 @@ class _RegisterEventState extends State<RegisterEvent> {
                     _locationController.text.toString(),
                     _descriptionController.text.toString(),
                     _eventColor.toInt(),
+                    _url,
                     user.uid.toString());
         
         insertEventIdToUserCollection(_eventNameController.text.toString(),
                                       _locationController.text.toString(),
                                       _descriptionController.text.toString(),
                                       _eventColor.toInt(),
+                                      _url,
                                       user.uid.toString(),
                                       true,
                                       _documentID.toString());
@@ -152,6 +157,14 @@ class _RegisterEventState extends State<RegisterEvent> {
     StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(fileName);
     StorageUploadTask uploadTask= firebaseStorageRef.putFile(_image);
     StorageTaskSnapshot storageTaskSnapshot= await uploadTask.onComplete;
+    var url = await firebaseStorageRef.getDownloadURL();
+    print(url);
+
+    setState(() {
+      _url = url;
+      
+    });
+    print(_url);
   }
 
   void _openDialog(Widget content) {
