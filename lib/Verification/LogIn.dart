@@ -63,7 +63,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
                                                                       password: _passwordController.text);
 
         if(user.user.isEmailVerified) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => EventList())); 
+          Navigator.push(context, MaterialPageRoute(builder: (context) => EventList(userId: user.user.uid))); 
           setState(() {
             _isLoading = false;
             _authHint = '';
