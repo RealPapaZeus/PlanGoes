@@ -13,7 +13,11 @@ import 'package:flutter_material_color_picker/flutter_material_color_picker.dart
 
 class RegisterEvent extends StatefulWidget {
 
-  RegisterEvent({Key key,}) : super (key: key);
+  final String userId;
+  RegisterEvent({
+    Key key,
+    this.userId
+    }) : super (key: key);
 
   @override
   _RegisterEventState createState() => _RegisterEventState();
@@ -37,7 +41,13 @@ class _RegisterEventState extends State<RegisterEvent> {
   final TextEditingController _eventNameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
- 
+  
+  @override
+  void initState(){
+    super.initState();
+    uploadImage(context);
+  }
+
   // admin creates a new event and this gets stored 
   //in a firebase collection 
   void createEvent(String eventName, String location, String description, int eventColor,String imageUrl, String userID) async {
@@ -91,7 +101,6 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   void registerEventByPress() async {
     final _formState = _formKey.currentState;
-    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
 
     setState(() {
       _isLoading = true;  
@@ -108,14 +117,14 @@ class _RegisterEventState extends State<RegisterEvent> {
                     _descriptionController.text.toString(),
                     _eventColor.toInt(),
                     _url.toString(),
-                    user.uid.toString());
+                    widget.userId);
         
         insertEventIdToUserCollection(_eventNameController.text.toString(),
                                       _locationController.text.toString(),
                                       _descriptionController.text.toString(),
                                       _eventColor.toInt(),
                                       _url.toString(),
-                                      user.uid.toString(),
+                                      widget.userId,
                                       true,
                                       _documentID.toString());
 
@@ -123,7 +132,7 @@ class _RegisterEventState extends State<RegisterEvent> {
           _isLoading = false;  
         });
 
-        Navigator.push(context, MaterialPageRoute(builder: (context) => EventList()));
+        Navigator.pop(context);
 
       } catch(e) {
 
@@ -147,7 +156,7 @@ class _RegisterEventState extends State<RegisterEvent> {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      _image=image;
+      _image = image;
       print('Image Path $_image');
     });
   }
@@ -156,14 +165,15 @@ class _RegisterEventState extends State<RegisterEvent> {
     StorageUploadTask uploadTask;
 
     String fileName = p.basename(_image.path.toString());
+    print('Name is ' + '$fileName');
     StorageReference firebaseStorageRef = FirebaseStorage.
                                           instance.
                                           ref().
-                                          child('$fileName');
+                                          child(fileName.toString());
     
-    setState(() {
-      uploadTask = firebaseStorageRef.putFile(_image);
-    }); 
+    print('image: '  + '$_image');
+    
+    uploadTask = firebaseStorageRef.putFile(_image);
 
     uploadTask.onComplete.then((onValue) async{
       _url = (await firebaseStorageRef.getDownloadURL()).toString();

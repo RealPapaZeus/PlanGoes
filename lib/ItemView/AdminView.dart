@@ -86,8 +86,8 @@ class _AdminViewState extends State<AdminView>{
   }
 
   buildStream() {
-    return ItemList(documentId: widget.documentId,
-                    userId: widget.userId,
+    return ItemList(userId: widget.userId,
+                    documentId: widget.documentId,
                     eventColor: _eventColor.toInt(),
                     );
   }

@@ -7,9 +7,11 @@ import 'package:plan_go_software_project/ItemView/AdminView.dart';
 
 class EventList extends StatefulWidget {
   
+  final String userId;
 
   EventList({
     Key key,
+    this.userId
   }) : super(key: key);
 
   @override
@@ -17,34 +19,16 @@ class EventList extends StatefulWidget {
 }
 
 class _EventListState extends State<EventList> {
-  FirebaseUser _user;
-  int _eventColor=0;
+  int _eventColor = 0;
   String _error;
   String _documentId;
-
-  // setUser and setError is very important to be declared.
-  //they set the UserId before StreamBuilder gets called. That way
-  //data gets loaded from Firestore.
-  void setUser(FirebaseUser user) {
-    setState(() {
-      this._user = user;
-      this._error = null;
-    });
-  }
-
-  void setError(e) {
-    setState(() {
-      this._user = null;
-      this._error = e.toString();
-    });
-  }
 
   @override
   void initState() {
     super.initState();
-    FirebaseAuth.instance.currentUser().then(setUser).catchError(setError);
   }
 
+  
   // builds a stream in which we connect to subcollection and
   //get our data loaded into the EventList
   StreamBuilder buildStream(BuildContext context) {
@@ -53,7 +37,7 @@ class _EventListState extends State<EventList> {
     return new StreamBuilder(
       stream: databaseReference
           .collection("users")
-          .document(_user.uid)
+          .document(widget.userId)
           .collection("usersEventList")
           .snapshots(),
       builder: (context, snapshot) {
@@ -82,7 +66,7 @@ class _EventListState extends State<EventList> {
             MaterialPageRoute(
                 builder: (context) => AdminView(
                     documentId: document.documentID.toString(),
-                    userId: _user.uid.toString())));
+                    userId: widget.userId)));
       },
       child: new Stack(children: <Widget>[
         new Container(
@@ -191,7 +175,7 @@ class _EventListState extends State<EventList> {
         icon: Icon(Icons.add_circle),
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => RegisterEvent()));
+              MaterialPageRoute(builder: (context) => RegisterEvent(userId: widget.userId)));
         },
       ),
       centerTitle: true,

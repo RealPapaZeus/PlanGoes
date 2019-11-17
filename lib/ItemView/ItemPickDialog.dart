@@ -1,18 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class ItemPickDialog extends StatefulWidget {
 
+  final String userId;
   final String documentId;
   final String itemDocumentId;
-  final String userId;
 
   ItemPickDialog({
     Key key,
+    this.userId,
     this.documentId,
-    this.itemDocumentId,
-    this.userId
+    this.itemDocumentId
     }) : super(key: key);
 
   @override
@@ -22,6 +23,7 @@ class ItemPickDialog extends StatefulWidget {
 class _ItemPickDialogState extends State<ItemPickDialog>{
 
   String _itemName = '';
+  String _userName = '';
   int _value = 0;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -30,6 +32,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
   void initState(){
     super.initState();
     getItemName();
+    getUserName();
   }
 
   void getItemName() async{
@@ -47,20 +50,50 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
     });
   }
 
-  // same procedure as in other classes, to insert values into 
-  //database under given path 
-  // void addNewItemToDatabase(String itemName, int value) async {
-  //   final databaseReference = Firestore.instance;
+  // Get username to display in itemList and get sure, 
+  // who is getting which item
+  void getUserName() async {
 
-  //   await databaseReference.collection("events").
-  //                           document(widget.documentId).
-  //                           collection("itemList").
-  //                           document().
-  //                           setData({
-  //                             'name' : '$itemName',
-  //                             'value' : value.toInt()
-  //                           });
-  // }
+    final databaseReference = Firestore.instance;
+    var documentReference = databaseReference.
+                            collection("users").
+                            document(widget.userId);
+
+    documentReference.get().then((DocumentSnapshot document) {
+      setState(() {
+        _userName = document['username'].toString();
+      });
+    });
+    print(_userName);
+  }
+
+  // method to get all variables out of database
+  void getVariables(){
+    getItemName();
+    getUserName();
+  }
+
+  // same procedure as in other classes, to insert values into 
+  // database under given path 
+  void addNewItemToDatabase(String userName, int value) async {
+
+    final databaseReference = Firestore.instance;
+
+    await databaseReference.collection("events").
+                            document(widget.documentId).
+                            collection("itemList").
+                            document(widget.itemDocumentId).
+                            collection("usersItemList").
+                            document().
+                            setData({
+                              'user' : '$userName',
+                              'value' : value.toInt()
+                            });
+  }
+
+  void callDatabaseInserts() {
+    if(_value != 0){ addNewItemToDatabase(_userName.toString(), _value); }
+  }
 
 
   // checks if everything is valid and sends after that values to
@@ -70,11 +103,11 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
     
     if(_formState.validate()) {
       _formState.save();
+      getVariables();
 
       try{
-        
-        // addNewItemToDatabase(_itemController.text.toString(),
-        //                     _value.toInt());
+      
+       callDatabaseInserts();                
         
         Navigator.pop(context);
 
