@@ -181,8 +181,10 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
           top: new BorderSide(width: 1, color: Colors.black26)
         )
       ),
-      child: new Scaffold(
-        body: buildUsersItemStream(context),
+      child: new Scrollbar(
+        child: new Scaffold(
+          body: buildUsersItemStream(context),
+        )
       )
     );
   }
@@ -214,6 +216,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
   
   Widget displayElements() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         createItemCounter(),
         getUsersItems()

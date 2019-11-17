@@ -112,10 +112,12 @@ class _ItemListState extends State<ItemList>{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      backgroundColor: Color(widget.eventColor.toInt()),
-      body: buildItemStream(context),
+    return Scrollbar(
+      child: Scaffold(
+        extendBody: true,
+        backgroundColor: Color(widget.eventColor.toInt()),
+        body: buildItemStream(context),
+      )
     );
   }
 }
