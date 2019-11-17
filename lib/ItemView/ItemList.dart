@@ -5,14 +5,14 @@ import 'package:plan_go_software_project/ItemView/ItemPickDialog.dart';
 
 class ItemList extends StatefulWidget {
 
-  final String documentId;
   final String userId;
+  final String documentId;
   final int eventColor;
 
   ItemList({
     Key key,
-    this.documentId,
     this.userId,
+    this.documentId,
     this.eventColor
     }) : super(key: key);
 
@@ -61,9 +61,9 @@ class _ItemListState extends State<ItemList>{
       onTap: (){
         showDialog(
           context: context,
-          child: new ItemPickDialog(documentId: widget.documentId,
-                                    itemDocumentId: document.documentID.toString(),
-                                    userId: widget.userId)
+          child: new ItemPickDialog(userId: widget.userId,
+                                    documentId: widget.documentId,
+                                    itemDocumentId: document.documentID.toString())
         );
       },
       child: Container(
