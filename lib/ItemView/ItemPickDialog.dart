@@ -25,8 +25,6 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
   String _itemName = '';
   String _userName = '';
   int _value = 0;
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   
   @override
   void initState(){
@@ -67,12 +65,6 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
     print(_userName);
   }
 
-  // method to get all variables out of database
-  void getVariables(){
-    getItemName();
-    getUserName();
-  }
-
   // same procedure as in other classes, to insert values into 
   // database under given path 
   void addNewItemToDatabase(String userName, int value) async {
@@ -84,8 +76,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
                             collection("itemList").
                             document(widget.itemDocumentId).
                             collection("usersItemList").
-                            document().
-                            setData({
+                            add({
                               'user' : '$userName',
                               'value' : value.toInt()
                             });
@@ -95,26 +86,26 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
     if(_value != 0){ addNewItemToDatabase(_userName.toString(), _value); }
   }
 
+  // method to get all variables out of database
+  void getVariables(){
+    getItemName();
+    getUserName();
+  }
 
   // checks if everything is valid and sends after that values to
   //database
   void registerItemByPress() async {
-    final _formState = _formKey.currentState;
     
-    if(_formState.validate()) {
-      _formState.save();
-      getVariables();
+    getVariables();
 
-      try{
+    try{
+    
+      callDatabaseInserts();                
       
-       callDatabaseInserts();                
-        
-        Navigator.pop(context);
+      Navigator.pop(context);
 
-      } catch(e) {
-        print(e);
-      }
-
+    } catch(e) {
+      print(e);
     }
   }
 
@@ -132,59 +123,108 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
     }
   }
 
-  Widget createItemCounter() {
-    return new Padding (
-      padding: EdgeInsets.only(top: 15.0),
-      child: new Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  StreamBuilder buildUsersItemStream(BuildContext context)  {
+
+    final databaseReference = Firestore.instance;
+    
+    return new StreamBuilder(
+      stream: databaseReference.collection("events").
+                                document(widget.documentId).
+                                collection("itemList").
+                                document(widget.itemDocumentId).
+                                collection("usersItemList").
+                                snapshots(),
+      builder: (context, snapshot) {
+        if(!snapshot.hasData) return const Center(child: Text("There is no item selected"));
+        return ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemExtent: 75,
+            padding: EdgeInsets.only(bottom: 5.0),
+            itemCount: snapshot.data.documents.length,
+            itemBuilder: (context, index) =>
+              buildItemList(context, snapshot.data.documents[index]),
+        );
+      },
+    );
+  }
+
+  Widget buildItemList(BuildContext context, DocumentSnapshot document) {
+    return new Container(
+      margin: new EdgeInsets.symmetric(horizontal: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () {decrementCounter();}
-          ),
-          Text('$_value',
-              style: new TextStyle(fontSize: 30.0)),
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {incrementCounter();}
-          ),
-        ],
+            Container(
+              padding: const EdgeInsets.only(right: 5.0, left: 5.0),
+              child: Text(document['user']),
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+              decoration: new BoxDecoration(
+                border: new Border(
+                  left: new BorderSide(width: 1.0, color: Colors.black26)
+                )
+              ),
+              child: Text(document['value'].toString(),),
+            ), 
+          ],
+      ),
+    );
+  }
+
+  Widget getUsersItems() {
+    return Container(
+      height: 300,
+      width: 250,
+      decoration: BoxDecoration(
+        border: new Border(
+          top: new BorderSide(width: 1, color: Colors.black26)
+        )
+      ),
+      child: new Scaffold(
+        body: buildUsersItemStream(context),
       )
     );
   }
 
-  SingleChildScrollView itemGeneratorContent() {
-    return new SingleChildScrollView(
-      child: new Container(
-        padding: const EdgeInsets.all(5.0),
-        child: new Column(
+  Widget createItemCounter() {
+    return new Container(
+      height: 100,
+      width: 250,
+      child: Padding (
+        padding: const EdgeInsets.only(top: 10.0),
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-              new Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  new Container(
-                    padding: new EdgeInsets.all(15.0),
-                    child: new Form(
-                      key: _formKey,
-                      child: new Column(
-                        children: <Widget>[
-                          createItemCounter()
-                        ],
-                      )
-                    )
-                  )
-                ],
-              ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {decrementCounter();}
+            ),
+            Text('$_value',
+                style: new TextStyle(fontSize: 30.0)),
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {incrementCounter();}
+            ),
           ],
-        ),
+        )
       ),
+    );
+  }
+  
+  Widget displayElements() {
+    return Column(
+      children: <Widget>[
+        createItemCounter(),
+        getUsersItems()
+      ],
     );
   }
 
   showItemCreatorDialog() {
     return AlertDialog(
       title: Center(child: Text(_itemName)),
-      content: itemGeneratorContent(),
+      content: displayElements(),
       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
       actions: <Widget>[
         FlatButton(
