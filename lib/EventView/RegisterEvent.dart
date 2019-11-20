@@ -128,24 +128,27 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   void registerEventByPress() async {
     final _formState = _formKey.currentState;
-
+    String url;
     // StorageUploadTask needs to be build inside registerEventByPress
     // because otherwise we dont get url String and can not pass it 
     // into the database 
-    StorageUploadTask uploadTask;
+    if (_image != null){
+      StorageUploadTask uploadTask;
 
-    String fileName = p.basename(_image.path.toString());
-    print('Name is ' + '$fileName');
-    StorageReference firebaseStorageRef = FirebaseStorage.
-                                          instance.
-                                          ref().
-                                          child(fileName.toString());
-        
-    uploadTask = firebaseStorageRef.putFile(_image);
+      String fileName = p.basename(_image.path.toString());
+      print('Name is ' + '$fileName');
+      StorageReference firebaseStorageRef = FirebaseStorage.
+                                            instance.
+                                            ref().
+                                            child(fileName.toString());
+          
+      uploadTask = firebaseStorageRef.putFile(_image);
 
 
-    final StorageTaskSnapshot downloadUrl = (await uploadTask.onComplete);
-    final String url = (await downloadUrl.ref.getDownloadURL());
+      final StorageTaskSnapshot downloadUrl = (await uploadTask.onComplete);
+      url = (await downloadUrl.ref.getDownloadURL());
+    } else {url = null;}
+    
 
     setState(() {
       _isLoading = true;  
@@ -241,8 +244,9 @@ class _RegisterEventState extends State<RegisterEvent> {
           child: SizedBox(
             width: 180,
             height: 180,
-            child: (_image!=null)? Image.file(_image,fit: BoxFit.fill)
-            :Image.network(
+            child: (_image!=null)
+                    ? Image.file(_image,fit: BoxFit.fill)
+                    : Image.network(
               'https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=967&q=80',
               fit: BoxFit.fill,
             ),
