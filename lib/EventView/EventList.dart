@@ -150,7 +150,7 @@ class _EventListState extends State<EventList> {
               shape: BoxShape.circle,
               image: new DecorationImage(
                   fit: BoxFit.fill,
-                  image: (document['imageUrl'] != null)
+                  image: (document['imageUrl'] != 'null')
                       ? new NetworkImage(document['imageUrl'])
                       : new NetworkImage(
                           'https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=967&q=80',
