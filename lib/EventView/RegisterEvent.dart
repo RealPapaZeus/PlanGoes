@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:plan_go_software_project/EventView/EventList.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -45,12 +44,16 @@ class _RegisterEventState extends State<RegisterEvent> {
   @override
   void initState(){
     super.initState();
-    uploadImage(context);
   }
 
   // admin creates a new event and this gets stored 
   //in a firebase collection 
-  void createEvent(String eventName, String location, String description, int eventColor,String imageUrl, String userID) async {
+  void createEvent(String eventName, 
+                   String location,
+                   String description,
+                   int eventColor,
+                   String imageUrl,
+                   String userID) async {
     final databaseReference = Firestore.instance;
     
     // needs to be initialized that way, because so 
@@ -68,7 +71,6 @@ class _RegisterEventState extends State<RegisterEvent> {
 
     await documentReference.
       setData({
-        //'admins' : ["$userID"],
         'eventName': '$eventName',
         'location' : '$location',
         'description': '$description',
@@ -81,7 +83,14 @@ class _RegisterEventState extends State<RegisterEvent> {
   // in this method we create a subcollection whenever a 
   //user creates an event. It is important, because now every user gets his 
   //own eventList
-  void insertEventIdToUserCollection(String eventName, String location, String description, int eventColor,String imageUrl, String userID, bool admin, String documentReference) async{
+  void insertEventIdToUserCollection(String eventName,
+                                     String location,
+                                     String description, 
+                                     int eventColor,
+                                     String imageUrl, 
+                                     String userID, 
+                                     bool admin, 
+                                     String documentReference) async{
     final databaseReference = Firestore.instance;
     
     await databaseReference.collection("users").
@@ -98,9 +107,45 @@ class _RegisterEventState extends State<RegisterEvent> {
       });
   }
 
+  void getIntoCollection(String url) {
+
+    createEvent(_eventNameController.text.toString(),
+                    _locationController.text.toString(),
+                    _descriptionController.text.toString(),
+                    _eventColor.toInt(),
+                    url.toString(),
+                    widget.userId);
+        
+        insertEventIdToUserCollection(_eventNameController.text.toString(),
+                                      _locationController.text.toString(),
+                                      _descriptionController.text.toString(),
+                                      _eventColor.toInt(),
+                                      url.toString(),
+                                      widget.userId,
+                                      true,
+                                      _documentID.toString());
+  }
 
   void registerEventByPress() async {
     final _formState = _formKey.currentState;
+
+    // StorageUploadTask needs to be build inside registerEventByPress
+    // because otherwise we dont get url String and can not pass it 
+    // into the database 
+    StorageUploadTask uploadTask;
+
+    String fileName = p.basename(_image.path.toString());
+    print('Name is ' + '$fileName');
+    StorageReference firebaseStorageRef = FirebaseStorage.
+                                          instance.
+                                          ref().
+                                          child(fileName.toString());
+        
+    uploadTask = firebaseStorageRef.putFile(_image);
+
+
+    final StorageTaskSnapshot downloadUrl = (await uploadTask.onComplete);
+    final String url = (await downloadUrl.ref.getDownloadURL());
 
     setState(() {
       _isLoading = true;  
@@ -110,23 +155,9 @@ class _RegisterEventState extends State<RegisterEvent> {
       _formState.save();
 
       try{
-        uploadImage(context);
-
-        createEvent(_eventNameController.text.toString(),
-                    _locationController.text.toString(),
-                    _descriptionController.text.toString(),
-                    _eventColor.toInt(),
-                    _url.toString(),
-                    widget.userId);
         
-        insertEventIdToUserCollection(_eventNameController.text.toString(),
-                                      _locationController.text.toString(),
-                                      _descriptionController.text.toString(),
-                                      _eventColor.toInt(),
-                                      _url.toString(),
-                                      widget.userId,
-                                      true,
-                                      _documentID.toString());
+        // Calls method for better readable 
+        getIntoCollection(url);
 
         setState(() {
           _isLoading = false;  
@@ -152,6 +183,7 @@ class _RegisterEventState extends State<RegisterEvent> {
     return '$message';
   }
 
+  // Methods gets image 
   Future getImage() async{
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
@@ -159,29 +191,6 @@ class _RegisterEventState extends State<RegisterEvent> {
       _image = image;
       print('Image Path $_image');
     });
-  }
-
-  Future uploadImage(BuildContext context) async{
-    StorageUploadTask uploadTask;
-
-    String fileName = p.basename(_image.path.toString());
-    print('Name is ' + '$fileName');
-    StorageReference firebaseStorageRef = FirebaseStorage.
-                                          instance.
-                                          ref().
-                                          child(fileName.toString());
-    
-    print('image: '  + '$_image');
-    
-    uploadTask = firebaseStorageRef.putFile(_image);
-
-    uploadTask.onComplete.then((onValue) async{
-      _url = (await firebaseStorageRef.getDownloadURL()).toString();
-      print(_url);
-    });
-    
-    print(_url);
-
   }
 
   void _openDialog(Widget content) {
