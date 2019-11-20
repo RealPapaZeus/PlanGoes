@@ -6,13 +6,9 @@ import 'package:plan_go_software_project/EventView/RegisterEvent.dart';
 import 'package:plan_go_software_project/ItemView/AdminView.dart';
 
 class EventList extends StatefulWidget {
-  
   final String userId;
 
-  EventList({
-    Key key,
-    this.userId
-  }) : super(key: key);
+  EventList({Key key, this.userId}) : super(key: key);
 
   @override
   _EventListState createState() => new _EventListState();
@@ -28,7 +24,6 @@ class _EventListState extends State<EventList> {
     super.initState();
   }
 
-  
   // builds a stream in which we connect to subcollection and
   //get our data loaded into the EventList
   StreamBuilder buildStream(BuildContext context) {
@@ -97,10 +92,10 @@ class _EventListState extends State<EventList> {
                       children: <Widget>[
                         Expanded(
                             child: Text(
-                              document['eventname'],
-                              maxLines: 1,
-                              style: TextStyle(fontSize: 25.0, color: Colors.white),
-                              overflow: TextOverflow.ellipsis,
+                          document['eventname'],
+                          maxLines: 1,
+                          style: TextStyle(fontSize: 25.0, color: Colors.white),
+                          overflow: TextOverflow.ellipsis,
                         )),
                         PopupMenuButton(
                           child: Icon(
@@ -125,11 +120,11 @@ class _EventListState extends State<EventList> {
                     Icon(Icons.my_location, color: Colors.white, size: 10),
                     Expanded(
                         child: Text(
-                          document['location'],
-                          maxLines: 1,
-                          style: TextStyle(fontSize: 10.0, color: Colors.white),
-                          overflow: TextOverflow.ellipsis,
-                        )),
+                      document['location'],
+                      maxLines: 1,
+                      style: TextStyle(fontSize: 10.0, color: Colors.white),
+                      overflow: TextOverflow.ellipsis,
+                    )),
                   ])),
               new Container(
                 padding: const EdgeInsets.only(
@@ -154,9 +149,12 @@ class _EventListState extends State<EventList> {
               boxShadow: [BoxShadow(blurRadius: 7.0, spreadRadius: 1.5)],
               shape: BoxShape.circle,
               image: new DecorationImage(
-                fit: BoxFit.fill,
-                image: new AssetImage('images/gurkenPic.png'),
-              )),
+                  fit: BoxFit.fill,
+                  image: (document['imageUrl'] != null)
+                      ? new NetworkImage(document['imageUrl'])
+                      : new NetworkImage(
+                          'https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=967&q=80',
+                        ))),
         ),
       ]),
     );
@@ -174,8 +172,10 @@ class _EventListState extends State<EventList> {
       leading: IconButton(
         icon: Icon(Icons.add_circle),
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => RegisterEvent(userId: widget.userId)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => RegisterEvent(userId: widget.userId)));
         },
       ),
       centerTitle: true,
