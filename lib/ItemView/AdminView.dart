@@ -24,6 +24,7 @@ class _AdminViewState extends State<AdminView>{
 
   int _eventColor = 0;
   String _eventName = '';
+  String _imageUrl = '';
 
   @override
   void initState(){
@@ -41,10 +42,10 @@ class _AdminViewState extends State<AdminView>{
       setState(() {
         _eventColor = document['eventColor'];
         _eventName = document['eventName'];
+        _imageUrl = document['imageUrl'];
       });
     });
   }
-
 
   buildStream() {
     return ItemList(userId: widget.userId,
@@ -65,7 +66,7 @@ class _AdminViewState extends State<AdminView>{
         centerTitle: true,
         title: Text(_eventName),
         background: Image.network(
-          'https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=967&q=80',
+          _imageUrl,
           fit: BoxFit.cover
         )
       ),
