@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/ItemView/ItemAlertDialog.dart';
 import 'package:plan_go_software_project/ItemView/ItemList.dart';
+import 'package:plan_go_software_project/ItemView/ItemPickDialog.dart';
 
 class AdminView extends StatefulWidget {
 
@@ -23,6 +24,7 @@ class _AdminViewState extends State<AdminView>{
 
   int _eventColor = 0;
   String _eventName = '';
+  String _imageUrl = '';
 
   @override
   void initState(){
@@ -40,24 +42,42 @@ class _AdminViewState extends State<AdminView>{
       setState(() {
         _eventColor = document['eventColor'];
         _eventName = document['eventName'];
+        _imageUrl = document['imageUrl'];
       });
     });
   }
 
-  Widget createAppBar() {
-    return new AppBar(
-      elevation: 0.1,
+  buildStream() {
+    return ItemList(userId: widget.userId,
+                    documentId: widget.documentId,
+                    eventColor: _eventColor.toInt(),
+                    );
+  }
+
+  Widget createAppBar(bool value) {
+    return new SliverAppBar(
+      snap: true,
+      pinned: true,
+      floating: true,
+      forceElevated: value,
+      expandedHeight: 200.0,
       backgroundColor: Color(_eventColor),
-      centerTitle: true,
-      title: Text(_eventName),
+      flexibleSpace: FlexibleSpaceBar(
+        centerTitle: true,
+        title: Text(_eventName),
+        background: Image.network(
+          _imageUrl,
+          fit: BoxFit.cover
+        )
+      ),
     );
   }
 
   Widget createItem() {
     return new FloatingActionButton(
       elevation: 4.0,
-      child: Icon(Icons.add, color: Colors.black),
-      backgroundColor: Color(0xffdcd8e9),
+      child: Icon(Icons.add, color: Colors.white),
+      backgroundColor: Color(_eventColor),
       onPressed: () {
         showDialog(
           context: context,
@@ -71,32 +91,32 @@ class _AdminViewState extends State<AdminView>{
   Widget bottomNavigation() {
     return new BottomAppBar(
       shape: CircularNotchedRectangle(),
-      color: const Color(0xffdcd8e9),
+      color: Color(_eventColor),
       notchMargin: 4.0,
       child: new Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           IconButton(
-            icon: Icon(Icons.import_export, color: Colors.white,),
+            icon: Icon(Icons.import_export, color: Colors.white),
             onPressed: () {},
           )],
       ),
     );
   }
-
-  buildStream() {
-    return ItemList(userId: widget.userId,
-                    documentId: widget.documentId,
-                    eventColor: _eventColor.toInt(),
-                    );
-  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      appBar: createAppBar(),
-      body: buildStream(),
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxScrolled) {
+          return <Widget>[
+            createAppBar(innerBoxScrolled)
+          ];
+        },
+        body: buildStream(),
+      ),
       floatingActionButton: createItem(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: bottomNavigation(),
