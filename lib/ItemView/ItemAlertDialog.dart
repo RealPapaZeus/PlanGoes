@@ -100,7 +100,7 @@ class _ItemAlertViewState extends State<ItemAlertView>{
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: Icon(Icons.remove),
             onPressed: () {decrementCounter();}
           ),
           Text('$_value',

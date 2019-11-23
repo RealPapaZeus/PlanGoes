@@ -32,7 +32,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   Color _tempShadeColor;
   Color _shadeColor = Colors.blue[900];
   int _eventColor = Colors.blue[900].value;
-  String _url = '';
+  String _userName = '';
 
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -43,6 +43,22 @@ class _RegisterEventState extends State<RegisterEvent> {
   @override
   void initState(){
     super.initState();
+    getUserName();
+  }
+
+  void getUserName() async {
+
+    final databaseReference = Firestore.instance;
+    var documentReference = databaseReference.
+                            collection("users").
+                            document(widget.userId);
+
+    documentReference.get().then((DocumentSnapshot document) {
+      setState(() {
+        _userName = document['username'].toString();
+      });
+    });
+    print(_userName);
   }
 
   // admin creates a new event and this gets stored 
@@ -108,24 +124,28 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   // important to create one item, because otherwise 
   // it could call an exception when you swap between different 
-  // event views and not one item is inside the list 
+  // event views and not one item is inside the eventlist 
   //
-  // Error still exists but there is no possible way to fix it yet 
+  // Error still exists but there is no possible way to fix it yet!
   void createFirstItemInEvent() async {
     final databaseReference = Firestore.instance;
 
     await databaseReference.collection("events").
                             document(_documentID).
                             collection("itemList").
-                            document().
-                            setData({
-                              'name' : 'This is your first item Adrian!',
-                              'valueMax' : 42,
+                            add({
+                              'name' : 'Good Looking $_userName',
+                              'valueMax' : 1,
                               'valueCurrent' : 0
                             });
+            
   }
 
+  // calls all methods which are useful to pass data into 
+  // database 
   void getIntoCollection(String url) {
+
+    getUserName();
 
     createEvent(_eventNameController.text.toString(),
                     _locationController.text.toString(),
@@ -174,7 +194,7 @@ class _RegisterEventState extends State<RegisterEvent> {
 
       try{
         
-        // Calls method for better readable 
+        // Calls method for better readability 
         getIntoCollection(url);
 
         Navigator.pop(context);

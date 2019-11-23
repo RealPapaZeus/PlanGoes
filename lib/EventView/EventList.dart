@@ -51,17 +51,23 @@ class _EventListState extends State<EventList> {
     );
   }
 
-  //this widget actually builds the UI for the EventList.
-
-  Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
-    return new GestureDetector(
-      onTap: () {
-        Navigator.push(
+  void callAdminView(DocumentSnapshot document) async {
+    try{
+      Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => AdminView(
                     documentId: document.documentID.toString(),
                     userId: widget.userId)));
+    }catch(e) {
+      print(e);
+    }
+  }
+  //this widget actually builds the UI for the EventList.
+  Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
+    return new GestureDetector(
+      onTap: () {
+        callAdminView(document);
       },
       child: new Stack(children: <Widget>[
         new Container(
