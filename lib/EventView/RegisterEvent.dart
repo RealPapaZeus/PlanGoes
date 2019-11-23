@@ -106,6 +106,20 @@ class _RegisterEventState extends State<RegisterEvent> {
       });
   }
 
+  void createFirstItemInEvent() async {
+    final databaseReference = Firestore.instance;
+
+    await databaseReference.collection("events").
+                            document(_documentID).
+                            collection("itemList").
+                            document().
+                            setData({
+                              'name' : 'This is your first item Adrian!',
+                              'valueMax' : 42,
+                              'valueCurrent' : 0
+                            });
+  }
+
   void getIntoCollection(String url) {
 
     createEvent(_eventNameController.text.toString(),
@@ -115,14 +129,16 @@ class _RegisterEventState extends State<RegisterEvent> {
                     url.toString(),
                     widget.userId);
         
-        insertEventIdToUserCollection(_eventNameController.text.toString(),
-                                      _locationController.text.toString(),
-                                      _descriptionController.text.toString(),
-                                      _eventColor.toInt(),
-                                      url.toString(),
-                                      widget.userId,
-                                      true,
-                                      _documentID.toString());
+    insertEventIdToUserCollection(_eventNameController.text.toString(),
+                                  _locationController.text.toString(),
+                                  _descriptionController.text.toString(),
+                                  _eventColor.toInt(),
+                                  url.toString(),
+                                  widget.userId,
+                                  true,
+                                  _documentID.toString());
+    
+    createFirstItemInEvent();
   }
 
   void registerEventByPress() async {
