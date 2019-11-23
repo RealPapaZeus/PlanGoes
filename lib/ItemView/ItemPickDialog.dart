@@ -24,7 +24,12 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
 
   String _itemName = '';
   String _userName = '';
-  int _value = 0;
+  int _valueToAdd = 0;
+  int _valueCurrent = 0;
+  int _valueMax = 0; 
+  int _valueMin = 0;
+
+
   
   @override
   void initState(){
@@ -44,6 +49,9 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
     documentReference.get().then((DocumentSnapshot document) {
       setState(() {
         _itemName = document['name'];
+        _valueMax = document['valueMax'];
+        _valueCurrent = document['valueCurrent'];
+        _valueMin = document['valueCurrent'];
       });
     });
   }
@@ -78,12 +86,29 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
                             collection("usersItemList").
                             add({
                               'user' : '$userName',
-                              'value' : value.toInt()
+                              'value' : value
                             });
   }
 
+  void addNewValueToItemList(int value) async {
+
+    final databaseReference = Firestore.instance;
+
+    await databaseReference.collection("events").
+                            document(widget.documentId).
+                            collection("itemList").
+                            document(widget.itemDocumentId).
+                            updateData({
+                              "valueCurrent" : value
+                            });
+  }
+
+
   void callDatabaseInserts() {
-    if(_value != 0){ addNewItemToDatabase(_userName.toString(), _value); }
+    if(_valueCurrent != 0 && _valueToAdd != 0){
+      addNewItemToDatabase(_userName.toString(), _valueToAdd); 
+      addNewValueToItemList(_valueCurrent);
+    }
   }
 
   // method to get all variables out of database
@@ -111,16 +136,21 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
 
   void incrementCounter() {
     setState(() {
-      _value++;  
+      if(_valueCurrent < _valueMax) {
+        _valueCurrent++;
+        _valueToAdd++;
+      }
     });
   }
 
   void decrementCounter() {
-    if(_value != 0) {
-      setState(() {
-        _value--;
-      });
-    }
+    setState(() {
+      if(_valueCurrent != 0 && _valueCurrent != _valueMin) {
+        _valueCurrent--;
+        _valueToAdd--;
+      }
+    });
+
   }
 
   StreamBuilder buildUsersItemStream(BuildContext context)  {
@@ -202,7 +232,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
               icon: Icon(Icons.delete),
               onPressed: () {decrementCounter();}
             ),
-            Text('$_value',
+            Text('$_valueCurrent / $_valueMax',
                 style: new TextStyle(fontSize: 30.0)),
             IconButton(
               icon: Icon(Icons.add),
