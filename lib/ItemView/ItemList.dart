@@ -121,7 +121,7 @@ class _ItemListState extends State<ItemList>{
                   child: Container(
                     alignment: Alignment.centerRight,
                   padding: const EdgeInsets.only(right: 12.0),
-                  child: Text('0/${document['valueMax'].toString()}'),
+                  child: Text('${document['valueCurrent'].toString()}/${document['valueMax'].toString()}'),
                 )          
                 )]
             ),
