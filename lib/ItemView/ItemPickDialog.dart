@@ -229,7 +229,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             IconButton(
-              icon: Icon(Icons.delete),
+              icon: Icon(Icons.remove),
               onPressed: () {decrementCounter();}
             ),
             Text('$_valueCurrent / $_valueMax',
