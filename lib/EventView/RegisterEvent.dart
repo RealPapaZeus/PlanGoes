@@ -106,6 +106,11 @@ class _RegisterEventState extends State<RegisterEvent> {
       });
   }
 
+  // important to create one item, because otherwise 
+  // it could call an exception when you swap between different 
+  // event views and not one item is inside the list 
+  //
+  // Error still exists but there is no possible way to fix it yet 
   void createFirstItemInEvent() async {
     final databaseReference = Firestore.instance;
 
