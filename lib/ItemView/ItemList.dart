@@ -74,14 +74,23 @@ class _ItemListState extends State<ItemList>{
           margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             child: Slidable(
                 actionPane: SlidableDrawerActionPane(),
-                //actionExtentRatio: 0.25,
+                actionExtentRatio: 0.25,
                 closeOnScroll: false,
                 secondaryActions: <Widget>[
                   IconSlideAction(
                     caption: 'Delete',
                     color: Colors.red,
                     icon: Icons.delete,
-                    onTap: (){},
+                    onTap: () async {
+                      await Future.delayed(Duration(milliseconds: 300), () {
+                        Firestore.instance.
+                            collection('events').
+                            document(widget.documentId).
+                            collection('itemList').
+                            document(document.documentID.toString()).
+                            delete();
+                      });
+                    },
                   )
                 ],
             child: Row(
@@ -108,16 +117,13 @@ class _ItemListState extends State<ItemList>{
                     ), 
                   ],
                 ),
-                Container(
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.centerRight,
                   padding: const EdgeInsets.only(right: 12.0),
-                  child: Row(
-                    children: <Widget>[
-                      Text('0'),
-                      Text('/'),
-                      Text(document['value'].toString())
-                    ],)
+                  child: Text('${document['valueCurrent'].toString()}/${document['valueMax'].toString()}'),
                 )          
-              ]
+                )]
             ),
         ),
       ),

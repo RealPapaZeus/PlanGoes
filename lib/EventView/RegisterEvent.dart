@@ -28,7 +28,6 @@ class _RegisterEventState extends State<RegisterEvent> {
   String _eventName;
   String _location;
   String _description;
-  bool _isLoading = false;
   String _documentID;
   Color _tempShadeColor;
   Color _shadeColor = Colors.blue[900];
@@ -107,6 +106,25 @@ class _RegisterEventState extends State<RegisterEvent> {
       });
   }
 
+  // important to create one item, because otherwise 
+  // it could call an exception when you swap between different 
+  // event views and not one item is inside the list 
+  //
+  // Error still exists but there is no possible way to fix it yet 
+  void createFirstItemInEvent() async {
+    final databaseReference = Firestore.instance;
+
+    await databaseReference.collection("events").
+                            document(_documentID).
+                            collection("itemList").
+                            document().
+                            setData({
+                              'name' : 'This is your first item Adrian!',
+                              'valueMax' : 42,
+                              'valueCurrent' : 0
+                            });
+  }
+
   void getIntoCollection(String url) {
 
     createEvent(_eventNameController.text.toString(),
@@ -116,14 +134,16 @@ class _RegisterEventState extends State<RegisterEvent> {
                     url.toString(),
                     widget.userId);
         
-        insertEventIdToUserCollection(_eventNameController.text.toString(),
-                                      _locationController.text.toString(),
-                                      _descriptionController.text.toString(),
-                                      _eventColor.toInt(),
-                                      url.toString(),
-                                      widget.userId,
-                                      true,
-                                      _documentID.toString());
+    insertEventIdToUserCollection(_eventNameController.text.toString(),
+                                  _locationController.text.toString(),
+                                  _descriptionController.text.toString(),
+                                  _eventColor.toInt(),
+                                  url.toString(),
+                                  widget.userId,
+                                  true,
+                                  _documentID.toString());
+    
+    createFirstItemInEvent();
   }
 
   void registerEventByPress() async {
@@ -148,11 +168,6 @@ class _RegisterEventState extends State<RegisterEvent> {
       final StorageTaskSnapshot downloadUrl = (await uploadTask.onComplete);
       url = (await downloadUrl.ref.getDownloadURL());
     } else {url = null;}
-    
-
-    setState(() {
-      _isLoading = true;  
-    });
 
     if(_formState.validate()) {
       _formState.save();
@@ -162,17 +177,9 @@ class _RegisterEventState extends State<RegisterEvent> {
         // Calls method for better readable 
         getIntoCollection(url);
 
-        setState(() {
-          _isLoading = false;  
-        });
-
         Navigator.pop(context);
 
       } catch(e) {
-
-        setState(() {
-          _isLoading = false;  
-        });
 
         print(e.message);
       }
@@ -182,7 +189,6 @@ class _RegisterEventState extends State<RegisterEvent> {
   //whenever user tries to submit and all input strings 
   //are empty, _isLoading gets set to false
   String messageToDenyLoading(String message) {
-    _isLoading = false;
     return '$message';
   }
 
@@ -370,12 +376,10 @@ class _RegisterEventState extends State<RegisterEvent> {
     return [
       Padding(
         padding: EdgeInsets.all(15.0),
-        child: _isLoading
-                  ? Center(child: new CircularProgressIndicator())
-                  : RaisedButton(
-                      onPressed: registerEventByPress,
-                      child: Text('Register Event'),
-                  )
+        child: RaisedButton(
+                onPressed: registerEventByPress,
+                child: Text('Register Event'),
+               )
         )
     ];
   }
