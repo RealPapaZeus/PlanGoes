@@ -82,12 +82,14 @@ class _ItemListState extends State<ItemList>{
                     color: Colors.red,
                     icon: Icons.delete,
                     onTap: () async {
-                      await Firestore.instance.
+                      await Future.delayed(Duration(milliseconds: 300), () {
+                        Firestore.instance.
                             collection('events').
                             document(widget.documentId).
                             collection('itemList').
                             document(document.documentID.toString()).
                             delete();
+                      });
                     },
                   )
                 ],
