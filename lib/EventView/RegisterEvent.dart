@@ -273,7 +273,7 @@ class _RegisterEventState extends State<RegisterEvent> {
             child: (_image!=null)
                     ? Image.file(_image,fit: BoxFit.fill)
                     : Image.network(
-              'https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=967&q=80',
+              'https://images.unsplash.com/photo-1511871893393-82e9c16b81e3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80',
               fit: BoxFit.fill,
             ),
           ),
