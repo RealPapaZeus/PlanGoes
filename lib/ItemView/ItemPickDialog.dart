@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class ItemPickDialog extends StatefulWidget {
@@ -253,7 +251,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
       width: 250,
       decoration: BoxDecoration(
         border: new Border(
-          top: new BorderSide(width: 1, color: Colors.black26)
+          top: new BorderSide(width: 1.5, color: Colors.black26)
         )
       ),
       child: new Scrollbar(
