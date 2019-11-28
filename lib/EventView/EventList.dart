@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/EventView/RegisterEvent.dart';
 import 'package:plan_go_software_project/ItemView/AdminView.dart';
 
+
 class EventList extends StatefulWidget {
   final String userId;
 
@@ -37,15 +38,17 @@ class _EventListState extends State<EventList> {
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return const Text("No event found");
-        return ListView.separated(
-          padding: EdgeInsets.all(10.0),
-          itemCount: snapshot.data.documents.length,
-          separatorBuilder: (context, index) => Divider(
-            height: 15.0,
-            color: Colors.transparent,
-          ),
-          itemBuilder: (context, index) =>
-              buildCanbanList(context, snapshot.data.documents[index]),
+        return Scrollbar(
+          child: ListView.separated(
+            padding: EdgeInsets.all(10.0),
+            itemCount: snapshot.data.documents.length,
+            separatorBuilder: (context, index) => Divider(
+              height: 15.0,
+              color: Colors.transparent,
+            ),
+            itemBuilder: (context, index) =>
+                buildCanbanList(context, snapshot.data.documents[index]),
+          )
         );
       },
     );
@@ -64,6 +67,26 @@ class _EventListState extends State<EventList> {
     }
   }
 
+  PopupMenuButton popUpDelete() {
+    return PopupMenuButton(
+      child: Icon(
+        Icons.more_vert,
+        color: Colors.white,
+      ),
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          child: ListTile(
+            title: Text('Delete',
+              style: TextStyle(fontWeight: FontWeight.bold)
+            ),
+            leading: Icon(Icons.delete),
+            onTap: () async {
+            },
+          )
+        )
+      ],
+    );
+  }
 
   Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
     return new GestureDetector(
@@ -113,17 +136,7 @@ class _EventListState extends State<EventList> {
                             overflow: TextOverflow.ellipsis,
                           )
                         ),
-                        PopupMenuButton(
-                          child: Icon(
-                            Icons.more_vert,
-                            color: Colors.white,
-                          ),
-                          itemBuilder: (context) => [
-                            PopupMenuItem(
-                              child: Text("Delete"),
-                            )
-                          ],
-                          )
+                        popUpDelete(),
                         ]
                       )
                     ),
@@ -206,6 +219,8 @@ class _EventListState extends State<EventList> {
   Widget createAppBar() {
     return AppBar(
       title: Text('Your Events'),
+      elevation: 5.0,
+      backgroundColor: Colors.blue[900],
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.person),
