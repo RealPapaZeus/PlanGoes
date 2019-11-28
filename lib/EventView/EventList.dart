@@ -63,7 +63,8 @@ class _EventListState extends State<EventList> {
       print(e);
     }
   }
-  //this widget actually builds the UI for the EventList.
+
+
   Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
     return new GestureDetector(
       onTap: () {
@@ -72,37 +73,46 @@ class _EventListState extends State<EventList> {
       child: new Stack(children: <Widget>[
         new Container(
           width: 400.0,
-          height: 124.0,
-          margin: const EdgeInsets.only(left: 46.0, bottom: 10),
+          height: 130.0,
+          margin: const EdgeInsets.only(left: 46.0, bottom: 7.5, top: 7.5, right: 7.5),
           decoration: new BoxDecoration(
             color: Color(document['eventColor']),
             shape: BoxShape.rectangle,
             borderRadius: new BorderRadius.circular(8.0),
             boxShadow: <BoxShadow>[
               new BoxShadow(
+                color: Color(document['eventColor']),
                 blurRadius: 10.0,
-                spreadRadius: 2.0,
+                spreadRadius: 1.0,
               ),
             ],
           ),
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              new Container(
-                  padding: const EdgeInsets.only(
-                      right: 8.00, left: 62.00, top: 2.00),
-                  decoration: BoxDecoration(),
-                  child: new Row(
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 64.0
+            ),
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                new Column(
+                  children: <Widget>[
+                    new Container(
+                    padding: const EdgeInsets.only(
+                      right: 8.0,
+                      top: 7.5),
+                    decoration: BoxDecoration(),
+                    child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Expanded(
-                            child: Text(
-                          document['eventname'],
-                          maxLines: 1,
-                          style: TextStyle(fontSize: 25.0, color: Colors.white),
-                          overflow: TextOverflow.ellipsis,
-                        )),
+                          child: Text(
+                            document['eventname'],
+                            maxLines: 1,
+                            style: TextStyle(fontSize: 24.0, color: Colors.white),
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        ),
                         PopupMenuButton(
                           child: Icon(
                             Icons.more_vert,
@@ -110,49 +120,76 @@ class _EventListState extends State<EventList> {
                           ),
                           itemBuilder: (context) => [
                             PopupMenuItem(
-                              child: Text("Edit"),
-                            ),
-                            PopupMenuItem(
                               child: Text("Delete"),
                             )
                           ],
-                        )
-                      ])),
-              new Container(
-                  padding: const EdgeInsets.only(
-                      right: 8.00, left: 62.00, bottom: 8),
-                  decoration: BoxDecoration(),
-                  child: new Row(children: <Widget>[
-                    Icon(Icons.my_location, color: Colors.white, size: 10),
-                    Expanded(
-                        child: Text(
-                      document['location'],
-                      maxLines: 1,
-                      style: TextStyle(fontSize: 10.0, color: Colors.white),
-                      overflow: TextOverflow.ellipsis,
-                    )),
-                  ])),
-              new Container(
-                padding: const EdgeInsets.only(
-                    right: 8.00, left: 62.00, top: 2.00, bottom: 8.00),
-                decoration: BoxDecoration(),
-                child: Text(
-                  document['description'],
-                  maxLines: 3,
-                  style: TextStyle(fontSize: 14.0, color: Colors.white),
-                  overflow: TextOverflow.ellipsis,
+                          )
+                        ]
+                      )
+                    ),
+                    new Container(
+                      padding: const EdgeInsets.only(
+                        top: 4.00, 
+                        left: 1.0,
+                        right: 30.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                              document['description'],
+                              maxLines: 3,
+                              style: TextStyle(fontSize: 12.0, color: Colors.white),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          )],
+                      )
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.bottomCenter,
+                    padding: const EdgeInsets.only(
+                        right: 30.00,
+                        bottom: 10.0, 
+                      ),
+                    child: new Row(children: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.only(
+                          right: 5.0
+                        ),
+                        child: Icon(
+                          Icons.location_on,
+                          color: Colors.white,
+                          size: 10,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          document['location'],
+                          maxLines: 1,
+                          style: TextStyle(fontSize: 11.0, color: Colors.white),
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      ),
+                    ])),
+                )
+              ],
+            ),
+          )
         ),
         new Container(
-          height: 92.0,
-          width: 92.0,
+          height: 95.0,
+          width: 95.0,
           alignment: Alignment.centerLeft,
-          margin: const EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 8),
+          margin: const EdgeInsets.only(top: 25, bottom: 8, left: 3.75, right: 8),
           decoration: new BoxDecoration(
-              boxShadow: [BoxShadow(blurRadius: 7.0, spreadRadius: 1.5)],
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 10.0,
+                  spreadRadius: 1.0,
+                  )],
               shape: BoxShape.circle,
               image: new DecorationImage(
                   fit: BoxFit.fill,
