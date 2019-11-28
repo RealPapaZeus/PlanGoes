@@ -28,8 +28,6 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
   int _valueCurrent = 0;
   int _valueMax = 0; 
   int _valueMin = 0;
-
-
   
   @override
   void initState(){
@@ -86,7 +84,8 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
                             collection("usersItemList").
                             add({
                               'user' : '$userName',
-                              'value' : value
+                              'value' : value,
+                              'userId' : widget.userId
                             });
   }
 
@@ -261,7 +260,9 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
       actions: <Widget>[
         FlatButton(
-          onPressed:(){registerItemByPress();},
+          onPressed:(){
+            registerItemByPress()
+            ;},
           child: Text('Create'),
         )
       ],
