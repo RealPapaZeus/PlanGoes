@@ -50,7 +50,7 @@ class _ItemAlertViewState extends State<ItemAlertView>{
   void registerItemByPress() async {
     final _formState = _formKey.currentState;
     
-    if(_formState.validate()) {
+    if(_formState.validate() && _value > 0) {
       _formState.save();
 
       try{
