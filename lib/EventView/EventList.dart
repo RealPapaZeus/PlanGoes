@@ -24,6 +24,7 @@ class _EventListState extends State<EventList> {
   @override
   void initState() {
     super.initState();
+    getUserName();
   }
 
   void getUserName() async {
@@ -45,7 +46,8 @@ class _EventListState extends State<EventList> {
   //get our data loaded into the EventList
   StreamBuilder buildStream(BuildContext context) {
     final databaseReference = Firestore.instance;
-
+    //getUserName();
+    
     return new StreamBuilder(
       stream: databaseReference
           .collection("users")
@@ -233,8 +235,6 @@ class _EventListState extends State<EventList> {
   }
 
   Widget createAppBar() {
-    getUserName();
-
     return AppBar(
       title: Text('${_userName}s Events'),
       elevation: 5.0,
