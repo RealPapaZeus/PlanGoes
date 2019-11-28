@@ -1,48 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:plan_go_software_project/ItemView/ItemAlertDialog.dart';
 import 'package:plan_go_software_project/ItemView/ItemList.dart';
 
-class AdminView extends StatefulWidget {
+class UsersView extends StatefulWidget {
 
   final String documentId;
   final String userId;
 
-  AdminView({
+  UsersView({
     Key key,
     this.documentId,
     this.userId
     }) : super(key: key);
 
   @override
-  _AdminViewState createState() => new _AdminViewState();
+  _UsersViewState createState() => new _UsersViewState();
 }
   
-class _AdminViewState extends State<AdminView>{
+class _UsersViewState extends State<UsersView>{
 
   int _eventColor = 0;
   String _eventName = '';
   String _imageUrl = '';
   double offset = 0.0;
 
-  ScrollController _scrollController;
-
   @override
   void initState(){
     super.initState();
     getEventInfo();
-    _scrollController = ScrollController() 
-      ..addListener(() {
-        setState(() {
-          offset = _scrollController.offset;
-        });
-      });
   }
 
    @override
   void dispose() {
-    _scrollController.dispose();
     super.dispose();
   }
 
@@ -88,45 +78,12 @@ class _AdminViewState extends State<AdminView>{
       ),
     );
   }
-
-  Widget createItem() {
-    return new FloatingActionButton(
-      elevation: 4.0,
-      child: Icon(Icons.add, color: Colors.white),
-      backgroundColor: Color(_eventColor),
-      onPressed: () {
-        showDialog(
-          context: context,
-          child: new ItemAlertView(documentID: widget.documentId)
-        );
-      },
-      
-    );
-  }
-
-  Widget bottomNavigation() {
-    return new BottomAppBar(
-      shape: CircularNotchedRectangle(),
-      color: Color(_eventColor),
-      notchMargin: 4.0,
-      child: new Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.import_export, color: Colors.white),
-            onPressed: () {},
-          )],
-      ),
-    );
-  }
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
       body: new NestedScrollView(
-        controller: _scrollController,
         headerSliverBuilder: (context, innerBoxScrolled) {
           return <Widget>[
             createAppBar(innerBoxScrolled)
@@ -134,9 +91,6 @@ class _AdminViewState extends State<AdminView>{
         },
         body: buildStream(),
       ),
-      floatingActionButton: createItem(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: bottomNavigation(),
     );
   }
 }   

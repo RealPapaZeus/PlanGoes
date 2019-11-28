@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/ItemView/ItemPickDialog.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -45,7 +44,8 @@ class _ItemListState extends State<ItemList>{
                                 snapshots(),
       builder: (context, snapshot) {
         if(!snapshot.hasData) return const Center(child: Text("Your ItemList is empty"));
-        return ListView.builder(
+        return Scrollbar(
+          child: ListView.builder(
             scrollDirection: Axis.vertical,
             itemExtent: 100,
             padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0, bottom: 50.0),
@@ -53,6 +53,7 @@ class _ItemListState extends State<ItemList>{
             itemBuilder: (context, index) {
               return buildItemList(context, snapshot.data.documents[index]);
             }
+          ),
         );
       },
     );
@@ -73,10 +74,10 @@ class _ItemListState extends State<ItemList>{
           elevation: 10.0,
           margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             child: Slidable(
-                actionPane: SlidableDrawerActionPane(),
-                actionExtentRatio: 0.25,
-                closeOnScroll: false,
-                secondaryActions: <Widget>[
+                actionPane: SlidableStrechActionPane(),
+                //actionExtentRatio: 0.25,
+                closeOnScroll: true,
+                actions: <Widget>[
                   IconSlideAction(
                     caption: 'Delete',
                     color: Colors.red,

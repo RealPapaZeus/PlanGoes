@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class ItemPickDialog extends StatefulWidget {
@@ -28,14 +26,14 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
   int _valueCurrent = 0;
   int _valueMax = 0; 
   int _valueMin = 0;
-
-
+  int _valueUserItem = 0;
   
   @override
   void initState(){
     super.initState();
     getItemName();
     getUserName();
+    getUsersItemAmount();
   }
 
   void getItemName() async{
@@ -52,6 +50,23 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
         _valueMax = document['valueMax'];
         _valueCurrent = document['valueCurrent'];
         _valueMin = document['valueCurrent'];
+      });
+    });
+  }
+
+  void getUsersItemAmount() async{
+    final databaseReference = Firestore.instance;
+    var documentReference = databaseReference.
+                            collection("events").
+                            document(widget.documentId).
+                            collection("itemList").
+                            document(widget.itemDocumentId).
+                            collection("usersItemList").
+                            document(widget.userId);
+
+    documentReference.get().then((DocumentSnapshot document) {
+      setState(() {
+        _valueUserItem = document['value'];
       });
     });
   }
@@ -84,10 +99,36 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
                             collection("itemList").
                             document(widget.itemDocumentId).
                             collection("usersItemList").
-                            add({
+                            document(widget.userId).
+                            setData({
                               'user' : '$userName',
-                              'value' : value
+                              'value' : value,
                             });
+  }
+
+  void updateItemUser(int value) async{
+    final databaseReference = Firestore.instance;
+
+    int newItemValue = value + _valueUserItem;
+    var documentReference = databaseReference.
+                            collection("events").
+                            document(widget.documentId).
+                            collection("itemList").
+                            document(widget.itemDocumentId).
+                            collection("usersItemList").
+                            document(widget.userId);
+
+    documentReference.get().then((DocumentSnapshot document) async {
+      await databaseReference.collection("events").
+                            document(widget.documentId).
+                            collection("itemList").
+                            document(widget.itemDocumentId).
+                            collection("usersItemList").
+                            document(widget.userId).
+                            updateData({
+                              "value" : newItemValue
+                            });
+    });
   }
 
   void addNewValueToItemList(int value) async {
@@ -99,7 +140,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
                             collection("itemList").
                             document(widget.itemDocumentId).
                             updateData({
-                              "valueCurrent" : value
+                              "valueCurrent" : value 
                             });
   }
 
@@ -107,6 +148,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
   void callDatabaseInserts() {
     if(_valueCurrent != 0 && _valueToAdd != 0){
       addNewItemToDatabase(_userName.toString(), _valueToAdd); 
+      updateItemUser(_valueToAdd);
       addNewValueToItemList(_valueCurrent);
     }
   }
@@ -115,6 +157,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
   void getVariables(){
     getItemName();
     getUserName();
+    getUsersItemAmount();
   }
 
   // checks if everything is valid and sends after that values to
@@ -208,7 +251,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
       width: 250,
       decoration: BoxDecoration(
         border: new Border(
-          top: new BorderSide(width: 1, color: Colors.black26)
+          top: new BorderSide(width: 1.5, color: Colors.black26)
         )
       ),
       child: new Scrollbar(
@@ -261,7 +304,9 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
       actions: <Widget>[
         FlatButton(
-          onPressed:(){registerItemByPress();},
+          onPressed:(){
+            registerItemByPress()
+            ;},
           child: Text('Create'),
         )
       ],

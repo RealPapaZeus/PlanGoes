@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/EventView/RegisterEvent.dart';
 import 'package:plan_go_software_project/ItemView/AdminView.dart';
+import 'package:plan_go_software_project/ItemView/UsersView.dart';
 
 class EventList extends StatefulWidget {
   final String userId;
@@ -15,20 +14,35 @@ class EventList extends StatefulWidget {
 }
 
 class _EventListState extends State<EventList> {
-  int _eventColor = 0;
-  String _error;
-  String _documentId;
+  String _userName;
+  bool _adminRight = true;
 
   @override
   void initState() {
     super.initState();
+    getUserName();
+  }
+
+  void getUserName() async {
+
+    final databaseReference = Firestore.instance;
+    var documentReference = databaseReference.
+                            collection("users").
+                            document(widget.userId);
+
+    documentReference.get().then((DocumentSnapshot document) {
+      setState(() {
+        _userName = document['username'].toString();
+      });
+    });
+    print(_userName);
   }
 
   // builds a stream in which we connect to subcollection and
   //get our data loaded into the EventList
   StreamBuilder buildStream(BuildContext context) {
     final databaseReference = Firestore.instance;
-
+    
     return new StreamBuilder(
       stream: databaseReference
           .collection("users")
@@ -37,38 +51,87 @@ class _EventListState extends State<EventList> {
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return const Text("No event found");
-        return ListView.separated(
-          padding: EdgeInsets.all(10.0),
-          itemCount: snapshot.data.documents.length,
-          separatorBuilder: (context, index) => Divider(
-            height: 15.0,
-            color: Colors.transparent,
-          ),
-          itemBuilder: (context, index) =>
-              buildCanbanList(context, snapshot.data.documents[index]),
+        return Scrollbar(
+          child: ListView.separated(
+            padding: EdgeInsets.all(10.0),
+            itemCount: snapshot.data.documents.length,
+            separatorBuilder: (context, index) => Divider(
+              height: 15.0,
+              color: Colors.transparent,
+            ),
+            itemBuilder: (context, index) =>
+                buildCanbanList(context, snapshot.data.documents[index]),
+          )
         );
       },
     );
   }
 
-  void callAdminView(DocumentSnapshot document) async {
+  void callView(DocumentSnapshot document) async {
+    final databaseReference = Firestore.instance;
+    var documentReference = databaseReference.
+                            collection("users").
+                            document(widget.userId).
+                            collection("usersEventList").
+                            document(document.documentID.toString());
+
+    documentReference.get().then((DocumentSnapshot document) {
+      setState(() {
+        _adminRight = document['admin'];
+      });
+    });
+
     try{
-      Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => AdminView(
-                    documentId: document.documentID.toString(),
-                    userId: widget.userId)));
+      if(_adminRight) {
+        Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AdminView(
+            documentId: document.documentID.toString(),
+            userId: widget.userId)
+          )
+        );
+      }
+      else{
+        Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => UsersView(
+            documentId: document.documentID.toString(),
+            userId: widget.userId)
+          )
+        );
+      }
     }catch(e) {
       print(e);
     }
   }
 
+  PopupMenuButton popUpDelete() {
+    return PopupMenuButton(
+      child: Icon(
+        Icons.more_vert,
+        color: Colors.white,
+      ),
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          child: ListTile(
+            title: Text('Delete',
+              style: TextStyle(fontWeight: FontWeight.bold)
+            ),
+            leading: Icon(Icons.delete),
+            onTap: () async {
+            },
+          )
+        )
+      ],
+    );
+  }
 
   Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
     return new GestureDetector(
       onTap: () {
-        callAdminView(document);
+        callView(document);
       },
       child: new Stack(children: <Widget>[
         new Container(
@@ -113,17 +176,7 @@ class _EventListState extends State<EventList> {
                             overflow: TextOverflow.ellipsis,
                           )
                         ),
-                        PopupMenuButton(
-                          child: Icon(
-                            Icons.more_vert,
-                            color: Colors.white,
-                          ),
-                          itemBuilder: (context) => [
-                            PopupMenuItem(
-                              child: Text("Delete"),
-                            )
-                          ],
-                          )
+                        popUpDelete(),
                         ]
                       )
                     ),
@@ -205,7 +258,9 @@ class _EventListState extends State<EventList> {
 
   Widget createAppBar() {
     return AppBar(
-      title: Text('Your Events'),
+      title: Text('${_userName}s Events'),
+      elevation: 5.0,
+      backgroundColor: Colors.lightBlue,
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.person),
@@ -213,7 +268,8 @@ class _EventListState extends State<EventList> {
         )
       ],
       leading: IconButton(
-        icon: Icon(Icons.add_circle),
+        tooltip: "Create New Event",
+        icon: Icon(Icons.playlist_add_check),
         onPressed: () {
           Navigator.push(
               context,
@@ -228,6 +284,7 @@ class _EventListState extends State<EventList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.lightBlue,
       appBar: createAppBar(),
       body: buildStream(context),
     );
