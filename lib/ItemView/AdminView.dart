@@ -67,7 +67,7 @@ class _AdminViewState extends State<AdminView>{
     return ItemList(userId: widget.userId,
                     documentId: widget.documentId,
                     eventColor: _eventColor.toInt(),
-                    );
+    );
   }
 
   Widget createAppBar(bool value) {
