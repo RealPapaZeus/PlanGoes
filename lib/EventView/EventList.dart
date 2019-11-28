@@ -19,10 +19,26 @@ class _EventListState extends State<EventList> {
   int _eventColor = 0;
   String _error;
   String _documentId;
+  String _userName;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  void getUserName() async {
+
+    final databaseReference = Firestore.instance;
+    var documentReference = databaseReference.
+                            collection("users").
+                            document(widget.userId);
+
+    documentReference.get().then((DocumentSnapshot document) {
+      setState(() {
+        _userName = document['username'].toString();
+      });
+    });
+    print(_userName);
   }
 
   // builds a stream in which we connect to subcollection and
@@ -217,10 +233,12 @@ class _EventListState extends State<EventList> {
   }
 
   Widget createAppBar() {
+    getUserName();
+
     return AppBar(
-      title: Text('Your Events'),
+      title: Text('${_userName}s Events'),
       elevation: 5.0,
-      backgroundColor: Colors.blue[900],
+      backgroundColor: Colors.lightBlue,
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.person),
@@ -228,7 +246,8 @@ class _EventListState extends State<EventList> {
         )
       ],
       leading: IconButton(
-        icon: Icon(Icons.add_circle),
+        tooltip: "Create New Event",
+        icon: Icon(Icons.playlist_add_check),
         onPressed: () {
           Navigator.push(
               context,
@@ -243,6 +262,7 @@ class _EventListState extends State<EventList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.lightBlue,
       appBar: createAppBar(),
       body: buildStream(context),
     );
