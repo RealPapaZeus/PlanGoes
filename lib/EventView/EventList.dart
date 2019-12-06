@@ -129,7 +129,12 @@ class _EventListState extends State<EventList> {
     );
   }
   void deleteCanban(DocumentSnapshot document){
-    
+    Firestore.instance.
+    collection('events').
+    document(document.documentID.
+    toString()).
+    delete();
+
     Firestore.instance.
       collection('users').
       document(widget.userId).
