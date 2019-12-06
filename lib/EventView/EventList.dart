@@ -107,7 +107,7 @@ class _EventListState extends State<EventList> {
     }
   }
 
-  PopupMenuButton popUpDelete() {
+  PopupMenuButton popUpDelete(DocumentSnapshot document) {
     return PopupMenuButton(
       child: Icon(
         Icons.more_vert,
@@ -121,11 +121,23 @@ class _EventListState extends State<EventList> {
             ),
             leading: Icon(Icons.delete),
             onTap: () async {
+              deleteCanban(document);
             },
           )
         )
       ],
     );
+  }
+  void deleteCanban(DocumentSnapshot document){
+    
+    Firestore.instance.
+      collection('users').
+      document(widget.userId).
+      collection('usersEventList').
+      document(document.documentID.toString())
+      .delete();
+    
+
   }
 
   Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
@@ -176,7 +188,7 @@ class _EventListState extends State<EventList> {
                             overflow: TextOverflow.ellipsis,
                           )
                         ),
-                        popUpDelete(),
+                        popUpDelete(document),
                         ]
                       )
                     ),
