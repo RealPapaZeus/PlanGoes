@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class RegisterEvent extends StatefulWidget {
 
@@ -33,6 +34,12 @@ class _RegisterEventState extends State<RegisterEvent> {
   Color _shadeColor = Colors.blue[900];
   int _eventColor = Colors.blue[900].value;
   String _userName = '';
+  DateTime _dateTime = DateTime.now();
+  String _year = DateTime.now().year.toString();
+  String _day = DateTime.now().day.toString();
+  String _month = DateTime.now().month.toString();
+  String _hour = DateTime.now().hour.toString();
+  String _minute = DateTime.now().minute.toString();
 
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -343,6 +350,43 @@ class _RegisterEventState extends State<RegisterEvent> {
     );
   }
 
+  Widget eventDateTime() {
+    return FlatButton(
+      onPressed: () {
+        DatePicker.showDateTimePicker(
+          context,
+          showTitleActions: true,
+          minTime: DateTime.now(),
+          maxTime: DateTime(2030, 12,12,23,59),
+          onChanged: (dateTime) {
+            print('change $dateTime');
+          },
+          onConfirm: (dateTime){
+            print('confirm $dateTime');
+            setState(() {
+              _dateTime = dateTime;
+              _year = dateTime.year.toString();
+              _day = dateTime.day.toString();
+              _month = dateTime.month.toString();
+              _hour = dateTime.hour.toString();
+              _minute = dateTime.minute.toString();
+              if(_minute.length <2){
+                _minute = '0$_minute';
+              }
+            });
+          },
+          currentTime: DateTime.now(),
+          locale: LocaleType.de,
+        );
+      },
+      child: Text(
+        'Date: $_day.$_month.$_year |Time: $_hour:$_minute',
+        style: TextStyle(color: _shadeColor),
+      ),
+      
+    );
+  }
+
   Widget eventDescriptionTextField() {
     return TextFormField(
       keyboardType: TextInputType.multiline,
@@ -406,6 +450,7 @@ class _RegisterEventState extends State<RegisterEvent> {
     return [
       eventNameTextField(),
       eventLocation(),
+      eventDateTime(),
       eventDescriptionTextField(),
     ];
   }
