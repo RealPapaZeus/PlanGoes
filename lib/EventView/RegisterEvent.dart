@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class RegisterEvent extends StatefulWidget {
 
@@ -330,6 +331,8 @@ class _RegisterEventState extends State<RegisterEvent> {
       onSaved: (value) => _eventName == value,
     );
   }
+
+
 
   Widget eventLocation() {
     return TextFormField(
