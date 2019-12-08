@@ -72,6 +72,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   //in a firebase collection 
   void createEvent(String eventName, 
                    String location,
+                   String datetime,
                    String description,
                    int eventColor,
                    String imageUrl,
@@ -95,6 +96,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       setData({
         'eventName': '$eventName',
         'location' : '$location',
+        'datetime' : '$datetime',
         'description': '$description',
         'eventColor': eventColor.toInt(),
         'imageUrl': '$imageUrl'
@@ -107,6 +109,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   //own eventList
   void insertEventIdToUserCollection(String eventName,
                                      String location,
+                                     String datetime,
                                      String description, 
                                      int eventColor,
                                      String imageUrl, 
@@ -123,6 +126,7 @@ class _RegisterEventState extends State<RegisterEvent> {
         'admin' : admin,
         'eventname' : '$eventName',
         'location'  : '$location',
+        'datetime' : '$datetime',
         'description' : '$description',
         'eventColor': eventColor.toInt(),
         'imageUrl': '$imageUrl'
@@ -156,6 +160,7 @@ class _RegisterEventState extends State<RegisterEvent> {
 
     createEvent(_eventNameController.text.toString(),
                     _locationController.text.toString(),
+                    _dateTime.toIso8601String(),
                     _descriptionController.text.toString(),
                     _eventColor.toInt(),
                     url.toString(),
@@ -163,6 +168,7 @@ class _RegisterEventState extends State<RegisterEvent> {
         
     insertEventIdToUserCollection(_eventNameController.text.toString(),
                                   _locationController.text.toString(),
+                                  _dateTime.toIso8601String(),
                                   _descriptionController.text.toString(),
                                   _eventColor.toInt(),
                                   url.toString(),
