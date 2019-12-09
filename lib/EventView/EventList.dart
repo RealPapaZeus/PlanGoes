@@ -24,11 +24,9 @@ class _EventListState extends State<EventList> {
   }
 
   void getUserName() async {
-
     final databaseReference = Firestore.instance;
-    var documentReference = databaseReference.
-                            collection("users").
-                            document(widget.userId);
+    var documentReference =
+        databaseReference.collection("users").document(widget.userId);
 
     documentReference.get().then((DocumentSnapshot document) {
       setState(() {
@@ -42,7 +40,7 @@ class _EventListState extends State<EventList> {
   //get our data loaded into the EventList
   StreamBuilder buildStream(BuildContext context) {
     final databaseReference = Firestore.instance;
-    
+
     return new StreamBuilder(
       stream: databaseReference
           .collection("users")
@@ -52,28 +50,27 @@ class _EventListState extends State<EventList> {
       builder: (context, snapshot) {
         if (!snapshot.hasData) return const Text("No event found");
         return Scrollbar(
-          child: ListView.separated(
-            padding: EdgeInsets.all(10.0),
-            itemCount: snapshot.data.documents.length,
-            separatorBuilder: (context, index) => Divider(
-              height: 15.0,
-              color: Colors.transparent,
-            ),
-            itemBuilder: (context, index) =>
-                buildCanbanList(context, snapshot.data.documents[index]),
-          )
-        );
+            child: ListView.separated(
+          padding: EdgeInsets.all(10.0),
+          itemCount: snapshot.data.documents.length,
+          separatorBuilder: (context, index) => Divider(
+            height: 15.0,
+            color: Colors.transparent,
+          ),
+          itemBuilder: (context, index) =>
+              buildCanbanList(context, snapshot.data.documents[index]),
+        ));
       },
     );
   }
 
   void callView(DocumentSnapshot document) async {
     final databaseReference = Firestore.instance;
-    var documentReference = databaseReference.
-                            collection("users").
-                            document(widget.userId).
-                            collection("usersEventList").
-                            document(document.documentID.toString());
+    var documentReference = databaseReference
+        .collection("users")
+        .document(widget.userId)
+        .collection("usersEventList")
+        .document(document.documentID.toString());
 
     documentReference.get().then((DocumentSnapshot document) {
       setState(() {
@@ -81,75 +78,53 @@ class _EventListState extends State<EventList> {
       });
     });
 
-    try{
-      if(_adminRight) {
+    try {
+      if (_adminRight) {
         Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AdminView(
-            documentId: document.documentID.toString(),
-            userId: widget.userId)
-          )
-        );
-      }
-      else{
+            context,
+            MaterialPageRoute(
+                builder: (context) => AdminView(
+                    documentId: document.documentID.toString(),
+                    userId: widget.userId)));
+      } else {
         Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => UsersView(
-            documentId: document.documentID.toString(),
-            userId: widget.userId)
-          )
-        );
+            context,
+            MaterialPageRoute(
+                builder: (context) => UsersView(
+                    documentId: document.documentID.toString(),
+                    userId: widget.userId)));
       }
-    }catch(e) {
+    } catch (e) {
       print(e);
     }
   }
 
-  PopupMenuButton popUpDelete(DocumentSnapshot document) {
-    return PopupMenuButton(
-      child: Icon(
-        Icons.more_vert,
-        color: Colors.white,
-      ),
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          child: ListTile(
-            title: Text('Delete',
-              style: TextStyle(fontWeight: FontWeight.bold)
-            ),
-            leading: Icon(Icons.delete),
-            onTap: () async {
-              deleteCanban(document);
-            },
-          )
-        )
-      ],
-    );
-  }
-  void deleteCanban(DocumentSnapshot document){
+
+  void deleteCanban(DocumentSnapshot document) {
     deleteItems(document);
-    
-    Firestore.instance.
-    collection('events').
-    document(document.documentID.
-    toString()).
-    delete();
 
-    Firestore.instance.
-      collection('users').
-      document(widget.userId).
-      collection('usersEventList').
-      document(document.documentID.toString())
-      .delete();
-    
+    Firestore.instance
+        .collection('events')
+        .document(document.documentID.toString())
+        .delete();
 
+    Firestore.instance
+        .collection('users')
+        .document(widget.userId)
+        .collection('usersEventList')
+        .document(document.documentID.toString())
+        .delete();
   }
-  void deleteItems(DocumentSnapshot document){
-    Firestore.instance.collection('events').document(document.documentID).collection("itemList").getDocuments().then((snapshot) {
-       for (DocumentSnapshot doc in snapshot.documents) {
-          doc.reference.delete();
+
+  void deleteItems(DocumentSnapshot document) {
+    Firestore.instance
+        .collection('events')
+        .document(document.documentID)
+        .collection("itemList")
+        .getDocuments()
+        .then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.documents) {
+        doc.reference.delete();
       }
     });
   }
@@ -161,114 +136,115 @@ class _EventListState extends State<EventList> {
       },
       child: new Stack(children: <Widget>[
         new Container(
-          width: 400.0,
-          height: 130.0,
-          margin: const EdgeInsets.only(left: 46.0, bottom: 7.5, top: 7.5, right: 7.5),
-          decoration: new BoxDecoration(
-            color: Color(document['eventColor']),
-            shape: BoxShape.rectangle,
-            borderRadius: new BorderRadius.circular(8.0),
-            boxShadow: <BoxShadow>[
-              new BoxShadow(
-                color: Color(document['eventColor']),
-                blurRadius: 10.0,
-                spreadRadius: 1.0,
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: 64.0
-            ),
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                new Column(
-                  children: <Widget>[
-                    new Container(
-                    padding: const EdgeInsets.only(
-                      right: 8.0,
-                      top: 7.5),
-                    decoration: BoxDecoration(),
-                    child: new Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            document['eventname'],
-                            maxLines: 1,
-                            style: TextStyle(fontSize: 24.0, color: Colors.white),
-                            overflow: TextOverflow.ellipsis,
-                          )
-                        ),
-                        popUpDelete(document),
-                        ]
-                      )
-                    ),
-                    new Container(
-                      padding: const EdgeInsets.only(
-                        top: 4.00, 
-                        left: 1.0,
-                        right: 30.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            child: Text(
-                              document['description'],
-                              maxLines: 3,
-                              style: TextStyle(fontSize: 12.0, color: Colors.white),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          )],
-                      )
-                    ),
-                  ],
+            width: 400.0,
+            height: 130.0,
+            margin: const EdgeInsets.only(
+                left: 46.0, bottom: 7.5, top: 7.5, right: 7.5),
+            decoration: new BoxDecoration(
+              color: Color(document['eventColor']),
+              shape: BoxShape.rectangle,
+              borderRadius: new BorderRadius.circular(8.0),
+              boxShadow: <BoxShadow>[
+                new BoxShadow(
+                  color: Color(document['eventColor']),
+                  blurRadius: 10.0,
+                  spreadRadius: 1.0,
                 ),
-                Expanded(
-                  child: Container(
-                    alignment: Alignment.bottomCenter,
-                    padding: const EdgeInsets.only(
-                        right: 30.00,
-                        bottom: 10.0, 
-                      ),
-                    child: new Row(children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.only(
-                          right: 5.0
-                        ),
-                        child: Icon(
-                          Icons.location_on,
-                          color: Colors.white,
-                          size: 10,
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          document['location'],
-                          maxLines: 1,
-                          style: TextStyle(fontSize: 11.0, color: Colors.white),
-                          overflow: TextOverflow.ellipsis,
-                        )
-                      ),
-                    ])),
-                )
               ],
             ),
-          )
-        ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 64.0),
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  new Column(
+                    children: <Widget>[
+                      new Container(
+                          padding: const EdgeInsets.only(right: 8.0, top: 7.5),
+                          decoration: BoxDecoration(),
+                          child: new Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Expanded(
+                                    child: Text(
+                                  document['eventname'],
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      fontSize: 24.0, color: Colors.white),
+                                  overflow: TextOverflow.ellipsis,
+                                )),
+                                new IconButton(
+                                  icon: new Icon(Icons.delete_forever),
+                                  color: Colors.white,
+                                  iconSize: 20.0,
+                                  onPressed: (){
+                                    deleteItems(document);
+                                    deleteCanban(document);
+                                  },
+                                ),
+                              ])),
+                      new Container(
+                          padding: const EdgeInsets.only(
+                              top: 4.00, left: 1.0, right: 30.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Expanded(
+                                child: Text(
+                                  document['description'],
+                                  maxLines: 3,
+                                  style: TextStyle(
+                                      fontSize: 12.0, color: Colors.white),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              )
+                            ],
+                          )),
+                    ],
+                  ),
+                  Expanded(
+                    child: Container(
+                        alignment: Alignment.bottomCenter,
+                        padding: const EdgeInsets.only(
+                          right: 30.00,
+                          bottom: 10.0,
+                        ),
+                        child: new Row(children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.only(right: 5.0),
+                            child: Icon(
+                              Icons.location_on,
+                              color: Colors.white,
+                              size: 10,
+                            ),
+                          ),
+                          Expanded(
+                              child: Text(
+                            document['location'],
+                            maxLines: 1,
+                            style:
+                                TextStyle(fontSize: 11.0, color: Colors.white),
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                        ])),
+                  )
+                ],
+              ),
+            )),
         new Container(
           height: 95.0,
           width: 95.0,
           alignment: Alignment.centerLeft,
-          margin: const EdgeInsets.only(top: 25, bottom: 8, left: 3.75, right: 8),
+          margin:
+              const EdgeInsets.only(top: 25, bottom: 8, left: 3.75, right: 8),
           decoration: new BoxDecoration(
               boxShadow: [
                 BoxShadow(
                   blurRadius: 10.0,
                   spreadRadius: 1.0,
-                  )],
+                )
+              ],
               shape: BoxShape.circle,
               image: new DecorationImage(
                   fit: BoxFit.fill,
