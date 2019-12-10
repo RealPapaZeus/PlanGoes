@@ -30,11 +30,16 @@ class _RegisterEventState extends State<RegisterEvent> {
   int _eventColor = Colors.blue[900].value;
   String _userName = '';
   DateTime _dateTime, _dateTimeEnd = DateTime.now();
-  String _year, _yearEnd = DateTime.now().year.toString();
-  String _day, _dayEnd = DateTime.now().day.toString();
-  String _month, _monthEnd = DateTime.now().month.toString();
-  String _hour, _hourEnd = DateTime.now().hour.toString();
-  String _minute, _minuteEnd = DateTime.now().minute.toString();
+  String _year = DateTime.now().year.toString();
+  String _yearEnd = DateTime.now().year.toString();
+  String _day = DateTime.now().day.toString();
+  String _dayEnd = DateTime.now().day.toString();
+  String _month = DateTime.now().month.toString();
+  String _monthEnd = DateTime.now().month.toString();
+  String _hour = DateTime.now().hour.toString();
+  String _hourEnd = DateTime.now().hour.toString();
+  String _minute = DateTime.now().minute.toString();
+  String _minuteEnd = DateTime.now().minute.toString();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _eventNameController = TextEditingController();
@@ -89,7 +94,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       'eventName': '$eventName',
       'location': '$location',
       'datetime': '$datetime',
-      'datetimeEnd' : '$datetimeEnd',
+      'datetimeEnd': '$datetimeEnd',
       'description': '$description',
       'eventColor': eventColor.toInt(),
       'imageUrl': '$imageUrl'
@@ -122,7 +127,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       'eventname': '$eventName',
       'location': '$location',
       'datetime': '$datetime',
-      'datetimeEnd' : '$datetimeEnd',
+      'datetimeEnd': '$datetimeEnd',
       'description': '$description',
       'eventColor': eventColor.toInt(),
       'imageUrl': '$imageUrl'
@@ -351,87 +356,87 @@ class _RegisterEventState extends State<RegisterEvent> {
   }
 
   Widget eventDateTime() {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          FlatButton(
-              onPressed: () {
-                DatePicker.showDateTimePicker(
-                  context,
-                  showTitleActions: true,
-                  minTime: DateTime.now(),
-                  maxTime: DateTime(2030, 12, 12, 23, 59),
-                  onChanged: (dateTime) {
-                    print('change $dateTime');
-                  },
-                  onConfirm: (dateTime) {
-                    print('confirm $dateTime');
-                    setState(() {
-                      _dateTime = dateTime;
-                      _year = dateTime.year.toString();
-                      _day = dateTime.day.toString();
-                      _month = dateTime.month.toString();
-                      _hour = dateTime.hour.toString();
-                      _minute = dateTime.minute.toString();
-                      if (_minute.length < 2) {
-                        _minute = '0$_minute';
-                      }
-                    });
-                  },
-                  currentTime: DateTime.now(),
-                  locale: LocaleType.en,
-                );
+    return Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+      FlatButton(
+          onPressed: () {
+            DatePicker.showDateTimePicker(
+              context,
+              showTitleActions: true,
+              minTime: DateTime.now(),
+              maxTime: DateTime(2030, 12, 12, 23, 59),
+              onChanged: (dateTime) {
+                print('change startTime $dateTime &' +
+                    dateTime.timeZoneOffset.inHours.toString());
               },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('Date: $_day.$_month.$_year',
-                      style: TextStyle(color: _shadeColor)),
-                  Text(
-                    'Time: $_hour:$_minute',
-                    style: TextStyle(color: _shadeColor),
-                  )
-                ],
-              ))
-        ,FlatButton(
-              onPressed: () {
-                DatePicker.showDateTimePicker(
-                  context,
-                  showTitleActions: true,
-                  minTime: _dateTime,
-                  maxTime: DateTime(2030, 12, 12, 23, 59),
-                  onChanged: (dateTimeEnd) {
-                    print('change $dateTimeEnd');
-                  },
-                  onConfirm: (dateTimeEnd) {
-                    print('confirm $dateTimeEnd');
-                    setState(() {
-                      _dateTimeEnd = dateTimeEnd;
-                      _yearEnd = dateTimeEnd.year.toString();
-                      _dayEnd = dateTimeEnd.day.toString();
-                      _monthEnd = dateTimeEnd.month.toString();
-                      _hourEnd = dateTimeEnd.hour.toString();
-                      _minuteEnd = dateTimeEnd.minute.toString();
-                      if (_minuteEnd.length < 2) {
-                        _minuteEnd = '0$_minuteEnd';
-                      }
-                    });
-                  },
-                  currentTime: DateTime.now(),
-                  locale: LocaleType.en,
-                );
+              onConfirm: (dateTime) {
+                print('confirm startTime $dateTime');
+                setState(() {
+                  _dateTime = dateTime;
+                  _year = dateTime.year.toString();
+                  _day = dateTime.day.toString();
+                  _month = dateTime.month.toString();
+                  _hour = dateTime.hour.toString();
+                  _minute = dateTime.minute.toString();
+                  if (_minute.length < 2) {
+                    _minute = '0$_minute';
+                  }
+                });
               },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('Date: $_dayEnd.$_monthEnd.$_yearEnd',
-                      style: TextStyle(color: _shadeColor)),
-                  Text(
-                    'Time: $_hourEnd:$_minuteEnd',
-                    style: TextStyle(color: _shadeColor),
-                  )
-                ],
-              ))]);
+              currentTime: DateTime.now(),
+              locale: LocaleType.en,
+            );
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text('Date: $_day.$_month.$_year',
+                  style: TextStyle(color: _shadeColor)),
+              Text(
+                'Time: $_hour:$_minute',
+                style: TextStyle(color: _shadeColor),
+              )
+            ],
+          )),
+      FlatButton(
+          onPressed: () {
+            DatePicker.showDateTimePicker(
+              context,
+              showTitleActions: true,
+              minTime: DateTime.now(),
+              maxTime: DateTime(2030, 12, 12, 23, 59),
+              onChanged: (dateTimeEnd) {
+                print('change endTime $dateTimeEnd');
+              },
+              onConfirm: (dateTimeEnd) {
+                print('confirm endTime $dateTimeEnd');
+                setState(() {
+                  _dateTimeEnd = dateTimeEnd;
+                  _yearEnd = dateTimeEnd.year.toString();
+                  _dayEnd = dateTimeEnd.day.toString();
+                  _monthEnd = dateTimeEnd.month.toString();
+                  _hourEnd = dateTimeEnd.hour.toString();
+                  _minuteEnd = dateTimeEnd.minute.toString();
+                  if (_minuteEnd.length < 2) {
+                    _minuteEnd = '0$_minuteEnd';
+                  }
+                });
+              },
+              currentTime: DateTime.now(),
+              locale: LocaleType.en,
+            );
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text('Date: $_dayEnd.$_monthEnd.$_yearEnd',
+                  style: TextStyle(color: _shadeColor)),
+              Text(
+                'Time: $_hourEnd:$_minuteEnd',
+                style: TextStyle(color: _shadeColor),
+              )
+            ],
+          ))
+    ]);
   }
 
   Widget eventDescriptionTextField() {
