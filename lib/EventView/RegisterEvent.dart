@@ -30,11 +30,16 @@ class _RegisterEventState extends State<RegisterEvent> {
   int _eventColor = Colors.blue[900].value;
   String _userName = '';
   DateTime _dateTime, _dateTimeEnd = DateTime.now();
-  String _year, _yearEnd = DateTime.now().year.toString();
-  String _day, _dayEnd = DateTime.now().day.toString();
-  String _month, _monthEnd = DateTime.now().month.toString();
-  String _hour, _hourEnd = DateTime.now().hour.toString();
-  String _minute, _minuteEnd = DateTime.now().minute.toString();
+  String _year = DateTime.now().year.toString();
+  String _yearEnd = DateTime.now().year.toString();
+  String _day = DateTime.now().day.toString();
+  String _dayEnd = DateTime.now().day.toString();
+  String _month = DateTime.now().month.toString();
+  String _monthEnd = DateTime.now().month.toString();
+  String _hour = DateTime.now().hour.toString();
+  String _hourEnd = DateTime.now().hour.toString();
+  String _minute = DateTime.now().minute.toString();
+  String _minuteEnd = DateTime.now().minute.toString();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _eventNameController = TextEditingController();
@@ -362,10 +367,10 @@ class _RegisterEventState extends State<RegisterEvent> {
                   minTime: DateTime.now(),
                   maxTime: DateTime(2030, 12, 12, 23, 59),
                   onChanged: (dateTime) {
-                    print('change $dateTime');
+                    print('change startTime $dateTime');
                   },
                   onConfirm: (dateTime) {
-                    print('confirm $dateTime');
+                    print('confirm startTime $dateTime');
                     setState(() {
                       _dateTime = dateTime;
                       _year = dateTime.year.toString();
@@ -398,13 +403,13 @@ class _RegisterEventState extends State<RegisterEvent> {
                 DatePicker.showDateTimePicker(
                   context,
                   showTitleActions: true,
-                  minTime: _dateTime,
+                  minTime: DateTime.now(),
                   maxTime: DateTime(2030, 12, 12, 23, 59),
                   onChanged: (dateTimeEnd) {
-                    print('change $dateTimeEnd');
+                    print('change endTime $dateTimeEnd');
                   },
                   onConfirm: (dateTimeEnd) {
-                    print('confirm $dateTimeEnd');
+                    print('confirm endTime $dateTimeEnd');
                     setState(() {
                       _dateTimeEnd = dateTimeEnd;
                       _yearEnd = dateTimeEnd.year.toString();
