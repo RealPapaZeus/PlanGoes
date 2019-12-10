@@ -29,7 +29,8 @@ class _RegisterEventState extends State<RegisterEvent> {
   Color _shadeColor = Colors.blue[900];
   int _eventColor = Colors.blue[900].value;
   String _userName = '';
-  DateTime _dateTime, _dateTimeEnd = DateTime.now();
+  DateTime _dateTime = DateTime.now();
+  DateTime _dateTimeEnd = DateTime.now();
   String _year = DateTime.now().year.toString();
   String _yearEnd = DateTime.now().year.toString();
   String _day = DateTime.now().day.toString();
@@ -40,6 +41,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   String _hourEnd = DateTime.now().hour.toString();
   String _minute = DateTime.now().minute.toString();
   String _minuteEnd = DateTime.now().minute.toString();
+  bool _isLoading = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _eventNameController = TextEditingController();
@@ -185,6 +187,11 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   void registerEventByPress() async {
     final _formState = _formKey.currentState;
+
+    setState(() {
+      _isLoading= true;
+    });
+
     String url;
     // StorageUploadTask needs to be build inside registerEventByPress
     // because otherwise we dont get url String and can not pass it
@@ -213,8 +220,15 @@ class _RegisterEventState extends State<RegisterEvent> {
         getIntoCollection(url);
 
         Navigator.pop(context);
+        setState(() {
+          _isLoading = false;
+        });
       } catch (e) {
+        setState(() {
+          _isLoading = false;
+        });
         print(e.message);
+        
       }
     }
   }
@@ -487,10 +501,15 @@ class _RegisterEventState extends State<RegisterEvent> {
     return [
       Padding(
           padding: EdgeInsets.all(15.0),
-          child: RaisedButton(
+          child: _isLoading
+          ? Center(
+            child: CircularProgressIndicator(),
+          )
+          : RaisedButton(
             onPressed: registerEventByPress,
             child: Text('Register Event'),
-          ))
+          )
+          )
     ];
   }
 
