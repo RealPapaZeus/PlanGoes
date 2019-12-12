@@ -40,7 +40,8 @@ class _ItemAlertViewState extends State<ItemAlertView>{
                             setData({
                               'name' : '$itemName',
                               'valueMax' : value.toInt(),
-                              'valueCurrent' : 0
+                              'valueCurrent' : 0,
+                              'userName' : []
                             });
   }
 
