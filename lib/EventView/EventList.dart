@@ -64,6 +64,11 @@ class _EventListState extends State<EventList> {
     );
   }
 
+  // it gets checked whether user is admin or not 
+  // The reason is to give logged user the important
+  // view for navigating through the app
+  // users are for instance not allowed to append items to 
+  // the itemlist 
   void callView(DocumentSnapshot document) async {
     final databaseReference = Firestore.instance;
     var documentReference = databaseReference
