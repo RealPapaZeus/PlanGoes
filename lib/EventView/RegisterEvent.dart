@@ -21,26 +21,21 @@ class RegisterEvent extends StatefulWidget {
 
 class _RegisterEventState extends State<RegisterEvent> {
   File _image;
-  String _eventName;
-  String _location;
-  String _description;
+  String _eventName,
+         _location,
+         _description;
+         
   String _documentID;
   Color _tempShadeColor;
   Color _shadeColor = Colors.blue[900];
   int _eventColor = Colors.blue[900].value;
   String _userName = '';
-  DateTime _dateTime = DateTime.now();
-  DateTime _dateTimeEnd = DateTime.now();
-  String _year = DateTime.now().year.toString();
-  String _yearEnd = DateTime.now().year.toString();
-  String _day = DateTime.now().day.toString();
-  String _dayEnd = DateTime.now().day.toString();
-  String _month = DateTime.now().month.toString();
-  String _monthEnd = DateTime.now().month.toString();
-  String _hour = DateTime.now().hour.toString();
-  String _hourEnd = DateTime.now().hour.toString();
-  String _minute = DateTime.now().minute.toString();
-  String _minuteEnd = DateTime.now().minute.toString();
+  DateTime _dateTime, _dateTimeEnd = DateTime.now();
+  String _year, _yearEnd = DateTime.now().year.toString();
+  String _day, _dayEnd = DateTime.now().day.toString();
+  String _month, _monthEnd = DateTime.now().month.toString();
+  String _hour, _hourEnd = DateTime.now().hour.toString();
+  String _minute, _minuteEnd = DateTime.now().minute.toString();
   bool _isLoading = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
