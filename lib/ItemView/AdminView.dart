@@ -26,31 +26,18 @@ class _AdminViewState extends State<AdminView>{
   String _imageUrl = '';
   double offset = 0.0;
 
-  ScrollController _scrollController;
-
   @override
   void initState(){
     super.initState();
     getEventInfo();
-    _scrollController = ScrollController() 
-      ..addListener(() {
-        setState(() {
-          offset = _scrollController.offset;
-        });
-      });
-  }
-
-   @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
   }
 
   // Method how to get one variable out of database, without using 
   //StreamBuilder   
   void getEventInfo() async{
     final databaseReference = Firestore.instance;
-    var documentReference = databaseReference.collection("events").document(widget.documentId);
+    var documentReference = databaseReference.collection("events").
+                                              document(widget.documentId);
 
     documentReference.get().then((DocumentSnapshot document) {
       setState(() {
@@ -126,7 +113,6 @@ class _AdminViewState extends State<AdminView>{
     return Scaffold(
       extendBody: true,
       body: new NestedScrollView(
-        controller: _scrollController,
         headerSliverBuilder: (context, innerBoxScrolled) {
           return <Widget>[
             createAppBar(innerBoxScrolled)
