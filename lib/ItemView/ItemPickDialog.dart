@@ -87,9 +87,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
     });
     print(_userName);
   }
-
-  // same procedure as in other classes, to insert values into 
-  // database under given path 
+ 
   void addNewItemToDatabase(String userName, int value) async {
 
     final databaseReference = Firestore.instance;
@@ -119,15 +117,10 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
                             document(widget.userId);
 
     documentReference.get().then((DocumentSnapshot document) async {
-      await databaseReference.collection("events").
-                            document(widget.documentId).
-                            collection("itemList").
-                            document(widget.itemDocumentId).
-                            collection("usersItemList").
-                            document(widget.userId).
-                            updateData({
-                              "value" : newItemValue
-                            });
+      await documentReference.
+            updateData({
+              "value" : newItemValue
+            });
     });
   }
 
