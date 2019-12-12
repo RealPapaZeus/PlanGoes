@@ -31,12 +31,12 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
   @override
   void initState(){
     super.initState();
-    getItemName();
+    getItemInformation();
     getUserName();
     getUsersItemAmount();
   }
 
-  void getItemName() async{
+  void getItemInformation() async{
     final databaseReference = Firestore.instance;
     var documentReference = databaseReference.
                             collection("events").
@@ -137,37 +137,32 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
                             });
   }
 
+  void addUsernameToItem(String userName) async{
+    final databaseReference = Firestore.instance;
+
+    await databaseReference.collection("events").
+                            document(widget.documentId).
+                            collection("itemList").
+                            document(widget.itemDocumentId).
+                            updateData({
+                              "username" : FieldValue.arrayUnion([userName.toString()])
+                            });
+  }
 
   void callDatabaseInserts() {
     if(_valueCurrent != 0 && _valueToAdd != 0){
       addNewItemToDatabase(_userName.toString(), _valueToAdd); 
       updateItemUser(_valueToAdd);
       addNewValueToItemList(_valueCurrent);
+      addUsernameToItem(_userName);
     }
   }
 
   // method to get all variables out of database
   void getVariables(){
-    getItemName();
+    getItemInformation();
     getUserName();
     getUsersItemAmount();
-  }
-
-  // checks if everything is valid and sends after that values to
-  //database
-  void registerItemByPress() async {
-    
-    getVariables();
-
-    try{
-    
-      callDatabaseInserts();                
-      
-      Navigator.pop(context);
-
-    } catch(e) {
-      print(e);
-    }
   }
 
   void incrementCounter() {
@@ -187,6 +182,23 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
       }
     });
 
+  }
+
+  // checks if everything is valid and sends after that values to
+  //database
+  void registerItemByPress() async {
+    
+    getVariables();
+
+    try{
+    
+      callDatabaseInserts();                
+      
+      Navigator.pop(context);
+
+    } catch(e) {
+      print(e);
+    }
   }
 
   StreamBuilder buildUsersItemStream(BuildContext context)  {
