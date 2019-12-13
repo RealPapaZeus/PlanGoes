@@ -12,7 +12,7 @@ class AdminView extends StatefulWidget {
   AdminView({
     Key key,
     this.documentId,
-    this.userId
+    this.userId,
     }) : super(key: key);
 
   @override

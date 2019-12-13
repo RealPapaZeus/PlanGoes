@@ -41,7 +41,7 @@ class _ItemAlertViewState extends State<ItemAlertView>{
                               'name' : '$itemName',
                               'valueMax' : value.toInt(),
                               'valueCurrent' : 0,
-                              'userName' : []
+                              'username' : []
                             });
   }
 
