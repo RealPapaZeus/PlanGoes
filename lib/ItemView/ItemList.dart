@@ -8,12 +8,14 @@ class ItemList extends StatefulWidget {
   final String userId;
   final String documentId;
   final int eventColor;
+  final String userName;
 
   ItemList({
     Key key,
     this.userId,
     this.documentId,
-    this.eventColor
+    this.eventColor,
+    this.userName
     }) : super(key: key);
 
   @override
@@ -33,8 +35,52 @@ class _ItemListState extends State<ItemList>{
     super.initState();
   }
 
-  StreamBuilder buildItemStream(BuildContext context)  {
+  void deleteUsersItemList(DocumentSnapshot document) {
+    Firestore.instance
+        .collection('events')
+        .document(widget.documentId)
+        .collection("itemList")
+        .document(document.documentID.toString())
+        .collection("usersItemList")
+        .getDocuments()
+        .then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.documents) {
+        doc.reference.delete();
+      }
+    });
+  }
 
+  void deleteItem(DocumentSnapshot document) {
+    Firestore.instance.
+      collection('events').
+      document(widget.documentId).
+      collection('itemList').
+      document(document.documentID.toString()).
+      delete();
+  }
+
+  Widget getCircleAvatar(String textInput) {
+    return CircleAvatar(
+      child: Text(textInput),
+      backgroundColor: Color(widget.eventColor),
+    );
+  }
+
+  Widget getUsernameChar(DocumentSnapshot document) {
+    int value = document['username'].length;
+    var _username = document['username'];
+
+    if(document['username'].length < 1) {
+      return getCircleAvatar(value.toString());
+    } else if(document['username'].length == 1) {
+      return getCircleAvatar(_username[0][0].toString());
+    } else if(document['username'].length > 1) {
+      return getCircleAvatar('+' + value.toString());
+    }
+    return null;
+  }
+
+  StreamBuilder buildItemStream(BuildContext context)  {
     final databaseReference = Firestore.instance;
     
     return new StreamBuilder(
@@ -74,26 +120,22 @@ class _ItemListState extends State<ItemList>{
           elevation: 10.0,
           margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             child: Slidable(
-                actionPane: SlidableStrechActionPane(),
-                //actionExtentRatio: 0.25,
-                closeOnScroll: true,
-                actions: <Widget>[
-                  IconSlideAction(
-                    caption: 'Delete',
-                    color: Colors.red,
-                    icon: Icons.delete,
-                    onTap: () async {
-                      await Future.delayed(Duration(milliseconds: 300), () {
-                        Firestore.instance.
-                            collection('events').
-                            document(widget.documentId).
-                            collection('itemList').
-                            document(document.documentID.toString()).
-                            delete();
-                      });
-                    },
-                  )
-                ],
+              actionPane: SlidableStrechActionPane(),
+              //actionExtentRatio: 0.25,
+              closeOnScroll: true,
+              actions: <Widget>[
+                IconSlideAction(
+                  caption: 'Delete',
+                  color: Colors.red,
+                  icon: Icons.delete,
+                  onTap: () async {
+                    await Future.delayed(Duration(milliseconds: 300), () {
+                      deleteItem(document);
+                      deleteUsersItemList(document);
+                    });
+                  },
+                )
+              ],
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -106,7 +148,7 @@ class _ItemListState extends State<ItemList>{
                           right: new BorderSide(width: 1.0, color: Colors.black26)
                         )
                       ),
-                      child: Icon(Icons.person),
+                      child: getUsernameChar(document)
                     ),
                     Container(
                       constraints: BoxConstraints(maxWidth: 250),

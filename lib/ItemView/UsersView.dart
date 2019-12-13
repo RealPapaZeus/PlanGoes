@@ -11,7 +11,7 @@ class UsersView extends StatefulWidget {
   UsersView({
     Key key,
     this.documentId,
-    this.userId
+    this.userId,
     }) : super(key: key);
 
   @override
