@@ -267,7 +267,7 @@ class _EventListState extends State<EventList> {
     return AppBar(
       title: Text('${_userName}s Events'),
       elevation: 5.0,
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: Colors.blue[900],
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.person),
@@ -291,7 +291,7 @@ class _EventListState extends State<EventList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: Color(0XFFF4F9FF),
       appBar: createAppBar(),
       body: buildStream(context),
     );
