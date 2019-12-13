@@ -22,7 +22,10 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
 
   String _itemName = '';
   String _userName = '';
+  String _documentId = '';
+
   int _valueToAdd = 0;
+  int _valueToSub = 0;
   int _valueCurrent = 0;
   int _valueMax = 0; 
   int _valueMin = 0;
@@ -34,6 +37,18 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
     getItemInformation();
     getUserName();
     getUsersItemAmount();
+    getDocumentId();
+  }
+
+  void deleteItem() {
+    final databaseReference = Firestore.instance;
+    databaseReference.collection('events').
+                      document(widget.documentId).
+                      collection('itemList').
+                      document(widget.itemDocumentId).
+                      collection('usersItemList').
+                      document(widget.userId).
+                      delete();
   }
 
   void getItemInformation() async{
@@ -54,6 +69,25 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
     });
   }
 
+  void getDocumentId() async{
+    final databaseReference = Firestore.instance;
+
+    final snapshot = await databaseReference.
+                            collection("events").
+                            document(widget.documentId).
+                            collection("itemList").
+                            document(widget.itemDocumentId).
+                            collection("usersItemList").
+                            document(widget.userId).
+                            get();
+
+    if(!snapshot.exists) {
+      print("snapshot does not exists");
+    } else {
+      _documentId = widget.userId;
+      print("snapshot exists");
+    }
+  }
   void getUsersItemAmount() async{
     final databaseReference = Firestore.instance;
     var documentReference = databaseReference.
@@ -107,7 +141,6 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
   void updateItemUser(int value) async{
     final databaseReference = Firestore.instance;
 
-    int newItemValue = value + _valueUserItem;
     var documentReference = databaseReference.
                             collection("events").
                             document(widget.documentId).
@@ -118,9 +151,9 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
 
     documentReference.get().then((DocumentSnapshot document) async {
       await documentReference.
-            updateData({
-              "value" : newItemValue
-            });
+        updateData({
+          "value" : value
+        });
     });
   }
 
@@ -163,6 +196,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
     getItemInformation();
     getUserName();
     getUsersItemAmount();
+    getDocumentId();
   }
 
   void incrementCounter() {
@@ -181,9 +215,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
         _valueToAdd--;
       }
     });
-
   }
-
   // checks if everything is valid and sends after that values to
   //database
   void registerItemByPress() async {
@@ -193,7 +225,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
     try{
     
       callDatabaseInserts();                
-      
+
       Navigator.pop(context);
 
     } catch(e) {
@@ -278,10 +310,10 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.remove),
-              onPressed: () {decrementCounter();}
+              onPressed: () { decrementCounter(); }
             ),
             Text('$_valueCurrent / $_valueMax',
-                style: new TextStyle(fontSize: 30.0)),
+                style: new TextStyle(fontSize: 40.0)),
             IconButton(
               icon: Icon(Icons.add),
               onPressed: () {incrementCounter();}
@@ -304,14 +336,12 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
 
   showItemCreatorDialog() {
     return AlertDialog(
-      title: Center(child: Text(_itemName)),
+      title: Center(child: Text(_itemName, overflow: TextOverflow.ellipsis)),
       content: displayElements(),
       shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
       actions: <Widget>[
         FlatButton(
-          onPressed:(){
-            registerItemByPress()
-            ;},
+          onPressed:(){ registerItemByPress(); },
           child: Text('Create'),
         )
       ],
