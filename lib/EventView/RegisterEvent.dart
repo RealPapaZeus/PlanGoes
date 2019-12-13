@@ -146,7 +146,8 @@ class _RegisterEventState extends State<RegisterEvent> {
         .add({
       'name': 'Good Looking $_userName',
       'valueMax': 1,
-      'valueCurrent': 0
+      'valueCurrent': 0,
+      'username' : []
     });
   }
 
