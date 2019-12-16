@@ -24,12 +24,14 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
   String _userName = '';
   String _documentId = '';
 
-  int _valueToAdd = 0;
-  int _valueToSub = 0;
+  int _value = 0;
   int _valueCurrent = 0;
   int _valueMax = 0; 
   int _valueMin = 0;
   int _valueUserItem = 0;
+  int _valueUserItemOld = 0;
+  int _valueNew = 0;
+
   
   @override
   void initState(){
@@ -101,7 +103,10 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
     documentReference.get().then((DocumentSnapshot document) {
       setState(() {
         _valueUserItem = document['value'];
+        _valueUserItemOld = document['value'];
       });
+      print("valueUserItem: " + _valueUserItem.toString());
+      print("valueUserItemOld: " + _valueUserItemOld.toString());
     });
   }
 
@@ -183,45 +188,81 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
   }
 
   void callDatabaseInserts() {
-    if(_valueCurrent != 0 && _valueToAdd != 0){
-      addNewItemToDatabase(_userName.toString(), _valueToAdd); 
-      updateItemUser(_valueToAdd);
-      addNewValueToItemList(_valueCurrent);
-      addUsernameToItem(_userName);
+    if(_documentId == widget.userId) {
+      if(_valueUserItem != 0) {
+        updateItemUser(_valueUserItem);
+        addNewValueToItemList(_valueCurrent);
+      }
+      else if(_valueUserItem == 0) {
+        deleteItem();
+        addNewValueToItemList(_valueCurrent);
+      }
+    } else {
+      if(_valueCurrent != 0 && _value != 0) {
+        addNewItemToDatabase(_userName.toString(), _value); 
+        addNewValueToItemList(_valueCurrent);
+        updateItemUser(_value);
+        addUsernameToItem(_userName);
+      }
     }
-  }
-
-  // method to get all variables out of database
-  void getVariables(){
-    getItemInformation();
-    getUserName();
-    getUsersItemAmount();
-    getDocumentId();
   }
 
   void incrementCounter() {
     setState(() {
       if(_valueCurrent < _valueMax) {
         _valueCurrent++;
-        _valueToAdd++;
+        _value++;
+        _valueUserItem++;
       }
     });
   }
 
-  void decrementCounter() {
+  void decrementCounter() {        
     setState(() {
-      if(_valueCurrent != 0 && _valueCurrent != _valueMin) {
-        _valueCurrent--;
-        _valueToAdd--;
+      if(_documentId == widget.userId) { 
+          if(_valueUserItem != 0) {
+            _valueUserItem--;
+            _valueCurrent--;
+            _value--;
+          }
+          //_valueUserItem--;
+        // while()
+        // for(int i = 0; i < _valueUserItemOld-1; i++) {
+        //   if(_valueCurrent != 0 && _valueUserItem >= 0) {
+        //       _valueUserItem--;
+        //   }   
+        // }
+        // if(_valueCurrent != 0) {
+        //   _valueCurrent--;
+        //   _valueUserItem--;
+        // }
+          // _valueUserItem--;
+          // _valueCurrent--;
+          // if(_valueCurrent != 0 && _valueUserItem >= 0) {
+          //   _valueUserItem--;
+          //   _valueCurrent--;
+          // }
+      } else{
+        if(_valueCurrent != 0 && _valueCurrent != _valueMin) {
+          _valueCurrent--;
+          _value--;
+        }
       }
     });
   }
+  
+  // method to get all variables out of database
+  // void getVariables(){
+  //   getItemInformation();
+  //   getUserName();
+  //   getUsersItemAmount();
+  //   getDocumentId();
+  // }
+
   // checks if everything is valid and sends after that values to
   //database
   void registerItemByPress() async {
     
-    getVariables();
-
     try{
     
       callDatabaseInserts();                
@@ -233,8 +274,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
     }
   }
 
-  StreamBuilder buildUsersItemStream(BuildContext context)  {
-
+  StreamBuilder buildUsersItemStream(BuildContext context)  {    
     final databaseReference = Firestore.instance;
     
     return new StreamBuilder(
@@ -300,6 +340,7 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
   }
 
   Widget createItemCounter() {
+    
     return new Container(
       height: 100,
       width: 250,
