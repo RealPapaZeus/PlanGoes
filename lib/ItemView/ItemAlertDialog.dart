@@ -87,7 +87,7 @@ class _ItemAlertViewState extends State<ItemAlertView>{
       maxLength: 100,
       controller: _itemController,
       decoration: InputDecoration(
-        labelText: 'Item'
+        prefixIcon: Icon(Icons.library_add),
       ),
       validator: (value) => value.isEmpty ? 'Please create an item' : null,
       onSaved: (value) => _item == value,
@@ -105,7 +105,7 @@ class _ItemAlertViewState extends State<ItemAlertView>{
             onPressed: () {decrementCounter();}
           ),
           Text('$_value',
-              style: new TextStyle(fontSize: 30.0)),
+              style: new TextStyle(fontSize: 40.0)),
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {incrementCounter();}
