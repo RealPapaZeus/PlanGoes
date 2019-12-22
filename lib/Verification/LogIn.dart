@@ -93,17 +93,24 @@ class _MyLogInPageState extends State<MyLogInPage> {
     return Padding(
       padding: const EdgeInsets.only(left: 6.0, right: 6.0),
       child: TextFormField(
+        keyboardType: TextInputType.emailAddress,
+        cursorColor: cPlanGoBlue,
+        style: TextStyle(color: cPlanGoMarineBlue),
         controller: _emailController,
         decoration: InputDecoration(
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
-          ),
-          prefixIcon: Icon(
-            Icons.email),
-          labelText: 'Email',
-          labelStyle: TextStyle(
-            color: cPlanGoBlue
-          )),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
+            ),
+            errorStyle: TextStyle(color: cPlanGoRedBright),
+            prefixIcon: Padding(
+              padding: EdgeInsets.all(0.0),
+              child: Icon(
+                Icons.email,
+                color: cPlanGoBlue,
+              ),
+            ),
+            labelText: 'email',
+            labelStyle: TextStyle(color: cPlanGoBlue)),
         obscureText: false,
         validator: (value) =>
             value.isEmpty ? messageNotifier('Please enter an email') : null,
@@ -116,17 +123,25 @@ class _MyLogInPageState extends State<MyLogInPage> {
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: TextFormField(
+        cursorColor: cPlanGoBlue,
         controller: _passwordController,
         obscureText: _obscurePassword,
+        style: TextStyle(color: cPlanGoMarineBlue),
         decoration: InputDecoration(
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
           ),
-          labelText: 'Password',
-          labelStyle: TextStyle(
-            color: cPlanGoBlue
+          fillColor: cPlanGoBlue,
+          labelText: 'password',
+          labelStyle: TextStyle(color: cPlanGoBlue),
+          errorStyle: TextStyle(color: cPlanGoRedBright),
+          prefixIcon: Padding(
+            padding: EdgeInsets.all(0.0),
+            child: Icon(
+              Icons.lock,
+              color: cPlanGoBlue,
+            ),
           ),
-          prefixIcon: Icon(Icons.lock),
           suffixIcon: IconButton(
             tooltip: 'Show Password',
             color: cPlanGoBlue,
@@ -149,6 +164,52 @@ class _MyLogInPageState extends State<MyLogInPage> {
 
   List<Widget> submitWidgets() {
     return [emailTextFormField(), passwordTextFormField()];
+  }
+
+  Widget showLabel() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 2.9 ,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(color: cPlanGoBlue, blurRadius: 10, // has the effect of softening the shadow
+        spreadRadius: 0.5,)
+        ],
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [cPlanGoBlue, cPlanGoBlue],
+          ),
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(90))),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Spacer(),
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+        height: 150.0,
+        width: 150.0,
+        decoration: new BoxDecoration(
+            shape: BoxShape.rectangle,
+            image: new DecorationImage(
+                fit: BoxFit.fill,
+                image: new AssetImage('images/PlanGo_Transparent.png'))))
+          ),
+          Spacer(),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 30, right: 30),
+              child: Text(
+                'Login'.toLowerCase(),
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget getButton() {
@@ -191,24 +252,24 @@ class _MyLogInPageState extends State<MyLogInPage> {
             FlatButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ResetPassword()));
-              },
-              shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(40.0),
-              ),
-              textColor: Theme.of(context).accentColor,
-              child: new Text('Reset Password'),
-            ),
-            FlatButton(
-              onPressed: () {
-                Navigator.push(context,
                     MaterialPageRoute(builder: (context) => CreateAccount()));
               },
               shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(40.0),
               ),
-              textColor: Theme.of(context).accentColor,
-              child: new Text('Create Account?'),
+              textColor: cPlanGoBlue,
+              child: new Text('Register'),
+            ),
+            FlatButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ResetPassword()));
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(40.0),
+              ),
+              textColor: cPlanGoBlue,
+              child: new Text('Forgot Password?'),
             ),
           ],
         ));
@@ -218,7 +279,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
     return new Container(
       child: Text(
         _authHint,
-        style: TextStyle(color: Colors.red),
+        style: TextStyle(color: cPlanGoRedBright),
         textAlign: TextAlign.center,
       ),
     );
@@ -226,53 +287,79 @@ class _MyLogInPageState extends State<MyLogInPage> {
 
   Widget createAppBar() {
     return AppBar(
+      // title: Text(
+      //   'PlanGo',
+      //   style: TextStyle(color: cPlanGoWhiteBlue),
+      // ),
+      elevation: 0,
       centerTitle: true,
-      backgroundColor: cPlanGoMarineBlue,
-      title: Text(
-        'PlanGo',
-        style: TextStyle(color: cPlanGoWhiteBlue),
-      ),
+      backgroundColor: cPlanGoBlue,
     );
   }
 
   Widget getCard() {
-    return new Center(
-      child: new Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(5.0),
-        ),
-        child: new Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            new Container(
-                padding: new EdgeInsets.all(15.0),
-                child: new Form(
-                    key: _formKey,
-                    child: new Column(
-                        children: submitWidgets() + navigateWidgets())))
-          ],
-        ),
-      ),
-    );
+    return Padding(
+        padding: const EdgeInsets.only(top: 32.0),
+        child: new Card(
+          elevation: 5.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(25.0),
+          ),
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              new Container(
+                  padding: new EdgeInsets.all(15.0),
+                  child: new Form(
+                      key: _formKey,
+                      child: new Column(
+                          children: submitWidgets() + navigateWidgets())))
+            ],
+          ),
+        ));
+  }
+
+  Widget getLogo() {
+    return Container(
+        height: 125.0,
+        width: 125.0,
+        decoration: new BoxDecoration(
+            shape: BoxShape.rectangle,
+            image: new DecorationImage(
+                fit: BoxFit.fill,
+                image: new AssetImage('images/PlanGoLogo.png'))));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: cPlanGoBlue,
-      appBar: createAppBar(),
-      body: new SingleChildScrollView(
-        child: new Container(
-          padding: const EdgeInsets.all(15.0),
+        backgroundColor: cPlanGoWhiteBlue,
+        // appBar: createAppBar(),
+        body: new SingleChildScrollView(
+      child: new Container(
+        alignment: Alignment.center,
+        child: new Center(
           child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              getCard(),
-              positionCreateAndReset(),
-              signInSuccess()
+              showLabel(),
+              //getLogo(),
+              Container(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: <Widget>[
+                    new Center(child: getCard()),
+                    positionCreateAndReset(),
+                    signInSuccess()
+                  ],
+                ),
+              )
             ],
           ),
         ),
       ),
-    );
+    ));
   }
 }
