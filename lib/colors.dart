@@ -6,3 +6,5 @@ const cPlanGoBlue = const Color(0xFF1e48b4);
 const cPlanGoBlueGrey = const Color(0xFF83a6c6);
 
 const cPlanGoWhiteBlue = const Color(0xFFf4f9ff);
+
+const cPlanGoRedBright = const Color(0xFFff0000);
