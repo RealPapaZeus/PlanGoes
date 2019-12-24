@@ -97,6 +97,7 @@ class _CreateAccountState extends State<CreateAccount> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            backgroundColor: cPlanGoWhiteBlue,
             title: Text('Verify Your Email Address'),
             content: RichText(
                 text: new TextSpan(
@@ -289,6 +290,12 @@ class _CreateAccountState extends State<CreateAccount> {
         ));
   }
 
+  Widget loadingButton() {
+    return CircularProgressIndicator(
+      valueColor: new AlwaysStoppedAnimation<Color>(cPlanGoMarineBlue),
+    );
+  }
+
   //calls the method which builds TextFormField with given parameters
   //it helps to read the code more efficient
   List<Widget> submitWidgets() {
@@ -300,7 +307,7 @@ class _CreateAccountState extends State<CreateAccount> {
       Padding(
           padding: const EdgeInsets.all(15.0),
           child: _isLoading
-              ? Center(child: new CircularProgressIndicator())
+              ? loadingButton()
               : getRegistrationButton())
     ];
   }

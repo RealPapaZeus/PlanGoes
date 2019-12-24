@@ -243,17 +243,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
   }
 
   Widget loadingButton() {
-    return Center(
-      child: Container(
-        decoration: BoxDecoration(
-          color: cPlanGoBlueGrey,
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        width: 40.0,
-        height: 40.0,
-        child: CircularProgressIndicator(
-            valueColor: new AlwaysStoppedAnimation<Color>(cPlanGoMarineBlue)),
-      ),
+    return CircularProgressIndicator(
+      valueColor: new AlwaysStoppedAnimation<Color>(cPlanGoMarineBlue),
     );
   }
 
@@ -307,18 +298,6 @@ class _MyLogInPageState extends State<MyLogInPage> {
     );
   }
 
-  Widget createAppBar() {
-    return AppBar(
-      // title: Text(
-      //   'PlanGo',
-      //   style: TextStyle(color: cPlanGoWhiteBlue),
-      // ),
-      elevation: 0,
-      centerTitle: true,
-      backgroundColor: cPlanGoBlue,
-    );
-  }
-
   Widget getCard() {
     return Padding(
         padding: const EdgeInsets.only(
@@ -346,17 +325,6 @@ class _MyLogInPageState extends State<MyLogInPage> {
         ));
   }
 
-  Widget getLogo() {
-    return Container(
-        height: 125.0,
-        width: 125.0,
-        decoration: new BoxDecoration(
-            shape: BoxShape.rectangle,
-            image: new DecorationImage(
-                fit: BoxFit.fill,
-                image: new AssetImage('images/PlanGo_Transparent.png'))));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -369,7 +337,6 @@ class _MyLogInPageState extends State<MyLogInPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   showLabel(),
-                  //getLogo(),
                   Container(
                     padding: const EdgeInsets.all(15.0),
                     child: Column(
