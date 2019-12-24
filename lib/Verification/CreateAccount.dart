@@ -98,13 +98,14 @@ class _CreateAccountState extends State<CreateAccount> {
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: cPlanGoWhiteBlue,
-            title: Text('Verify Your Email Address'),
+            title: Text(
+              'Verify Your Email Address',
+              style: TextStyle(color: cPlanGoMarineBlue),
+            ),
             content: RichText(
                 text: new TextSpan(
-                    style: new TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.black,
-                    ),
+                    style:
+                        new TextStyle(fontSize: 14.0, color: cPlanGoMarineBlue),
                     children: <TextSpan>[
                   new TextSpan(
                       text:
@@ -114,7 +115,14 @@ class _CreateAccountState extends State<CreateAccount> {
                       style: new TextStyle(fontWeight: FontWeight.bold)),
                   new TextSpan(
                       text:
-                          ' to verify your address. Please click the link in that email to continue.')
+                          ' to verify your address. Please click the link in that email to continue.'),
+                  new TextSpan(
+                      text:
+                          '\nWait some seconds and check spam if you have not received an email.'),
+                  new TextSpan(
+                      text:
+                          '\nWe are glad to welcome you!'),
+                  new TextSpan(text: '\n\nYour PlanGo Team')
                 ])),
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(15)),
@@ -124,7 +132,10 @@ class _CreateAccountState extends State<CreateAccount> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LogIn()));
                 },
-                child: Text('Okay, got it'),
+                child: Text(
+                  'Okay, got it',
+                  style: TextStyle(color: cPlanGoBlue),
+                ),
               )
             ],
           );
@@ -306,9 +317,7 @@ class _CreateAccountState extends State<CreateAccount> {
     return [
       Padding(
           padding: const EdgeInsets.all(15.0),
-          child: _isLoading
-              ? loadingButton()
-              : getRegistrationButton())
+          child: _isLoading ? loadingButton() : getRegistrationButton())
     ];
   }
 
@@ -317,7 +326,8 @@ class _CreateAccountState extends State<CreateAccount> {
       elevation: 0.0,
       backgroundColor: cPlangGoDarkBlue,
       centerTitle: true,
-      title: Text('Registration'.toLowerCase(), style: TextStyle(color: cPlanGoWhiteBlue)),
+      title: Text('Registration'.toLowerCase(),
+          style: TextStyle(color: cPlanGoWhiteBlue)),
     );
   }
 
@@ -351,15 +361,14 @@ class _CreateAccountState extends State<CreateAccount> {
         alignment: Alignment.topCenter,
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height / 3.3 ,
+          height: MediaQuery.of(context).size.height / 3.3,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [cPlangGoDarkBlue, cPlanGoMarineBlueDark],
             ),
-            borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(90)),
+            borderRadius: BorderRadius.only(bottomRight: Radius.circular(90)),
           ),
         ),
       ),
@@ -370,8 +379,8 @@ class _CreateAccountState extends State<CreateAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: cPlanGoBlue,
-      appBar: getAppBar(),
-      body: showRegistration());
+        backgroundColor: cPlanGoBlue,
+        appBar: getAppBar(),
+        body: showRegistration());
   }
 }
