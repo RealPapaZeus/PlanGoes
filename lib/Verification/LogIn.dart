@@ -242,16 +242,26 @@ class _MyLogInPageState extends State<MyLogInPage> {
     );
   }
 
+  Widget loadingButton() {
+    return Center(
+      child: Container(
+        decoration: BoxDecoration(
+          color: cPlanGoBlueGrey,
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        width: 40.0,
+        height: 40.0,
+        child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(cPlanGoMarineBlue)),
+      ),
+    );
+  }
+
   List<Widget> navigateWidgets() {
     return [
       Padding(
           padding: const EdgeInsets.all(15.0),
-          child: _isLoading
-              ? Center(
-                  child: CircularProgressIndicator(
-                      backgroundColor: cPlanGoMarineBlue),
-                )
-              : getButton()),
+          child: _isLoading ? loadingButton() : getButton()),
     ];
   }
 
@@ -311,7 +321,9 @@ class _MyLogInPageState extends State<MyLogInPage> {
 
   Widget getCard() {
     return Padding(
-        padding: const EdgeInsets.only(top: 40.0,),
+        padding: const EdgeInsets.only(
+          top: 40.0,
+        ),
         child: new Card(
           color: cPlanGoWhiteBlue,
           elevation: 5.0,
