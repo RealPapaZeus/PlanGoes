@@ -122,7 +122,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   new TextSpan(
                       text:
                           '\nWe are glad to welcome you!'),
-                  new TextSpan(text: '\n\nYour PlanGo Team')
+                  new TextSpan(text: '\n\nYour PlanGo team')
                 ])),
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(15)),
