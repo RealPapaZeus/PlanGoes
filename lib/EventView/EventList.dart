@@ -154,7 +154,7 @@ class _EventListState extends State<EventList> {
               boxShadow: <BoxShadow>[
                 new BoxShadow(
                   color: Color(document['eventColor']),
-                  blurRadius: 10.0,
+                  blurRadius: 5.0,
                   spreadRadius: 1.0,
                 ),
               ],
@@ -188,9 +188,11 @@ class _EventListState extends State<EventList> {
                                   splashColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   iconSize: 20.0,
-                                  onPressed: () {
-                                    deleteItems(document);
-                                    deleteCanban(document);
+                                  onPressed: () async { 
+                                    await Future.delayed(Duration(milliseconds: 300), () {
+                                      deleteItems(document);
+                                      deleteCanban(document);
+                                    });
                                   },
                                 ),
                               ])),
