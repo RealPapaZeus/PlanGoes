@@ -38,7 +38,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   String _dayEnd = DateTime.now().day.toString();
   String _month = DateTime.now().month.toString();
   String _monthEnd = DateTime.now().month.toString();
-  String _hour =  DateTime.now().hour.toString(); 
+  String _hour = DateTime.now().hour.toString();
   String _hourEnd = DateTime.now().hour.toString();
   String _minute = DateTime.now().minute.toString();
   String _minuteEnd = DateTime.now().minute.toString();
@@ -235,6 +235,40 @@ class _RegisterEventState extends State<RegisterEvent> {
     }
   }
 
+  void callDateTimePickerStart() {
+    DatePicker.showDateTimePicker(
+      context,
+      showTitleActions: true,
+      minTime: DateTime.now(),
+      maxTime: DateTime(2030, 12, 12, 23, 59),
+      onChanged: (dateTime) {
+        print('change startTime $dateTime &' +
+            dateTime.timeZoneOffset.inHours.toString());
+      },
+      onConfirm: (dateTime) {
+        print('confirm startTime $dateTime');
+        setState(() {
+          _dateTime = dateTime;
+          _year = dateTime.year.toString();
+          _day = dateTime.day.toString();
+          _month = dateTime.month.toString();
+          _hour = dateTime.hour.toString();
+          _minute = dateTime.minute.toString();
+
+          if (_hour.length < 2) {
+            _hour = '0$_hour'.toString();
+          }
+
+          if (_minute.length < 2) {
+            _minute = '0$_minute'.toString();
+          }
+        });
+      },
+      currentTime: DateTime.now(),
+      locale: LocaleType.en,
+    );
+  }
+
   //whenever user tries to submit and all input strings
   //are empty, _isLoading gets set to false
   String messageToDenyLoading(String message) {
@@ -257,16 +291,22 @@ class _RegisterEventState extends State<RegisterEvent> {
       builder: (_) {
         return AlertDialog(
           contentPadding: const EdgeInsets.all(12.0),
-          title: Text('Pick Color', style: TextStyle(color: cPlanGoDark),),
+          title: Text(
+            'Pick Color',
+            style: TextStyle(color: cPlanGoDark),
+          ),
           content: content,
           shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(15)),
+              borderRadius: new BorderRadius.circular(15)),
           actions: [
             FlatButton(
               shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(40.0),
               ),
-              child: Text('Cancel', style: TextStyle(color: cPlanGoDark),),
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: cPlanGoDark),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -328,6 +368,9 @@ class _RegisterEventState extends State<RegisterEvent> {
     return Padding(
       padding: EdgeInsets.only(top: 20),
       child: IconButton(
+        tooltip: 'select picture',
+        hoverColor: cPlanGoWhiteBlue,
+        splashColor: cPlanGoWhiteBlue,
         color: cPlangGoDarkBlue,
         icon: Icon(
           FontAwesomeIcons.camera,
@@ -340,28 +383,145 @@ class _RegisterEventState extends State<RegisterEvent> {
     );
   }
 
-  // calls methods which allow user to pick from list of colors
-  Widget pickColorRow() {
+  Widget eventDateTimeStart() {
     return Padding(
-        padding: EdgeInsets.only(top: 12.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              child: Text('Event color:',
-                  style: new TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            Container(
-              child: FloatingActionButton(
-                backgroundColor: _shadeColor,
-                onPressed: () {
-                  _openColorPicker();
-                },
-              ),
-            )
-          ],
-        ));
+        padding: const EdgeInsets.all(5.0),
+        child: InkWell(
+            onTap: callDateTimePickerStart,
+            child: Container(
+                decoration: BoxDecoration(
+                  //border: Border.all(color: cPlanGoBlue, width: 1.0),
+                  color: cPlanGoBlue,
+                  borderRadius: new BorderRadius.circular(10.0),
+                ),
+                height: MediaQuery.of(context).size.height / 13,
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Container(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text('date',
+                                style: TextStyle(color: cPlanGoWhiteBlue))),
+                        Container(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text('time',
+                                style: TextStyle(color: cPlanGoWhiteBlue))),
+                      ],
+                    ),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Container(
+                              padding: const EdgeInsets.all(6.0),
+                              child: Text('$_day/$_month/$_year',
+                                  style: TextStyle(color: cPlanGoWhiteBlue))),
+                          Container(
+                              padding: const EdgeInsets.all(6.0),
+                              child: Text('$_hour:$_minute',
+                                  style: TextStyle(color: cPlanGoWhiteBlue))),
+                        ])
+                  ],
+                ))));
   }
+
+  ///
+  /// DO NOT DELETE THIS COMMENT! IT IS IMPORTANT FOR FUTURE UPDATES
+  ///
+  // Widget eventDateTime() {
+  //   return Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+  //     FlatButton(
+  //         onPressed: () {
+  //           DatePicker.showDateTimePicker(
+  //             context,
+  //             showTitleActions: true,
+  //             minTime: DateTime.now(),
+  //             maxTime: DateTime(2030, 12, 12, 23, 59),
+  //             onChanged: (dateTime) {
+  //               print('change startTime $dateTime &' +
+  //                   dateTime.timeZoneOffset.inHours.toString());
+  //             },
+  //             onConfirm: (dateTime) {
+  //               print('confirm startTime $dateTime');
+  //               setState(() {
+  //                 _dateTime = dateTime;
+  //                 _year = dateTime.year.toString();
+  //                 _day = dateTime.day.toString();
+  //                 _month = dateTime.month.toString();
+  //                 _hour = dateTime.hour.toString();
+  //                 _minute = dateTime.minute.toString();
+  //                 if (_minute.length < 2) {
+  //                   _minute = '0$_minute'.toString();
+  //                   _minute = dateTime.minute.toString();
+  //                 } else {
+  //                   _minute = dateTime.minute.toString();
+  //                 }
+  //               });
+  //             },
+  //             currentTime: DateTime.now(),
+  //             locale: LocaleType.en,
+  //           );
+  //         },
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: <Widget>[
+  //             Text('Date: $_day.$_month.$_year',
+  //                 style: TextStyle(color: _shadeColor)),
+  //             Text(
+  //               'Time: $_hour:$_minute',
+  //               style: TextStyle(color: _shadeColor),
+  //             )
+  //           ],
+  //         )),
+  //     FlatButton(
+  //         onPressed: () {
+  //           DatePicker.showDateTimePicker(
+  //             context,
+  //             showTitleActions: true,
+  //             minTime: DateTime.now(),
+  //             maxTime: DateTime(2030, 12, 12, 23, 59),
+  //             onChanged: (dateTimeEnd) {
+  //               print('change endTime $dateTimeEnd');
+  //             },
+  //             onConfirm: (dateTimeEnd) {
+  //               print('confirm endTime $dateTimeEnd');
+  //               setState(() {
+  //                 _dateTimeEnd = dateTimeEnd;
+  //                 _yearEnd = dateTimeEnd.year.toString();
+  //                 _dayEnd = dateTimeEnd.day.toString();
+  //                 _monthEnd = dateTimeEnd.month.toString();
+  //                 _hourEnd = dateTimeEnd.hour.toString();
+  //                 _minuteEnd = dateTimeEnd.minute.toString();
+  //                 if (_minuteEnd.length < 2) {
+  //                   _minuteEnd = '0$_minuteEnd';
+  //                   _minuteEnd = dateTimeEnd.minute.toString();
+  //                 } else {
+  //                   _minuteEnd = dateTimeEnd.minute.toString();
+  //                 }
+  //               });
+  //             },
+  //             currentTime: DateTime.now(),
+  //             locale: LocaleType.en,
+  //           );
+  //         },
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: <Widget>[
+  //             Text('Date: $_dayEnd.$_monthEnd.$_yearEnd',
+  //                 style: TextStyle(color: _shadeColor)),
+  //             Text(
+  //               'Time: $_hourEnd:$_minuteEnd',
+  //               style: TextStyle(color: _shadeColor),
+  //             )
+  //           ],
+  //         ))
+  //   ]);
+  // }
 
   Widget eventNameTextField() {
     return TextFormField(
@@ -388,92 +548,6 @@ class _RegisterEventState extends State<RegisterEvent> {
     );
   }
 
-  Widget eventDateTime() {
-    return Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-      FlatButton(
-          onPressed: () {
-            DatePicker.showDateTimePicker(
-              context,
-              showTitleActions: true,
-              minTime: DateTime.now(),
-              maxTime: DateTime(2030, 12, 12, 23, 59),
-              onChanged: (dateTime) {
-                print('change startTime $dateTime &' +
-                    dateTime.timeZoneOffset.inHours.toString());
-              },
-              onConfirm: (dateTime) {
-                print('confirm startTime $dateTime');
-                setState(() {
-                  _dateTime = dateTime;
-                  _year = dateTime.year.toString();
-                  _day = dateTime.day.toString();
-                  _month = dateTime.month.toString();
-                  _hour = dateTime.hour.toString();
-                  _minute = dateTime.minute.toString();
-                  if (_minute.length < 2) {
-                    _minute = '0$_minute'.toString();
-                    _minute = dateTime.minute.toString();
-                  } else {_minute = dateTime.minute.toString();}
-                });
-              },
-              currentTime: DateTime.now(),
-              locale: LocaleType.en,
-            );
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text('Date: $_day.$_month.$_year',
-                  style: TextStyle(color: _shadeColor)),
-              Text( 
-                'Time: $_hour:$_minute',
-                style: TextStyle(color: _shadeColor),
-              )
-            ],
-          )),
-      FlatButton(
-          onPressed: () {
-            DatePicker.showDateTimePicker(
-              context,
-              showTitleActions: true,
-              minTime: DateTime.now(),
-              maxTime: DateTime(2030, 12, 12, 23, 59),
-              onChanged: (dateTimeEnd) {
-                print('change endTime $dateTimeEnd');
-              },
-              onConfirm: (dateTimeEnd) {
-                print('confirm endTime $dateTimeEnd');
-                setState(() {
-                  _dateTimeEnd = dateTimeEnd;
-                  _yearEnd = dateTimeEnd.year.toString();
-                  _dayEnd = dateTimeEnd.day.toString();
-                  _monthEnd = dateTimeEnd.month.toString();
-                  _hourEnd = dateTimeEnd.hour.toString();
-                  _minuteEnd = dateTimeEnd.minute.toString();
-                  if (_minuteEnd.length < 2) {
-                    _minuteEnd = '0$_minuteEnd';
-                    _minuteEnd = dateTimeEnd.minute.toString();
-                  } else{ _minuteEnd = dateTimeEnd.minute.toString(); }
-                });
-              },
-              currentTime: DateTime.now(),
-              locale: LocaleType.en,
-            );
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text('Date: $_dayEnd.$_monthEnd.$_yearEnd',
-                  style: TextStyle(color: _shadeColor)),
-              Text(
-                'Time: $_hourEnd:$_minuteEnd',
-                style: TextStyle(color: _shadeColor),
-              )
-            ],
-          ))
-    ]);
-  }
-
   Widget eventDescriptionTextField() {
     return TextFormField(
       keyboardType: TextInputType.multiline,
@@ -487,6 +561,29 @@ class _RegisterEventState extends State<RegisterEvent> {
           : null,
       onSaved: (value) => _description == value,
     );
+  }
+
+  // calls methods which allow user to pick from list of colors
+  Widget pickColorRow() {
+    return Padding(
+        padding: EdgeInsets.only(top: 12.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              child: Text('Event color:',
+                  style: new TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            Container(
+              child: FloatingActionButton(
+                backgroundColor: _shadeColor,
+                onPressed: () {
+                  _openColorPicker();
+                },
+              ),
+            )
+          ],
+        ));
   }
 
   Widget getRegistrationEventView() {
@@ -572,8 +669,10 @@ class _RegisterEventState extends State<RegisterEvent> {
     return [
       eventNameTextField(),
       eventLocation(),
-      eventDateTime(),
       eventDescriptionTextField(),
+      Divider(color: cPlangGoDarkBlue),
+      eventDateTimeStart(),
+      Divider(color: cPlangGoDarkBlue)
     ];
   }
 
