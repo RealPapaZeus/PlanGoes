@@ -225,23 +225,6 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
             _valueCurrent--;
             _value--;
           }
-          //_valueUserItem--;
-        // while()
-        // for(int i = 0; i < _valueUserItemOld-1; i++) {
-        //   if(_valueCurrent != 0 && _valueUserItem >= 0) {
-        //       _valueUserItem--;
-        //   }   
-        // }
-        // if(_valueCurrent != 0) {
-        //   _valueCurrent--;
-        //   _valueUserItem--;
-        // }
-          // _valueUserItem--;
-          // _valueCurrent--;
-          // if(_valueCurrent != 0 && _valueUserItem >= 0) {
-          //   _valueUserItem--;
-          //   _valueCurrent--;
-          // }
       } else{
         if(_valueCurrent != 0 && _valueCurrent != _valueMin) {
           _valueCurrent--;
@@ -250,14 +233,6 @@ class _ItemPickDialogState extends State<ItemPickDialog>{
       }
     });
   }
-  
-  // method to get all variables out of database
-  // void getVariables(){
-  //   getItemInformation();
-  //   getUserName();
-  //   getUsersItemAmount();
-  //   getDocumentId();
-  // }
 
   // checks if everything is valid and sends after that values to
   //database

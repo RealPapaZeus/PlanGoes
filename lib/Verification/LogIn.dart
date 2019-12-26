@@ -9,6 +9,7 @@ class LogIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      color: cPlanGoBlue,
       home: MyLogInPage(),
     );
   }
@@ -98,7 +99,11 @@ class _MyLogInPageState extends State<MyLogInPage> {
         style: TextStyle(color: cPlanGoMarineBlue),
         controller: _emailController,
         decoration: InputDecoration(
+            enabledBorder: UnderlineInputBorder(
+              borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
+            ),
             focusedBorder: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
               borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
             ),
             errorStyle: TextStyle(color: cPlanGoRedBright),
@@ -123,12 +128,17 @@ class _MyLogInPageState extends State<MyLogInPage> {
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: TextFormField(
+        keyboardType: TextInputType.visiblePassword,
         cursorColor: cPlanGoBlue,
         controller: _passwordController,
         obscureText: _obscurePassword,
         style: TextStyle(color: cPlanGoMarineBlue),
         decoration: InputDecoration(
+          enabledBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
+          ),
           focusedBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
             borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
           ),
           fillColor: cPlanGoBlue,
@@ -169,16 +179,19 @@ class _MyLogInPageState extends State<MyLogInPage> {
   Widget showLabel() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 2.9 ,
+      height: MediaQuery.of(context).size.height / 3.1,
       decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(color: cPlanGoBlue, blurRadius: 10, // has the effect of softening the shadow
-        spreadRadius: 0.5,)
-        ],
+          boxShadow: [
+            BoxShadow(
+              color: cPlanGoMarineBlueDark,
+              blurRadius: 8, // has the effect of softening the shadow
+              spreadRadius: 0.3,
+            )
+          ],
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [cPlanGoBlue, cPlanGoBlue],
+            colors: [cPlangGoDarkBlue, cPlanGoMarineBlueDark],
           ),
           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(90))),
       child: Column(
@@ -186,16 +199,16 @@ class _MyLogInPageState extends State<MyLogInPage> {
         children: <Widget>[
           Spacer(),
           Align(
-            alignment: Alignment.center,
-            child: Container(
-        height: 150.0,
-        width: 150.0,
-        decoration: new BoxDecoration(
-            shape: BoxShape.rectangle,
-            image: new DecorationImage(
-                fit: BoxFit.fill,
-                image: new AssetImage('images/PlanGo_Transparent.png'))))
-          ),
+              alignment: Alignment.center,
+              child: Container(
+                  height: 150.0,
+                  width: 150.0,
+                  decoration: new BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      image: new DecorationImage(
+                          fit: BoxFit.fill,
+                          image: new AssetImage(
+                              'images/PlanGo_Transparent.png'))))),
           Spacer(),
           Align(
             alignment: Alignment.bottomRight,
@@ -203,7 +216,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
               padding: const EdgeInsets.only(bottom: 30, right: 30),
               child: Text(
                 'Login'.toLowerCase(),
-                style: TextStyle(color: Colors.white, fontSize: 18),
+                style: TextStyle(color: cPlanGoWhiteBlue, fontSize: 18),
               ),
             ),
           ),
@@ -224,22 +237,23 @@ class _MyLogInPageState extends State<MyLogInPage> {
           elevation: 5.0,
           onPressed: signIn,
           child: Text(
-            'Sign in',
+            'Plan and Go',
             style: TextStyle(color: cPlanGoWhiteBlue),
           )),
+    );
+  }
+
+  Widget loadingButton() {
+    return CircularProgressIndicator(
+      valueColor: new AlwaysStoppedAnimation<Color>(cPlanGoMarineBlue),
     );
   }
 
   List<Widget> navigateWidgets() {
     return [
       Padding(
-          padding: EdgeInsets.all(15.0),
-          child: _isLoading
-              ? Center(
-                  child: CircularProgressIndicator(
-                      backgroundColor: cPlanGoMarineBlue),
-                )
-              : getButton()),
+          padding: const EdgeInsets.all(15.0),
+          child: _isLoading ? loadingButton() : getButton()),
     ];
   }
 
@@ -257,7 +271,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
               shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(40.0),
               ),
-              textColor: cPlanGoBlue,
+              textColor: cPlanGoWhiteBlue,
               child: new Text('Register'),
             ),
             FlatButton(
@@ -268,7 +282,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
               shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(40.0),
               ),
-              textColor: cPlanGoBlue,
+              textColor: cPlanGoWhiteBlue,
               child: new Text('Forgot Password?'),
             ),
           ],
@@ -285,22 +299,13 @@ class _MyLogInPageState extends State<MyLogInPage> {
     );
   }
 
-  Widget createAppBar() {
-    return AppBar(
-      // title: Text(
-      //   'PlanGo',
-      //   style: TextStyle(color: cPlanGoWhiteBlue),
-      // ),
-      elevation: 0,
-      centerTitle: true,
-      backgroundColor: cPlanGoBlue,
-    );
-  }
-
   Widget getCard() {
     return Padding(
-        padding: const EdgeInsets.only(top: 32.0),
+        padding: const EdgeInsets.only(
+          top: 40.0,
+        ),
         child: new Card(
+          color: cPlanGoWhiteBlue,
           elevation: 5.0,
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(25.0),
@@ -321,45 +326,32 @@ class _MyLogInPageState extends State<MyLogInPage> {
         ));
   }
 
-  Widget getLogo() {
-    return Container(
-        height: 125.0,
-        width: 125.0,
-        decoration: new BoxDecoration(
-            shape: BoxShape.rectangle,
-            image: new DecorationImage(
-                fit: BoxFit.fill,
-                image: new AssetImage('images/PlanGoLogo.png'))));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: cPlanGoWhiteBlue,
-        // appBar: createAppBar(),
+        backgroundColor: cPlanGoBlue,
         body: new SingleChildScrollView(
-      child: new Container(
-        alignment: Alignment.center,
-        child: new Center(
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              showLabel(),
-              //getLogo(),
-              Container(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: <Widget>[
-                    new Center(child: getCard()),
-                    positionCreateAndReset(),
-                    signInSuccess()
-                  ],
-                ),
-              )
-            ],
+          child: new Container(
+            alignment: Alignment.center,
+            child: new Center(
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  showLabel(),
+                  Container(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      children: <Widget>[
+                        new Center(child: getCard()),
+                        positionCreateAndReset(),
+                        signInSuccess()
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
-    ));
+        ));
   }
 }
