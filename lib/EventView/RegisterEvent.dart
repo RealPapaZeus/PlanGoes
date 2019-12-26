@@ -256,7 +256,7 @@ class _RegisterEventState extends State<RegisterEvent> {
           actions: [
             FlatButton(
               child: Text('Cancel'),
-              onPressed: Navigator.of(context).pop,
+              onPressed: () {Navigator.of(context).pop();},
             ),
             FlatButton(
               child: Text('Submit'),
