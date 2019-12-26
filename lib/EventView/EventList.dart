@@ -188,9 +188,11 @@ class _EventListState extends State<EventList> {
                                   splashColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   iconSize: 20.0,
-                                  onPressed: () {
-                                    deleteItems(document);
-                                    deleteCanban(document);
+                                  onPressed: () async { 
+                                    await Future.delayed(Duration(milliseconds: 300), () {
+                                      deleteItems(document);
+                                      deleteCanban(document);
+                                    });
                                   },
                                 ),
                               ])),
