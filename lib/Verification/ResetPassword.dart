@@ -99,6 +99,10 @@ class _ResetPasswordState extends State<ResetPassword> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LogIn()));
                 },
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(40.0),
+                ),
+                textColor: cPlanGoWhiteBlue,
                 child: Text('Okay', style: TextStyle(color: cPlanGoBlue)),
               )
             ],

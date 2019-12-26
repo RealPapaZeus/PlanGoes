@@ -119,9 +119,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   new TextSpan(
                       text:
                           '\nWait some seconds and check spam if you have not received an email.'),
-                  new TextSpan(
-                      text:
-                          '\nWe are glad to welcome you!'),
+                  new TextSpan(text: '\nWe are glad to welcome you!'),
                   new TextSpan(text: '\n\nYour PlanGo team')
                 ])),
             shape: RoundedRectangleBorder(
@@ -132,6 +130,10 @@ class _CreateAccountState extends State<CreateAccount> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LogIn()));
                 },
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(40.0),
+                ),
+                textColor: cPlanGoWhiteBlue,
                 child: Text(
                   'Okay, got it',
                   style: TextStyle(color: cPlanGoBlue),
