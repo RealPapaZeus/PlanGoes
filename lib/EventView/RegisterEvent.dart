@@ -10,6 +10,7 @@ import 'package:path/path.dart' as p;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:plan_go_software_project/colors.dart';
 
 class RegisterEvent extends StatefulWidget {
   final String userId;
@@ -21,21 +22,27 @@ class RegisterEvent extends StatefulWidget {
 
 class _RegisterEventState extends State<RegisterEvent> {
   File _image;
-  String _eventName,
-         _location,
-         _description;
-         
+  String _eventName, _location, _description;
+
   String _documentID;
-  Color _tempShadeColor;
-  Color _shadeColor = Colors.blue[900];
-  int _eventColor = Colors.blue[900].value;
+  Color _tempShadeColor = cPlanGoBlue;
+  Color _shadeColor = cPlanGoBlue;
+  int _eventColor = cPlanGoBlue.value;
   String _userName = '';
-  DateTime _dateTime, _dateTimeEnd = DateTime.now();
-  String _year, _yearEnd = DateTime.now().year.toString();
-  String _day, _dayEnd = DateTime.now().day.toString();
-  String _month, _monthEnd = DateTime.now().month.toString();
-  String _hour, _hourEnd = DateTime.now().hour.toString();
-  String _minute, _minuteEnd = DateTime.now().minute.toString();
+
+  DateTime _dateTime = DateTime.now();
+  DateTime _dateTimeEnd = DateTime.now();
+  String _year = DateTime.now().year.toString();
+  String _yearEnd = DateTime.now().year.toString();
+  String _day = DateTime.now().day.toString();
+  String _dayEnd = DateTime.now().day.toString();
+  String _month = DateTime.now().month.toString();
+  String _monthEnd = DateTime.now().month.toString();
+  String _hour =  DateTime.now().hour.toString(); 
+  String _hourEnd = DateTime.now().hour.toString();
+  String _minute = DateTime.now().minute.toString();
+  String _minuteEnd = DateTime.now().minute.toString();
+
   bool _isLoading = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -147,7 +154,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       'name': 'Good Looking $_userName',
       'valueMax': 1,
       'valueCurrent': 0,
-      'username' : []
+      'username': []
     });
   }
 
@@ -185,7 +192,7 @@ class _RegisterEventState extends State<RegisterEvent> {
     final _formState = _formKey.currentState;
 
     setState(() {
-      _isLoading= true;
+      _isLoading = true;
     });
 
     String url;
@@ -224,7 +231,6 @@ class _RegisterEventState extends State<RegisterEvent> {
           _isLoading = false;
         });
         print(e.message);
-        
       }
     }
   }
@@ -251,15 +257,25 @@ class _RegisterEventState extends State<RegisterEvent> {
       builder: (_) {
         return AlertDialog(
           contentPadding: const EdgeInsets.all(12.0),
-          title: Text('Pick Color'),
+          title: Text('Pick Color', style: TextStyle(color: cPlanGoDark),),
           content: content,
+          shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(15)),
           actions: [
             FlatButton(
-              child: Text('Cancel'),
-              onPressed: () {Navigator.of(context).pop();},
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(40.0),
+              ),
+              child: Text('Cancel', style: TextStyle(color: cPlanGoDark),),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
             FlatButton(
-              child: Text('Submit'),
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(40.0),
+              ),
+              child: Text('Submit', style: TextStyle(color: cPlanGoDark)),
               onPressed: () {
                 setState(() {
                   _shadeColor = _tempShadeColor;
@@ -287,20 +303,24 @@ class _RegisterEventState extends State<RegisterEvent> {
   Widget eventImage() {
     return Align(
       alignment: Alignment.center,
-      child: CircleAvatar(
-        radius: 75,
-        child: ClipOval(
-          child: SizedBox(
-              width: 180,
-              height: 180,
-              child: (_image != null)
-                  ? Image.file(_image, fit: BoxFit.fill)
-                  : Image.asset(
-                      'images/calendar.png',
-                      fit: BoxFit.fill,
-                    )),
-        ),
-      ),
+      child: Container(
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [BoxShadow(blurRadius: 10.0, spreadRadius: 0.1)]),
+          child: CircleAvatar(
+            radius: 75,
+            child: ClipOval(
+              child: SizedBox(
+                  width: 180,
+                  height: 180,
+                  child: (_image != null)
+                      ? Image.file(_image, fit: BoxFit.fill)
+                      : Image.asset(
+                          'images/calendar.png',
+                          fit: BoxFit.fill,
+                        )),
+            ),
+          )),
     );
   }
 
@@ -308,6 +328,7 @@ class _RegisterEventState extends State<RegisterEvent> {
     return Padding(
       padding: EdgeInsets.only(top: 20),
       child: IconButton(
+        color: cPlangGoDarkBlue,
         icon: Icon(
           FontAwesomeIcons.camera,
           size: 20,
@@ -344,6 +365,7 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   Widget eventNameTextField() {
     return TextFormField(
+      maxLength: 50,
       controller: _eventNameController,
       decoration: InputDecoration(labelText: 'Eventname'),
       obscureText: false,
@@ -355,6 +377,7 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   Widget eventLocation() {
     return TextFormField(
+      maxLength: 50,
       controller: _locationController,
       decoration: InputDecoration(labelText: 'Location'),
       obscureText: false,
@@ -388,8 +411,9 @@ class _RegisterEventState extends State<RegisterEvent> {
                   _hour = dateTime.hour.toString();
                   _minute = dateTime.minute.toString();
                   if (_minute.length < 2) {
-                    _minute = '0$_minute';
-                  }
+                    _minute = '0$_minute'.toString();
+                    _minute = dateTime.minute.toString();
+                  } else {_minute = dateTime.minute.toString();}
                 });
               },
               currentTime: DateTime.now(),
@@ -401,7 +425,7 @@ class _RegisterEventState extends State<RegisterEvent> {
             children: <Widget>[
               Text('Date: $_day.$_month.$_year',
                   style: TextStyle(color: _shadeColor)),
-              Text(
+              Text( 
                 'Time: $_hour:$_minute',
                 style: TextStyle(color: _shadeColor),
               )
@@ -428,7 +452,8 @@ class _RegisterEventState extends State<RegisterEvent> {
                   _minuteEnd = dateTimeEnd.minute.toString();
                   if (_minuteEnd.length < 2) {
                     _minuteEnd = '0$_minuteEnd';
-                  }
+                    _minuteEnd = dateTimeEnd.minute.toString();
+                  } else{ _minuteEnd = dateTimeEnd.minute.toString(); }
                 });
               },
               currentTime: DateTime.now(),
@@ -464,32 +489,74 @@ class _RegisterEventState extends State<RegisterEvent> {
     );
   }
 
-  Widget buildBody() {
-    return SingleChildScrollView(
-      child: new Container(
+  Widget getRegistrationEventView() {
+    return new Padding(
         padding: const EdgeInsets.all(15.0),
-        child: new Column(
-          children: <Widget>[
-            new Card(
-              elevation: 4.0,
-              child: new Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  new Container(
-                      padding: new EdgeInsets.all(15.0),
-                      child: new Form(
-                          key: _formKey,
-                          child: new Column(
-                              children: pickPicture() +
-                                  inputWidgets() +
-                                  pickColor() +
-                                  userViewConfirmNewAccount())))
-                ],
-              ),
+        child: Card(
+          color: cPlanGoWhiteBlue,
+          elevation: 5.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(25.0),
+          ),
+          child: new Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              new Container(
+                  padding: new EdgeInsets.all(15.0),
+                  child: new Form(
+                      key: _formKey,
+                      child: new Column(
+                          children: pickPicture() +
+                              inputWidgets() +
+                              pickColor() +
+                              userViewConfirmNewAccount())))
+            ],
+          ),
+        ));
+  }
+
+  Widget showRegistration() {
+    return Stack(children: <Widget>[
+      Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height / 3.3,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [cPlangGoDarkBlue, cPlanGoMarineBlueDark],
             ),
-          ],
+            borderRadius: BorderRadius.only(bottomRight: Radius.circular(90)),
+          ),
         ),
       ),
+      Scrollbar(child: SingleChildScrollView(child: getRegistrationEventView()))
+    ]);
+  }
+
+  Widget getEventRegistration() {
+    return SizedBox(
+        width: 250,
+        child: RaisedButton(
+          splashColor: cPlanGoMarineBlue,
+          color: cPlanGoBlue,
+          child: Text(
+            'Register Event',
+            style: TextStyle(color: cPlanGoWhiteBlue),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(40.0),
+          ),
+          elevation: 5.0,
+          onPressed: registerEventByPress,
+        ));
+  }
+
+  Widget loadingButton() {
+    return CircularProgressIndicator(
+      valueColor: new AlwaysStoppedAnimation<Color>(cPlanGoMarineBlue),
     );
   }
 
@@ -497,15 +564,7 @@ class _RegisterEventState extends State<RegisterEvent> {
     return [
       Padding(
           padding: EdgeInsets.all(15.0),
-          child: _isLoading
-          ? Center(
-            child: CircularProgressIndicator(),
-          )
-          : RaisedButton(
-            onPressed: registerEventByPress,
-            child: Text('Register Event'),
-          )
-          )
+          child: _isLoading ? loadingButton() : getEventRegistration())
     ];
   }
 
@@ -529,17 +588,21 @@ class _RegisterEventState extends State<RegisterEvent> {
     return [pickColorRow()];
   }
 
+  Widget getAppBar() {
+    return AppBar(
+      backgroundColor: cPlangGoDarkBlue,
+      elevation: 0.1,
+      centerTitle: true,
+      title: Text('Register Event'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(_eventColor),
-      appBar: AppBar(
-        backgroundColor: Color(_eventColor),
-        elevation: 0.1,
-        centerTitle: true,
-        title: Text('Register Event'),
-      ),
-      body: buildBody(),
+      backgroundColor: cPlangGoDarkBlue,
+      appBar: getAppBar(),
+      body: showRegistration(),
     );
   }
 }
