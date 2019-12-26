@@ -121,7 +121,6 @@ class _ItemListState extends State<ItemList>{
           margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             child: Slidable(
               actionPane: SlidableStrechActionPane(),
-              //actionExtentRatio: 0.25,
               closeOnScroll: true,
               actions: <Widget>[
                 IconSlideAction(

@@ -136,6 +136,8 @@ class _EventListState extends State<EventList> {
 
   Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
     return new InkWell(
+      borderRadius: new BorderRadius.circular(20.0),
+      splashColor: cPlanGoDark,
       onTap: () {
         callView(document);
       },

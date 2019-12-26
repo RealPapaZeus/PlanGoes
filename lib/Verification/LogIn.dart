@@ -9,6 +9,7 @@ class LogIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      color: cPlanGoBlue,
       home: MyLogInPage(),
     );
   }
