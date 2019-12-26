@@ -154,7 +154,7 @@ class _EventListState extends State<EventList> {
               boxShadow: <BoxShadow>[
                 new BoxShadow(
                   color: Color(document['eventColor']),
-                  blurRadius: 10.0,
+                  blurRadius: 5.0,
                   spreadRadius: 1.0,
                 ),
               ],
