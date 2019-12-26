@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/EventView/RegisterEvent.dart';
 import 'package:plan_go_software_project/ItemView/AdminView.dart';
 import 'package:plan_go_software_project/ItemView/UsersView.dart';
+import 'package:plan_go_software_project/colors.dart';
 
 class EventList extends StatefulWidget {
   final String userId;
@@ -64,11 +65,11 @@ class _EventListState extends State<EventList> {
     );
   }
 
-  // it gets checked whether user is admin or not 
+  // it gets checked whether user is admin or not
   // The reason is to give logged user the important
   // view for navigating through the app
-  // users are for instance not allowed to append items to 
-  // the itemlist 
+  // users are for instance not allowed to append items to
+  // the itemlist
   void callView(DocumentSnapshot document) async {
     final databaseReference = Firestore.instance;
     var documentReference = databaseReference
@@ -104,7 +105,6 @@ class _EventListState extends State<EventList> {
     }
   }
 
-
   void deleteCanban(DocumentSnapshot document) {
     deleteItems(document);
 
@@ -135,7 +135,7 @@ class _EventListState extends State<EventList> {
   }
 
   Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
-    return new GestureDetector(
+    return new InkWell(
       onTap: () {
         callView(document);
       },
@@ -180,10 +180,13 @@ class _EventListState extends State<EventList> {
                                   overflow: TextOverflow.ellipsis,
                                 )),
                                 new IconButton(
+                                  padding: const EdgeInsets.all(0.0),
                                   icon: new Icon(Icons.delete_forever),
-                                  color: Colors.white,
+                                  color: cPlanGoWhiteBlue,
+                                  splashColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
                                   iconSize: 20.0,
-                                  onPressed: (){
+                                  onPressed: () {
                                     deleteItems(document);
                                     deleteCanban(document);
                                   },
@@ -220,7 +223,7 @@ class _EventListState extends State<EventList> {
                             padding: const EdgeInsets.only(right: 5.0),
                             child: Icon(
                               Icons.location_on,
-                              color: Colors.white,
+                              color: cPlanGoWhiteBlue,
                               size: 10,
                             ),
                           ),
@@ -265,16 +268,25 @@ class _EventListState extends State<EventList> {
 
   Widget createAppBar() {
     return AppBar(
-      title: Text('${_userName}s Events'),
-      elevation: 5.0,
-      backgroundColor: Colors.blue[900],
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.person),
-          onPressed: () {},
-        )
-      ],
+      title:
+          Text("$_userName's List", style: TextStyle(color: cPlanGoWhiteBlue)),
+      elevation: 0.0,
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: <Color>[cPlangGoDarkBlue, cPlanGoBlue]),
+          borderRadius: BorderRadius.only(bottomRight: Radius.circular(25)),
+        ),
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          bottomRight: Radius.circular(25),
+        ),
+      ),
       leading: IconButton(
+        color: cPlanGoWhiteBlue,
         tooltip: "Create New Event",
         icon: Icon(Icons.playlist_add_check),
         onPressed: () {
@@ -291,7 +303,7 @@ class _EventListState extends State<EventList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0XFFF4F9FF),
+      backgroundColor: cPlangGoDarkBlue,
       appBar: createAppBar(),
       body: buildStream(context),
     );
