@@ -25,14 +25,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-android {
-    compileSdkVersion 28
-
-
-    def keystoreProperties = new Properties()
+def keystoreProperties = new Properties()
     def keystorePropertiesFile = rootProject.file('key.properties')
     if (keystorePropertiesFile.exists()) {
        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    }
+android {
+    compileSdkVersion 28
+
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -59,18 +59,20 @@ android {
            storeFile file(keystoreProperties['storeFile'])
            storePassword keystoreProperties['storePassword']
        }
+    }
 
     buildTypes {
         release {
             signingConfig signingConfigs.release
 
-            minifyEnabled true
-            useProguard true
+            //minifyEnabled true
+            //useProguard true
 
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
+
 
 flutter {
     source '../..'
@@ -85,4 +87,3 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
-}
