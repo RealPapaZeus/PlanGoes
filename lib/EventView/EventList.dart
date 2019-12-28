@@ -159,7 +159,7 @@ class _EventListState extends State<EventList> {
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.only(left: 64.0),
+              padding: const EdgeInsets.only(left: 50.0),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -167,7 +167,7 @@ class _EventListState extends State<EventList> {
                   new Column(
                     children: <Widget>[
                       new Container(
-                          padding: const EdgeInsets.only(right: 8.0, top: 7.5),
+                          padding: const EdgeInsets.only(right: 5.0),
                           decoration: BoxDecoration(),
                           child: new Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -177,7 +177,7 @@ class _EventListState extends State<EventList> {
                                   document['eventname'],
                                   maxLines: 1,
                                   style: TextStyle(
-                                      fontSize: 24.0, color: Colors.white),
+                                      fontSize: 20.0, color: Colors.white),
                                   overflow: TextOverflow.ellipsis,
                                 )),
                                 new IconButton(
