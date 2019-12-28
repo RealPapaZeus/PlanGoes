@@ -484,6 +484,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       maxLength: 50,
       controller: _eventNameController,
       decoration: InputDecoration(
+        counterStyle: TextStyle(color: cPlanGoDark),
         enabledBorder: UnderlineInputBorder(
           borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
         ),
@@ -510,6 +511,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       maxLength: 50,
       controller: _locationController,
       decoration: InputDecoration(
+        counterStyle: TextStyle(color: cPlanGoDark),
           enabledBorder: UnderlineInputBorder(
             borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
           ),
@@ -569,7 +571,18 @@ class _RegisterEventState extends State<RegisterEvent> {
         ]));
   }
 
+  void checkDateTimeZero() {
+    if (_hour.length < 2) {
+      _hour = '0$_hour'.toString();
+    }
+
+    if (_minute.length < 2) {
+      _minute = '0$_minute'.toString();
+    }
+  }
+
   Widget eventDateTimeStart() {
+    checkDateTimeZero();
     return Padding(
         padding: const EdgeInsets.all(5.0),
         child: InkWell(
