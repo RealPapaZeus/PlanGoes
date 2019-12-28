@@ -149,8 +149,7 @@ class _EventListState extends State<EventList> {
                 left: 46.0, bottom: 7.5, top: 7.5, right: 7.5),
             decoration: new BoxDecoration(
               color: Color(document['eventColor']),
-              shape: BoxShape.rectangle,
-              borderRadius: new BorderRadius.circular(8.0),
+              borderRadius: new BorderRadius.circular(18.0),
               boxShadow: <BoxShadow>[
                 new BoxShadow(
                   color: Color(document['eventColor']),
@@ -245,11 +244,11 @@ class _EventListState extends State<EventList> {
               ),
             )),
         new Container(
-          height: 95.0,
-          width: 95.0,
+          height: 75.0,
+          width: 75.0,
           alignment: Alignment.centerLeft,
           margin:
-              const EdgeInsets.only(top: 25, bottom: 8, left: 3.75, right: 8),
+              const EdgeInsets.only(top: 5, bottom: 8, left: 3.75, right: 8),
           decoration: new BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -291,7 +290,7 @@ class _EventListState extends State<EventList> {
       ),
       leading: IconButton(
         color: cPlanGoWhiteBlue,
-        tooltip: "Create New Event",
+        tooltip: "Create new event",
         icon: Icon(Icons.playlist_add_check),
         onPressed: () {
           Navigator.push(
