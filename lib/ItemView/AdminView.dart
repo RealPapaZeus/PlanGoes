@@ -66,12 +66,10 @@ class _AdminViewState extends State<AdminView>{
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
         title: Text(_eventName),
-        background: Image.network(
+        background: 
           (_imageUrl != 'null')
-            ? _imageUrl
-            : 'https://images.unsplash.com/photo-1511871893393-82e9c16b81e3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80',
-          fit: BoxFit.cover
-        )
+            ? Image.network(_imageUrl, fit: BoxFit.cover)
+            : Image.asset('images/calendar.png', fit: BoxFit.cover)
       ),
     );
   }

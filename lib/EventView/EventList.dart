@@ -49,7 +49,7 @@ class _EventListState extends State<EventList> {
           .collection("usersEventList")
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Text("No event found");
+        if (!snapshot.hasData) return const Text("Loading..", style: TextStyle(color: cPlanGoWhiteBlue),);
         return Scrollbar(
             child: ListView.separated(
           padding: EdgeInsets.all(10.0),
@@ -149,8 +149,7 @@ class _EventListState extends State<EventList> {
                 left: 46.0, bottom: 7.5, top: 7.5, right: 7.5),
             decoration: new BoxDecoration(
               color: Color(document['eventColor']),
-              shape: BoxShape.rectangle,
-              borderRadius: new BorderRadius.circular(8.0),
+              borderRadius: new BorderRadius.circular(18.0),
               boxShadow: <BoxShadow>[
                 new BoxShadow(
                   color: Color(document['eventColor']),
@@ -160,7 +159,7 @@ class _EventListState extends State<EventList> {
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.only(left: 64.0),
+              padding: const EdgeInsets.only(left: 50.0),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -168,7 +167,7 @@ class _EventListState extends State<EventList> {
                   new Column(
                     children: <Widget>[
                       new Container(
-                          padding: const EdgeInsets.only(right: 8.0, top: 7.5),
+                          padding: const EdgeInsets.only(right: 5.0),
                           decoration: BoxDecoration(),
                           child: new Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -178,7 +177,7 @@ class _EventListState extends State<EventList> {
                                   document['eventname'],
                                   maxLines: 1,
                                   style: TextStyle(
-                                      fontSize: 24.0, color: Colors.white),
+                                      fontSize: 20.0, color: Colors.white),
                                   overflow: TextOverflow.ellipsis,
                                 )),
                                 new IconButton(
@@ -245,11 +244,11 @@ class _EventListState extends State<EventList> {
               ),
             )),
         new Container(
-          height: 95.0,
-          width: 95.0,
+          height: 75.0,
+          width: 75.0,
           alignment: Alignment.centerLeft,
           margin:
-              const EdgeInsets.only(top: 25, bottom: 8, left: 3.75, right: 8),
+              const EdgeInsets.only(top: 5, bottom: 8, left: 3.75, right: 8),
           decoration: new BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -291,7 +290,7 @@ class _EventListState extends State<EventList> {
       ),
       leading: IconButton(
         color: cPlanGoWhiteBlue,
-        tooltip: "Create New Event",
+        tooltip: "Create new event",
         icon: Icon(Icons.playlist_add_check),
         onPressed: () {
           Navigator.push(

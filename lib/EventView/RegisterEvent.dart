@@ -383,53 +383,6 @@ class _RegisterEventState extends State<RegisterEvent> {
     );
   }
 
-  Widget eventDateTimeStart() {
-    return Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: InkWell(
-            onTap: callDateTimePickerStart,
-            child: Container(
-                decoration: BoxDecoration(
-                  //border: Border.all(color: cPlanGoBlue, width: 1.0),
-                  color: cPlanGoBlue,
-                  borderRadius: new BorderRadius.circular(10.0),
-                ),
-                height: MediaQuery.of(context).size.height / 13,
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Container(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Text('date',
-                                style: TextStyle(color: cPlanGoWhiteBlue))),
-                        Container(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Text('time',
-                                style: TextStyle(color: cPlanGoWhiteBlue))),
-                      ],
-                    ),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Container(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Text('$_day/$_month/$_year',
-                                  style: TextStyle(color: cPlanGoWhiteBlue))),
-                          Container(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Text('$_hour:$_minute',
-                                  style: TextStyle(color: cPlanGoWhiteBlue))),
-                        ])
-                  ],
-                ))));
-  }
-
   ///
   /// DO NOT DELETE THIS COMMENT! IT IS IMPORTANT FOR FUTURE UPDATES
   ///
@@ -525,9 +478,24 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   Widget eventNameTextField() {
     return TextFormField(
+      keyboardType: TextInputType.text,
+      cursorColor: cPlanGoBlue,
+      style: TextStyle(color: cPlanGoMarineBlue),
       maxLength: 50,
       controller: _eventNameController,
-      decoration: InputDecoration(labelText: 'Eventname'),
+      decoration: InputDecoration(
+        counterStyle: TextStyle(color: cPlanGoDark),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+          borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
+        ),
+        errorStyle: TextStyle(color: cPlanGoRedBright),
+        labelStyle: TextStyle(color: cPlanGoBlue),
+        labelText: 'Eventname'.toLowerCase(),
+      ),
       obscureText: false,
       validator: (value) =>
           value.isEmpty ? messageToDenyLoading('Please enter a name') : null,
@@ -537,9 +505,23 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   Widget eventLocation() {
     return TextFormField(
+      keyboardType: TextInputType.text,
+      cursorColor: cPlanGoBlue,
+      style: TextStyle(color: cPlanGoMarineBlue),
       maxLength: 50,
       controller: _locationController,
-      decoration: InputDecoration(labelText: 'Location'),
+      decoration: InputDecoration(
+        counterStyle: TextStyle(color: cPlanGoDark),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+            borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
+          ),
+          errorStyle: TextStyle(color: cPlanGoRedBright),
+          labelStyle: TextStyle(color: cPlanGoBlue),
+          labelText: 'Location'.toLowerCase()),
       obscureText: false,
       validator: (value) => value.isEmpty
           ? messageToDenyLoading('Please enter a location')
@@ -551,16 +533,100 @@ class _RegisterEventState extends State<RegisterEvent> {
   Widget eventDescriptionTextField() {
     return TextFormField(
       keyboardType: TextInputType.multiline,
+      cursorColor: cPlanGoBlue,
+      style: TextStyle(color: cPlanGoMarineBlue),
       maxLines: 4,
       maxLength: 200,
       controller: _descriptionController,
-      decoration: InputDecoration(labelText: 'Description'),
+      decoration: InputDecoration(
+          counterStyle: TextStyle(color: cPlanGoDark),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+            borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
+          ),
+          errorStyle: TextStyle(color: cPlanGoRedBright),
+          labelStyle: TextStyle(color: cPlanGoBlue),
+          labelText: 'Description'.toLowerCase()),
       obscureText: false,
       validator: (value) => value.isEmpty
           ? messageToDenyLoading('Please enter some description')
           : null,
       onSaved: (value) => _description == value,
     );
+  }
+
+  Widget getDateTimeHeader() {
+    return Padding(
+        padding: const EdgeInsets.only(bottom: 5.0),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+          Text(
+            'Start Date'.toLowerCase(),
+            textAlign: TextAlign.start,
+            style: TextStyle(color: cPlanGoBlue, fontSize: 16.0),
+          )
+        ]));
+  }
+
+  void checkDateTimeZero() {
+    if (_hour.length < 2) {
+      _hour = '0$_hour'.toString();
+    }
+
+    if (_minute.length < 2) {
+      _minute = '0$_minute'.toString();
+    }
+  }
+
+  Widget eventDateTimeStart() {
+    checkDateTimeZero();
+    return Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: InkWell(
+            onTap: callDateTimePickerStart,
+            child: Container(
+                decoration: BoxDecoration(
+                  //border: Border.all(color: cPlanGoBlue, width: 1.0),
+                  color: cPlanGoBlue,
+                  borderRadius: new BorderRadius.circular(10.0),
+                ),
+                height: MediaQuery.of(context).size.height / 13,
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Container(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text('date',
+                                style: TextStyle(color: cPlanGoWhiteBlue))),
+                        Container(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text('time',
+                                style: TextStyle(color: cPlanGoWhiteBlue))),
+                      ],
+                    ),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Container(
+                              padding: const EdgeInsets.all(6.0),
+                              child: Text('$_day/$_month/$_year',
+                                  style: TextStyle(color: cPlanGoWhiteBlue))),
+                          Container(
+                              padding: const EdgeInsets.all(6.0),
+                              child: Text('$_hour:$_minute',
+                                  style: TextStyle(color: cPlanGoWhiteBlue))),
+                        ])
+                  ],
+                ))));
   }
 
   // calls methods which allow user to pick from list of colors
@@ -572,7 +638,8 @@ class _RegisterEventState extends State<RegisterEvent> {
           children: [
             Container(
               child: Text('Event color:',
-                  style: new TextStyle(fontWeight: FontWeight.bold)),
+                  style: new TextStyle(
+                      fontWeight: FontWeight.bold, color: cPlanGoDark)),
             ),
             Container(
               child: FloatingActionButton(
@@ -640,7 +707,7 @@ class _RegisterEventState extends State<RegisterEvent> {
           splashColor: cPlanGoMarineBlue,
           color: cPlanGoBlue,
           child: Text(
-            'Register Event',
+            'Register',
             style: TextStyle(color: cPlanGoWhiteBlue),
           ),
           shape: RoundedRectangleBorder(
@@ -669,10 +736,10 @@ class _RegisterEventState extends State<RegisterEvent> {
     return [
       eventNameTextField(),
       eventLocation(),
-      eventDescriptionTextField(),
-      Divider(color: cPlangGoDarkBlue),
+      getDateTimeHeader(),
       eventDateTimeStart(),
-      Divider(color: cPlangGoDarkBlue)
+      Divider(color: cPlanGoBlue, thickness: 1.5),
+      eventDescriptionTextField(),
     ];
   }
 
@@ -692,7 +759,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       backgroundColor: cPlangGoDarkBlue,
       elevation: 0.1,
       centerTitle: true,
-      title: Text('Register Event'),
+      title: Text('Register Event'.toLowerCase()),
     );
   }
 
