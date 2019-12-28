@@ -49,7 +49,7 @@ class _EventListState extends State<EventList> {
           .collection("usersEventList")
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Text("No event found");
+        if (!snapshot.hasData) return const Text("Loading..", style: TextStyle(color: cPlanGoWhiteBlue),);
         return Scrollbar(
             child: ListView.separated(
           padding: EdgeInsets.all(10.0),
