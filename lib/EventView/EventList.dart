@@ -37,6 +37,15 @@ class _EventListState extends State<EventList> {
     print(_userName);
   }
 
+  // void getDate() async {
+  //   final databaseReference = Firestore.instance;
+
+  //   var documentReference = databaseReference.collection("users")
+  //         .document(widget.userId)
+  //         .collection("usersEventList")
+  //         .document(widget)
+  // }
+
   // builds a stream in which we connect to subcollection and
   //get our data loaded into the EventList
   StreamBuilder buildStream(BuildContext context) {
@@ -231,19 +240,39 @@ class _EventListState extends State<EventList> {
                           Container(
                             padding: const EdgeInsets.only(right: 5.0),
                             child: Icon(
-                              Icons.location_on,
+                              Icons.date_range,
                               color: cPlanGoWhiteBlue,
-                              size: 10,
+                              size: 10.0,
                             ),
                           ),
                           Expanded(
-                              child: Text(
-                            document['location'],
-                            maxLines: 1,
-                            style:
-                                TextStyle(fontSize: 11.0, color: Colors.white),
-                            overflow: TextOverflow.ellipsis,
-                          )),
+                            child: Text(
+                              document['datetime']
+                                  .substring(0, 10)
+                                  .replaceAll('-', '/'),
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontSize: 11.0, color: cPlanGoWhiteBlue),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Container(
+                            padding:
+                                const EdgeInsets.only(left: 40.0, right: 5.0),
+                            child: Icon(
+                              Icons.access_time,
+                              color: cPlanGoWhiteBlue,
+                              size: 10.0,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              document['datetime'].substring(11, 16),
+                              style: TextStyle(
+                                  fontSize: 11.0, color: cPlanGoWhiteBlue),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          )
                         ])),
                   )
                 ],
