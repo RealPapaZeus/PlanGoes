@@ -47,9 +47,14 @@ class _EventListState extends State<EventList> {
           .collection("users")
           .document(widget.userId)
           .collection("usersEventList")
+          .orderBy("datetime")
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Text("Loading..", style: TextStyle(color: cPlanGoWhiteBlue),);
+        if (!snapshot.hasData)
+          return const Text(
+            "Loading..",
+            style: TextStyle(color: cPlanGoWhiteBlue),
+          );
         return Scrollbar(
             child: ListView.separated(
           padding: EdgeInsets.all(10.0),
@@ -187,8 +192,9 @@ class _EventListState extends State<EventList> {
                                   splashColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   iconSize: 20.0,
-                                  onPressed: () async { 
-                                    await Future.delayed(Duration(milliseconds: 300), () {
+                                  onPressed: () async {
+                                    await Future.delayed(
+                                        Duration(milliseconds: 300), () {
                                       deleteItems(document);
                                       deleteCanban(document);
                                     });
