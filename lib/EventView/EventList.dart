@@ -37,6 +37,15 @@ class _EventListState extends State<EventList> {
     print(_userName);
   }
 
+  // void getDate() async {
+  //   final databaseReference = Firestore.instance;
+
+  //   var documentReference = databaseReference.collection("users")
+  //         .document(widget.userId)
+  //         .collection("usersEventList")
+  //         .document(widget)
+  // }
+
   // builds a stream in which we connect to subcollection and
   //get our data loaded into the EventList
   StreamBuilder buildStream(BuildContext context) {
@@ -47,9 +56,14 @@ class _EventListState extends State<EventList> {
           .collection("users")
           .document(widget.userId)
           .collection("usersEventList")
+          .orderBy("datetime")
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Text("Loading..", style: TextStyle(color: cPlanGoWhiteBlue),);
+        if (!snapshot.hasData)
+          return const Text(
+            "Loading..",
+            style: TextStyle(color: cPlanGoWhiteBlue),
+          );
         return Scrollbar(
             child: ListView.separated(
           padding: EdgeInsets.all(10.0),
@@ -134,121 +148,97 @@ class _EventListState extends State<EventList> {
     });
   }
 
-  Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
-    return new InkWell(
-      borderRadius: new BorderRadius.circular(20.0),
-      splashColor: cPlanGoDark,
-      onTap: () {
-        callView(document);
-      },
-      child: new Stack(children: <Widget>[
-        new Container(
-            width: 400.0,
-            height: 130.0,
-            margin: const EdgeInsets.only(
-                left: 46.0, bottom: 7.5, top: 7.5, right: 7.5),
-            decoration: new BoxDecoration(
-              color: Color(document['eventColor']),
-              borderRadius: new BorderRadius.circular(18.0),
-              boxShadow: <BoxShadow>[
-                new BoxShadow(
-                  color: Color(document['eventColor']),
-                  blurRadius: 5.0,
-                  spreadRadius: 1.0,
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 50.0),
-              child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  new Column(
-                    children: <Widget>[
-                      new Container(
-                          padding: const EdgeInsets.only(right: 5.0),
-                          decoration: BoxDecoration(),
-                          child: new Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Expanded(
-                                    child: Text(
-                                  document['eventname'],
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                      fontSize: 20.0, color: Colors.white),
-                                  overflow: TextOverflow.ellipsis,
-                                )),
-                                new IconButton(
-                                  padding: const EdgeInsets.all(0.0),
-                                  icon: new Icon(Icons.delete_forever),
-                                  color: cPlanGoWhiteBlue,
-                                  splashColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  iconSize: 20.0,
-                                  onPressed: () async { 
-                                    await Future.delayed(Duration(milliseconds: 300), () {
-                                      deleteItems(document);
-                                      deleteCanban(document);
-                                    });
-                                  },
-                                ),
-                              ])),
-                      new Container(
-                          padding: const EdgeInsets.only(
-                              top: 4.00, left: 1.0, right: 30.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Expanded(
-                                child: Text(
-                                  document['description'],
-                                  maxLines: 3,
-                                  style: TextStyle(
-                                      fontSize: 12.0, color: Colors.white),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              )
-                            ],
-                          )),
-                    ],
-                  ),
-                  Expanded(
-                    child: Container(
-                        alignment: Alignment.bottomCenter,
-                        padding: const EdgeInsets.only(
-                          right: 30.00,
-                          bottom: 10.0,
-                        ),
-                        child: new Row(children: <Widget>[
-                          Container(
-                            padding: const EdgeInsets.only(right: 5.0),
-                            child: Icon(
-                              Icons.location_on,
-                              color: cPlanGoWhiteBlue,
-                              size: 10,
-                            ),
-                          ),
-                          Expanded(
-                              child: Text(
-                            document['location'],
-                            maxLines: 1,
-                            style:
-                                TextStyle(fontSize: 11.0, color: Colors.white),
-                            overflow: TextOverflow.ellipsis,
-                          )),
-                        ])),
-                  )
-                ],
+  Widget eventName(DocumentSnapshot document) {
+    return new Container(
+        padding: const EdgeInsets.only(right: 5.0),
+        child: new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                  child: Text(
+                document['eventname'],
+                maxLines: 1,
+                style: TextStyle(fontSize: 20.0, color: Colors.white),
+                overflow: TextOverflow.ellipsis,
+              )),
+              new IconButton(
+                padding: const EdgeInsets.all(0.0),
+                icon: new Icon(Icons.delete),
+                color: cPlanGoWhiteBlue,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                iconSize: 20.0,
+                onPressed: () async {
+                  await Future.delayed(Duration(milliseconds: 300), () {
+                    deleteItems(document);
+                    deleteCanban(document);
+                  });
+                },
               ),
+            ]));
+  }
+
+  Widget descriptionAndLocation(DocumentSnapshot document) {
+    return new Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        new Container(
+          padding: const EdgeInsets.only(left: 1.0, right: 30.0),
+          child: new Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.only(right: 5.0),
+                child: Icon(
+                  Icons.location_on,
+                  color: cPlanGoWhiteBlue,
+                  size: 12.5,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  document['location'],
+                  maxLines: 1,
+                  style: TextStyle(fontSize: 13.0, color: cPlanGoWhiteBlue),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+            padding: const EdgeInsets.only(right: 30.0),
+            child: new Divider(
+              color: cPlanGoWhiteBlue,
+              thickness: 1.5,
             )),
         new Container(
-          height: 75.0,
-          width: 75.0,
+            padding: const EdgeInsets.only(left: 1.0, right: 30.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    document['description'],
+                    maxLines: 3,
+                    style: TextStyle(fontSize: 14.0, color: cPlanGoWhiteBlue),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                )
+              ],
+            )),
+      ],
+    );
+  }
+
+  Widget loadImage(DocumentSnapshot document) {
+    return new Container(
+          height: MediaQuery.of(context).size.height / 10,
+          width: MediaQuery.of(context).size.height / 10,
           alignment: Alignment.centerLeft,
           margin:
-              const EdgeInsets.only(top: 5, bottom: 8, left: 3.75, right: 8),
+              const EdgeInsets.only(top: 8, bottom: 8, left: 3.75, right: 8),
           decoration: new BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -264,7 +254,93 @@ class _EventListState extends State<EventList> {
                       : new AssetImage(
                           'images/calendar.png',
                         ))),
-        ),
+        );
+  }
+
+  Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
+    return new InkWell(
+      borderRadius: new BorderRadius.circular(20.0),
+      splashColor: cPlanGoDark,
+      onTap: () {
+        callView(document);
+      },
+      child: new Stack(children: <Widget>[
+        new Container(
+            width: MediaQuery.of(context).size.height / 1.0,
+            height: MediaQuery.of(context).size.height / 4.6,
+            margin: const EdgeInsets.only(
+                left: 40.0, bottom: 7.5, top: 7.5, right: 7.5),
+            decoration: new BoxDecoration(
+              color: Color(document['eventColor']),
+              borderRadius: new BorderRadius.circular(18.0),
+              boxShadow: <BoxShadow>[
+                new BoxShadow(
+                  color: Color(document['eventColor']),
+                  blurRadius: 5.0,
+                  spreadRadius: 1.0,
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 48.0),
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  new Column(
+                    children: <Widget>[
+                      eventName(document),
+                      descriptionAndLocation(document),
+                    ],
+                  ),
+                  Expanded(
+                    child: Container(
+                        alignment: Alignment.bottomCenter,
+                        padding: const EdgeInsets.only(
+                            right: 30.00, bottom: 10.0, top: 5.0),
+                        child: new Row(children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.only(right: 5.0),
+                            child: Icon(
+                              Icons.date_range,
+                              color: cPlanGoWhiteBlue,
+                              size: 12.5,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              document['datetime']
+                                  .substring(0, 10)
+                                  .replaceAll('-', '/'),
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontSize: 13.0, color: cPlanGoWhiteBlue),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Container(
+                            padding:
+                                const EdgeInsets.only(left: 40.0, right: 5.0),
+                            child: Icon(
+                              Icons.access_time,
+                              color: cPlanGoWhiteBlue,
+                              size: 12.5,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              document['datetime'].substring(11, 16),
+                              style: TextStyle(
+                                  fontSize: 13.0, color: cPlanGoWhiteBlue),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          )
+                        ])),
+                  )
+                ],
+              ),
+            )),
+        loadImage(document)
       ]),
     );
   }
