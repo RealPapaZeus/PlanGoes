@@ -87,6 +87,7 @@ class _ItemListState extends State<ItemList> {
           .collection("events")
           .document(widget.documentId)
           .collection("itemList")
+          //TODO ORDER BY
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
