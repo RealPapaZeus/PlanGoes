@@ -753,7 +753,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       centerTitle: true,
       title: Text(
         'Register Event'.toLowerCase(),
-        style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
+        style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratLight),
       ),
     );
   }

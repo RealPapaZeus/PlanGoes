@@ -355,8 +355,7 @@ class _EventListState extends State<EventList> {
       title: Text("$_userName's List".toUpperCase(),
           style: TextStyle(
             color: cPlanGoWhiteBlue,
-            fontFamily: _montserratMedium,
-            //fontSize: 24
+            fontFamily: _montserratLight,
           )),
       elevation: 0.0,
       flexibleSpace: Container(
