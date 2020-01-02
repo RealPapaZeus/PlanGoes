@@ -102,7 +102,7 @@ class _AdminViewState extends State<AdminView> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           IconButton(
-            icon: Icon(Icons.import_export, color: Colors.white),
+            icon: Icon(Icons.share, color: Colors.white),
             onPressed: () {},
           )
         ],
