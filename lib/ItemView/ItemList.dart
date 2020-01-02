@@ -116,8 +116,7 @@ class _ItemListState extends State<ItemList> {
               child: new ItemPickDialog(
                   userId: widget.userId,
                   documentId: widget.documentId,
-                  itemDocumentId: document.documentID.toString(),
-                  eventColor: widget.eventColor));
+                  itemDocumentId: document.documentID.toString()));
         },
         child: Container(
           child: Card(
