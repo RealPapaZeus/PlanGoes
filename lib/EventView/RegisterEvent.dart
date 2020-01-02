@@ -31,19 +31,17 @@ class _RegisterEventState extends State<RegisterEvent> {
   String _userName = '';
 
   DateTime _dateTime = DateTime.now();
-  DateTime _dateTimeEnd = DateTime.now();
   String _year = DateTime.now().year.toString();
-  String _yearEnd = DateTime.now().year.toString();
   String _day = DateTime.now().day.toString();
-  String _dayEnd = DateTime.now().day.toString();
   String _month = DateTime.now().month.toString();
-  String _monthEnd = DateTime.now().month.toString();
   String _hour = DateTime.now().hour.toString();
-  String _hourEnd = DateTime.now().hour.toString();
   String _minute = DateTime.now().minute.toString();
-  String _minuteEnd = DateTime.now().minute.toString();
 
   bool _isLoading = false;
+
+  String _montserratLight = 'MontserratLight';
+  String _montserratMedium = 'MontserratMedium';
+  String _montserratRegular = 'MontserratRegular';
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _eventNameController = TextEditingController();
@@ -474,11 +472,11 @@ class _RegisterEventState extends State<RegisterEvent> {
     return TextFormField(
       keyboardType: TextInputType.text,
       cursorColor: cPlanGoBlue,
-      style: TextStyle(color: cPlanGoMarineBlue),
+      style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
       maxLength: 50,
       controller: _eventNameController,
       decoration: InputDecoration(
-        counterStyle: TextStyle(color: cPlanGoDark),
+        counterStyle: TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
         enabledBorder: UnderlineInputBorder(
           borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
         ),
@@ -486,8 +484,8 @@ class _RegisterEventState extends State<RegisterEvent> {
           borderRadius: const BorderRadius.all(Radius.circular(10.0)),
           borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
         ),
-        errorStyle: TextStyle(color: cPlanGoRedBright),
-        labelStyle: TextStyle(color: cPlanGoBlue),
+        errorStyle: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
+        labelStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
         labelText: 'Eventname'.toLowerCase(),
       ),
       obscureText: false,
@@ -505,7 +503,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       maxLength: 50,
       controller: _locationController,
       decoration: InputDecoration(
-        counterStyle: TextStyle(color: cPlanGoDark),
+          counterStyle: TextStyle(color: cPlanGoDark),
           enabledBorder: UnderlineInputBorder(
             borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
           ),
@@ -753,7 +751,10 @@ class _RegisterEventState extends State<RegisterEvent> {
       backgroundColor: cPlangGoDarkBlue,
       elevation: 0.1,
       centerTitle: true,
-      title: Text('Register Event'.toLowerCase()),
+      title: Text(
+        'Register Event'.toLowerCase(),
+        style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
+      ),
     );
   }
 

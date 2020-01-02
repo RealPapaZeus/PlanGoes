@@ -18,6 +18,10 @@ class _EventListState extends State<EventList> {
   String _userName;
   bool _adminRight = true;
 
+  String _montserratLight = 'MontserratLight';
+  String _montserratMedium = 'MontserratMedium';
+  String _montserratRegular = 'MontserratRegular';
+
   @override
   void initState() {
     super.initState();
@@ -158,7 +162,7 @@ class _EventListState extends State<EventList> {
                   child: Text(
                 document['eventname'],
                 maxLines: 1,
-                style: TextStyle(fontSize: 20.0, color: Colors.white),
+                style: TextStyle(fontSize: 20.0, color: cPlanGoWhiteBlue, fontFamily: _montserratRegular),
                 overflow: TextOverflow.ellipsis,
               )),
               new IconButton(
@@ -200,7 +204,7 @@ class _EventListState extends State<EventList> {
                 child: Text(
                   document['location'],
                   maxLines: 1,
-                  style: TextStyle(fontSize: 13.0, color: cPlanGoWhiteBlue),
+                  style: TextStyle(fontSize: 13.0, color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -222,7 +226,9 @@ class _EventListState extends State<EventList> {
                   child: Text(
                     document['description'],
                     maxLines: 3,
-                    style: TextStyle(fontSize: 14.0, color: cPlanGoWhiteBlue),
+                    style: TextStyle(fontSize: 14.0, color: cPlanGoWhiteBlue,
+                     fontFamily: _montserratRegular
+                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
                 )
@@ -234,33 +240,32 @@ class _EventListState extends State<EventList> {
 
   Widget loadImage(DocumentSnapshot document) {
     return new Container(
-          height: MediaQuery.of(context).size.height / 10,
-          width: MediaQuery.of(context).size.height / 10,
-          alignment: Alignment.centerLeft,
-          margin:
-              const EdgeInsets.only(top: 8, bottom: 8, left: 3.75, right: 8),
-          decoration: new BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 10.0,
-                  spreadRadius: 1.0,
-                )
-              ],
-              shape: BoxShape.circle,
-              image: new DecorationImage(
-                  fit: BoxFit.fill,
-                  image: (document['imageUrl'] != 'null')
-                      ? new NetworkImage(document['imageUrl'])
-                      : new AssetImage(
-                          'images/calendar.png',
-                        ))),
-        );
+      height: MediaQuery.of(context).size.height / 10,
+      width: MediaQuery.of(context).size.height / 10,
+      alignment: Alignment.centerLeft,
+      margin: const EdgeInsets.only(top: 8, bottom: 8, left: 3.75, right: 8),
+      decoration: new BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 10.0,
+              spreadRadius: 1.0,
+            )
+          ],
+          shape: BoxShape.circle,
+          image: new DecorationImage(
+              fit: BoxFit.fill,
+              image: (document['imageUrl'] != 'null')
+                  ? new NetworkImage(document['imageUrl'])
+                  : new AssetImage(
+                      'images/calendar.png',
+                    ))),
+    );
   }
 
   Widget buildCanbanList(BuildContext context, DocumentSnapshot document) {
     return new InkWell(
       borderRadius: new BorderRadius.circular(20.0),
-      splashColor: cPlanGoDark,
+      splashColor: cPlanGoBlue,
       onTap: () {
         callView(document);
       },
@@ -314,7 +319,7 @@ class _EventListState extends State<EventList> {
                                   .replaceAll('-', '/'),
                               maxLines: 1,
                               style: TextStyle(
-                                  fontSize: 13.0, color: cPlanGoWhiteBlue),
+                                  fontSize: 13.0, color: cPlanGoWhiteBlue, fontFamily: _montserratRegular),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -331,7 +336,7 @@ class _EventListState extends State<EventList> {
                             child: Text(
                               document['datetime'].substring(11, 16),
                               style: TextStyle(
-                                  fontSize: 13.0, color: cPlanGoWhiteBlue),
+                                  fontSize: 13.0, color: cPlanGoWhiteBlue, fontFamily: _montserratRegular),
                               overflow: TextOverflow.ellipsis,
                             ),
                           )
@@ -347,8 +352,12 @@ class _EventListState extends State<EventList> {
 
   Widget createAppBar() {
     return AppBar(
-      title:
-          Text("$_userName's List", style: TextStyle(color: cPlanGoWhiteBlue)),
+      title: Text("$_userName's List".toUpperCase(),
+          style: TextStyle(
+            color: cPlanGoWhiteBlue,
+            fontFamily: _montserratMedium,
+            //fontSize: 24
+          )),
       elevation: 0.0,
       flexibleSpace: Container(
         decoration: BoxDecoration(
