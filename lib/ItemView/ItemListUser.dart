@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/ItemView/ItemPickDialog.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:plan_go_software_project/colors.dart';
 
 class ItemList extends StatefulWidget {
   final String userId;
@@ -57,10 +56,7 @@ class _ItemListState extends State<ItemList> {
 
   Widget getCircleAvatar(String textInput) {
     return CircleAvatar(
-      child: Text(
-        textInput,
-        style: TextStyle(color: cPlanGoWhiteBlue),
-      ),
+      child: Text(textInput),
       backgroundColor: Color(widget.eventColor),
     );
   }
@@ -96,7 +92,7 @@ class _ItemListState extends State<ItemList> {
               scrollDirection: Axis.vertical,
               itemExtent: 100,
               padding: EdgeInsets.only(
-                  left: 10.0, right: 10.0, top: 15.0, bottom: 50.0),
+                  left: 10.0, right: 10.0, top: 10.0, bottom: 50.0),
               itemCount: snapshot.data.documents.length,
               itemBuilder: (context, index) {
                 return buildItemList(context, snapshot.data.documents[index]);
@@ -108,8 +104,6 @@ class _ItemListState extends State<ItemList> {
 
   Widget buildItemList(BuildContext context, DocumentSnapshot document) {
     return new InkWell(
-        splashColor: Color(widget.eventColor),
-        borderRadius: new BorderRadius.circular(15.0),
         onTap: () {
           showDialog(
               context: context,
@@ -123,24 +117,8 @@ class _ItemListState extends State<ItemList> {
             shape: RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(15.0),
             ),
-            elevation: 5.0,
+            elevation: 10.0,
             margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-            child: Slidable(
-              actionPane: SlidableStrechActionPane(),
-              closeOnScroll: true,
-              actions: <Widget>[
-                IconSlideAction(
-                  caption: 'Delete',
-                  color: Colors.red,
-                  icon: Icons.delete,
-                  onTap: () async {
-                    await Future.delayed(Duration(milliseconds: 300), () {
-                      deleteItem(document);
-                      deleteUsersItemList(document);
-                    });
-                  },
-                )
-              ],
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -152,7 +130,7 @@ class _ItemListState extends State<ItemList> {
                             decoration: new BoxDecoration(
                                 border: new Border(
                                     right: new BorderSide(
-                                        width: 1.0, color: cPlanGoDark))),
+                                        width: 1.0, color: Colors.black26))),
                             child: getUsernameChar(document)),
                         Container(
                           constraints: BoxConstraints(maxWidth: 250),
@@ -175,7 +153,7 @@ class _ItemListState extends State<ItemList> {
                   ]),
             ),
           ),
-        ));
+        );
   }
 
   @override
