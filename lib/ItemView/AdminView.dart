@@ -6,7 +6,6 @@ import 'package:plan_go_software_project/ItemView/ItemList.dart';
 import 'package:plan_go_software_project/colors.dart';
 
 class AdminView extends StatefulWidget {
-
   final String documentId;
   final String userId;
 
@@ -14,31 +13,30 @@ class AdminView extends StatefulWidget {
     Key key,
     this.documentId,
     this.userId,
-    }) : super(key: key);
+  }) : super(key: key);
 
   @override
   _AdminViewState createState() => new _AdminViewState();
 }
-  
-class _AdminViewState extends State<AdminView>{
 
+class _AdminViewState extends State<AdminView> {
   int _eventColor = 0;
   String _eventName = '';
   String _imageUrl = '';
   double offset = 0.0;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     getEventInfo();
   }
 
-  // Method how to get one variable out of database, without using 
-  //StreamBuilder   
-  void getEventInfo() async{
+  // Method how to get one variable out of database, without using
+  //StreamBuilder
+  void getEventInfo() async {
     final databaseReference = Firestore.instance;
-    var documentReference = databaseReference.collection("events").
-                                              document(widget.documentId);
+    var documentReference =
+        databaseReference.collection("events").document(widget.documentId);
 
     documentReference.get().then((DocumentSnapshot document) {
       setState(() {
@@ -50,9 +48,10 @@ class _AdminViewState extends State<AdminView>{
   }
 
   buildStream() {
-    return ItemList(userId: widget.userId,
-                    documentId: widget.documentId,
-                    eventColor: _eventColor.toInt(),
+    return ItemList(
+      userId: widget.userId,
+      documentId: widget.documentId,
+      eventColor: _eventColor.toInt(),
     );
   }
 
@@ -62,16 +61,18 @@ class _AdminViewState extends State<AdminView>{
       pinned: true,
       floating: true,
       forceElevated: value,
-      expandedHeight: 200.0,
+      expandedHeight: 150.0,
       backgroundColor: Color(_eventColor),
       flexibleSpace: FlexibleSpaceBar(
-        centerTitle: true,
-        title: Text(_eventName),
-        background: 
-          (_imageUrl != 'null')
-            ? Image.network(_imageUrl, fit: BoxFit.cover)
-            : Image.asset('images/calendar.png', fit: BoxFit.cover)
-      ),
+          centerTitle: true,
+          title: Text(
+            _eventName,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          background: (_imageUrl != 'null')
+              ? Image.network(_imageUrl, fit: BoxFit.cover)
+              : Image.asset('images/calendar.png', fit: BoxFit.cover)),
     );
   }
 
@@ -82,11 +83,11 @@ class _AdminViewState extends State<AdminView>{
       backgroundColor: Color(_eventColor),
       onPressed: () {
         showDialog(
-          context: context,
-          child: new ItemCreateView(documentID: widget.documentId, eventColor: _eventColor.toInt())
-        );
+            context: context,
+            child: new ItemCreateView(
+                documentID: widget.documentId,
+                eventColor: _eventColor.toInt()));
       },
-      
     );
   }
 
@@ -103,22 +104,21 @@ class _AdminViewState extends State<AdminView>{
           IconButton(
             icon: Icon(Icons.import_export, color: Colors.white),
             onPressed: () {},
-          )],
+          )
+        ],
       ),
     );
   }
 
   Widget getScrollView() {
     return new NestedScrollView(
-        headerSliverBuilder: (context, innerBoxScrolled) {
-          return <Widget>[
-            createAppBar(innerBoxScrolled)
-          ];
-        },
-        body: buildStream(),
-      );
+      headerSliverBuilder: (context, innerBoxScrolled) {
+        return <Widget>[createAppBar(innerBoxScrolled)];
+      },
+      body: buildStream(),
+    );
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,4 +130,4 @@ class _AdminViewState extends State<AdminView>{
       bottomNavigationBar: bottomNavigation(),
     );
   }
-}   
+}
