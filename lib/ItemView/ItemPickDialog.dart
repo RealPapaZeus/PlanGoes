@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:plan_go_software_project/colors.dart';
 
 class ItemPickDialog extends StatefulWidget {
   final String userId;
@@ -307,6 +308,7 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
                 top: new BorderSide(width: 1.5, color: Colors.black26))),
         child: new Scrollbar(
             child: new Scaffold(
+              backgroundColor: cPlanGoWhiteBlue,
           body: buildUsersItemStream(context),
         )));
   }
@@ -344,19 +346,33 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
     );
   }
 
+  Widget getCreationButton() {
+    return SizedBox(
+      width: 250,
+      child: RaisedButton(
+          splashColor: cPlanGoMarineBlue,
+          color: cPlanGoBlue,
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(40.0),
+          ),
+          elevation: 5.0,
+          onPressed: registerItemByPress,
+          child: Text(
+            'Save',
+            style: TextStyle(color: cPlanGoWhiteBlue),
+          )),
+    );
+  }
+
   showItemCreatorDialog() {
     return AlertDialog(
+      backgroundColor: cPlanGoWhiteBlue,
       title: Center(child: Text(_itemName, overflow: TextOverflow.ellipsis)),
       content: displayElements(),
       shape:
-          RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
+          RoundedRectangleBorder(borderRadius: new BorderRadius.circular(25.0)),
       actions: <Widget>[
-        FlatButton(
-          onPressed: () {
-            registerItemByPress();
-          },
-          child: Text('Create'),
-        )
+        getCreationButton()
       ],
     );
   }

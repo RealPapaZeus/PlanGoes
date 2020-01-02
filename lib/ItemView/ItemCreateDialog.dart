@@ -193,6 +193,7 @@ class _ItemCreateViewState extends State<ItemCreateView> {
 
   showItemCreatorDialog() {
     return AlertDialog(
+      backgroundColor: cPlanGoWhiteBlue,
       title: Center(child: Text('New Item', style: TextStyle(color: cPlanGoDark),)),
       content: itemGeneratorContent(),
       shape: RoundedRectangleBorder(
