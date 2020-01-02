@@ -90,7 +90,7 @@ class _ItemListState extends State<ItemList> {
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
-          return const Center(child: Text("Your ItemList is empty"));
+          return const Text("Loading..");
         return Scrollbar(
           child: ListView.builder(
               scrollDirection: Axis.vertical,
@@ -116,7 +116,8 @@ class _ItemListState extends State<ItemList> {
               child: new ItemPickDialog(
                   userId: widget.userId,
                   documentId: widget.documentId,
-                  itemDocumentId: document.documentID.toString()));
+                  itemDocumentId: document.documentID.toString(),
+                  eventColor: widget.eventColor));
         },
         child: Container(
           child: Card(
@@ -152,12 +153,12 @@ class _ItemListState extends State<ItemList> {
                             decoration: new BoxDecoration(
                                 border: new Border(
                                     right: new BorderSide(
-                                        width: 1.0, color: cPlanGoDark))),
+                                        width: 1.0, color: Colors.black))),
                             child: getUsernameChar(document)),
                         Container(
-                          constraints: BoxConstraints(maxWidth: 250),
+                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width / 1.7),
                           padding:
-                              const EdgeInsets.only(left: 12.0, right: 12.0),
+                              const EdgeInsets.only(left: 6.0, right: 12.0),
                           child: Text(
                             document['name'],
                             overflow: TextOverflow.ellipsis,
