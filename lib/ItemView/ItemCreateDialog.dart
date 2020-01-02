@@ -2,20 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ItemAlertView extends StatefulWidget {
+class ItemCreateView extends StatefulWidget {
 
   final String documentID;
 
-  ItemAlertView({
+  ItemCreateView({
     Key key,
     this.documentID
     }) : super(key: key);
 
   @override
-  _ItemAlertViewState createState() => new _ItemAlertViewState();
+  _ItemCreateViewState createState() => new _ItemCreateViewState();
 }
   
-class _ItemAlertViewState extends State<ItemAlertView>{
+class _ItemCreateViewState extends State<ItemCreateView>{
 
   String _item;
   int _value = 0;
