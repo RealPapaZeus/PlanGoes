@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:plan_go_software_project/ItemView/ItemAlertDialog.dart';
+import 'package:plan_go_software_project/ItemView/ItemCreateDialog.dart';
 import 'package:plan_go_software_project/ItemView/ItemList.dart';
+import 'package:plan_go_software_project/colors.dart';
 
 class AdminView extends StatefulWidget {
 
@@ -82,7 +83,7 @@ class _AdminViewState extends State<AdminView>{
       onPressed: () {
         showDialog(
           context: context,
-          child: new ItemAlertView(documentID: widget.documentId)
+          child: new ItemCreateView(documentID: widget.documentId, eventColor: _eventColor.toInt())
         );
       },
       
@@ -91,6 +92,7 @@ class _AdminViewState extends State<AdminView>{
 
   Widget bottomNavigation() {
     return new BottomAppBar(
+      elevation: 5.0,
       shape: CircularNotchedRectangle(),
       color: Color(_eventColor),
       notchMargin: 4.0,
@@ -105,19 +107,24 @@ class _AdminViewState extends State<AdminView>{
       ),
     );
   }
-  
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      body: new NestedScrollView(
+
+  Widget getScrollView() {
+    return new NestedScrollView(
         headerSliverBuilder: (context, innerBoxScrolled) {
           return <Widget>[
             createAppBar(innerBoxScrolled)
           ];
         },
         body: buildStream(),
-      ),
+      );
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: cPlanGoWhiteBlue,
+      extendBody: true,
+      body: getScrollView(),
       floatingActionButton: createItem(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: bottomNavigation(),
