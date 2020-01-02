@@ -257,9 +257,11 @@ class _CreateAccountState extends State<CreateAccount> {
         child: TextFormField(
           keyboardType: TextInputType.text,
           cursorColor: cPlanGoBlue,
+          maxLength: 20,
           style: TextStyle(color: cPlanGoMarineBlue),
           controller: _usernameController,
           decoration: InputDecoration(
+            counterStyle: TextStyle(color: cPlanGoBlue),
               enabledBorder: UnderlineInputBorder(
                 borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
               ),

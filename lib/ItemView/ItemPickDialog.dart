@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:plan_go_software_project/colors.dart';
 
 class ItemPickDialog extends StatefulWidget {
   final String userId;
@@ -260,11 +261,10 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
           .collection("usersItemList")
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return const Center(child: Text("There is no item selected"));
+        if (!snapshot.hasData) return const Center(child: Text("Loading.."));
         return ListView.builder(
           scrollDirection: Axis.vertical,
-          itemExtent: 75,
+          itemExtent: 50,
           padding: EdgeInsets.only(bottom: 5.0),
           itemCount: snapshot.data.documents.length,
           itemBuilder: (context, index) =>
@@ -282,13 +282,16 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
         children: <Widget>[
           Container(
             padding: const EdgeInsets.only(right: 5.0, left: 5.0),
-            child: Text(document['user']),
+            child: Text(
+              document['user'],
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           Container(
             padding: const EdgeInsets.only(left: 5.0, right: 5.0),
             decoration: new BoxDecoration(
                 border: new Border(
-                    left: new BorderSide(width: 1.0, color: Colors.black26))),
+                    left: new BorderSide(width: 1, color: cPlanGoDark))),
             child: Text(
               document['value'].toString(),
             ),
@@ -300,15 +303,66 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
 
   Widget getUsersItems() {
     return Container(
-        height: 300,
-        width: 250,
+        height: MediaQuery.of(context).size.height / 3.5,
+        width: MediaQuery.of(context).size.width / 1.5,
         decoration: BoxDecoration(
             border: new Border(
-                top: new BorderSide(width: 1.5, color: Colors.black26))),
+                top: new BorderSide(width: 1.5, color: cPlanGoDark))),
         child: new Scrollbar(
             child: new Scaffold(
+          backgroundColor: cPlanGoWhiteBlue,
           body: buildUsersItemStream(context),
         )));
+  }
+
+  Widget itemValueUser() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(child: Text('Your value:')),
+          Container(
+            child: Text('$_value', style: new TextStyle()),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget itemValue() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(child: Text('Total value:')),
+          Container(
+            child: Text('$_valueCurrent / $_valueMax', style: new TextStyle()),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget decrementCounterButton() {
+    return FloatingActionButton(
+        backgroundColor: cPlanGoMarineBlue,
+        splashColor: cPlanGoBlue,
+        child: Icon(Icons.remove),
+        onPressed: () {
+          decrementCounter();
+        });
+  }
+
+  Widget incrementCounterButton() {
+    return FloatingActionButton(
+        backgroundColor: cPlanGoMarineBlue,
+        splashColor: cPlanGoBlue,
+        child: Icon(Icons.add),
+        onPressed: () {
+          incrementCounter();
+        });
   }
 
   Widget createItemCounter() {
@@ -320,18 +374,8 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              IconButton(
-                  icon: Icon(Icons.remove),
-                  onPressed: () {
-                    decrementCounter();
-                  }),
-              Text('$_valueCurrent / $_valueMax',
-                  style: new TextStyle(fontSize: 40.0)),
-              IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    incrementCounter();
-                  }),
+              decrementCounterButton(),
+              incrementCounterButton()
             ],
           )),
     );
@@ -340,23 +384,58 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
   Widget displayElements() {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: <Widget>[createItemCounter(), getUsersItems()],
+      children: <Widget>[
+        getUsersItems(),
+        itemValueUser(),
+        itemValue(),
+        createItemCounter(),
+      ],
+    );
+  }
+
+  Widget getCreationButton() {
+    return SizedBox(
+      width: 250,
+      child: RaisedButton(
+          splashColor: cPlanGoMarineBlue,
+          color: cPlanGoBlue,
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(40.0),
+          ),
+          elevation: 5.0,
+          onPressed: registerItemByPress,
+          child: Text(
+            'Save',
+            style: TextStyle(color: cPlanGoWhiteBlue),
+          )),
     );
   }
 
   showItemCreatorDialog() {
     return AlertDialog(
-      title: Center(child: Text(_itemName, overflow: TextOverflow.ellipsis)),
+      backgroundColor: cPlanGoWhiteBlue,
+      title: Center(
+          child: Text(
+        _itemName,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(color: cPlanGoDark),
+      )),
       content: displayElements(),
       shape:
-          RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15)),
+          RoundedRectangleBorder(borderRadius: new BorderRadius.circular(35.0)),
       actions: <Widget>[
         FlatButton(
-          onPressed: () {
-            registerItemByPress();
-          },
-          child: Text('Create'),
-        )
+            splashColor: cPlanGoBlueGrey,
+            shape: RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(40.0),
+            ),
+            onPressed: () {
+              registerItemByPress();
+            },
+            child: Text(
+              'Save all',
+              style: TextStyle(color: cPlanGoMarineBlue),
+            ))
       ],
     );
   }

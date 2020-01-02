@@ -110,7 +110,7 @@ class _EventListState extends State<EventList> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => UsersView(
+                builder: (context) => UserView(
                     documentId: document.documentID.toString(),
                     userId: widget.userId)));
       }
