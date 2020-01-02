@@ -78,27 +78,27 @@ class _ItemCreateViewState extends State<ItemCreateView> {
   Widget createNewItem() {
     return Flexible(
         child: TextFormField(
-          keyboardType: TextInputType.text,
-          cursorColor: Color(widget.eventColor),
-                  style: TextStyle(color: Color(widget.eventColor)),
-
-      maxLength: 100,
+      keyboardType: TextInputType.text,
+      cursorColor: cPlanGoBlue,
+      style: TextStyle(color: cPlanGoMarineBlue),
+      maxLength: 50,
       controller: _itemController,
       decoration: InputDecoration(
-        counterStyle: TextStyle(color: Color(widget.eventColor)),
+        counterStyle: TextStyle(color: cPlanGoBlue),
         enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Color(widget.eventColor), width: 1.5),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Color(widget.eventColor), width: 2.0),
-          ),
+          borderSide: BorderSide(color: cPlanGoBlue, width: MediaQuery.of(context).size.width/650),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: cPlanGoBlue, width: MediaQuery.of(context).size.width/200),
+        ),
+        errorStyle: TextStyle(color: cPlanGoRedBright),
         prefixIcon: Padding(
-            padding: EdgeInsets.all(0.0),
-            child: Icon(
-              Icons.event,
-              color: Color(widget.eventColor),
-            ),
+          padding: EdgeInsets.all(0.0),
+          child: Icon(
+            Icons.event,
+            color: cPlanGoBlue,
           ),
+        ),
       ),
       validator: (value) => value.isEmpty ? 'Please create an item' : null,
       onSaved: (value) => _item == value,
@@ -108,52 +108,34 @@ class _ItemCreateViewState extends State<ItemCreateView> {
   Widget getValueNumber() {
     return Container(
         padding: const EdgeInsets.only(left: 10.0, bottom: 20.0),
-        
-        child: Text('/$_value',
-            style: new TextStyle(fontSize: 25.0, color: Color(widget.eventColor))));
+        child: Text(' $_value',
+            style: new TextStyle(fontSize: 25.0, color: cPlanGoBlue)));
   }
 
   Widget inputField() {
     return Row(
-      children: <Widget>[
-        createNewItem(),
-        getValueNumber()
-        ],
+      children: <Widget>[createNewItem(), getValueNumber()],
     );
   }
 
   Widget decrementCounterWidget() {
-    return ClipOval(
-      child: Container(
-        color: Color(widget.eventColor),
-        child: IconButton(
-            splashColor: cPlanGoWhiteBlue,
-            icon: Icon(
-              Icons.remove,
-              color: cPlanGoWhiteBlue,
-            ),
-            onPressed: () {
-              decrementCounter();
-            }),
-      ),
-    );
+    return FloatingActionButton(
+                backgroundColor: cPlanGoBlue,
+                splashColor: cPlanGoMarineBlue,
+                  child: Icon(Icons.remove),
+                  onPressed: () {
+                    decrementCounter();
+                  });
   }
 
   Widget incrementCounterWidget() {
-    return ClipOval(
-      child: Container(
-        color: Color(widget.eventColor),
-        child: IconButton(
-            splashColor: cPlanGoWhiteBlue,
-            icon: Icon(
-              Icons.add,
-              color: cPlanGoWhiteBlue,
-            ),
-            onPressed: () {
-              incrementCounter();
-            }),
-      ),
-    );
+    return FloatingActionButton(
+                backgroundColor: cPlanGoBlue,
+                splashColor: cPlanGoMarineBlue,
+                  child: Icon(Icons.add),
+                  onPressed: () {
+                    incrementCounter();
+                  });
   }
 
   Widget createItemCounter() {
@@ -194,17 +176,28 @@ class _ItemCreateViewState extends State<ItemCreateView> {
   showItemCreatorDialog() {
     return AlertDialog(
       backgroundColor: cPlanGoWhiteBlue,
-      title: Center(child: Text('New Item', style: TextStyle(color: cPlanGoDark),)),
+      title: Center(
+          child: Text(
+        'New Item',
+        style: TextStyle(color: cPlanGoDark),
+      )),
       content: itemGeneratorContent(),
       shape: RoundedRectangleBorder(
-        borderRadius: new BorderRadius.circular(25.0),
+        borderRadius: new BorderRadius.circular(35.0),
       ),
       actions: <Widget>[
         FlatButton(
+          splashColor: Color(widget.eventColor),
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(40.0),
+          ),
           onPressed: () {
             registerItemByPress();
           },
-          child: Text('Create', style: TextStyle(color: Color(widget.eventColor)),),
+          child: Text(
+            'Create',
+            style: TextStyle(color: cPlanGoMarineBlue),
+          ),
         )
       ],
     );
