@@ -1,46 +1,42 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:plan_go_software_project/ItemView/ItemCreateDialog.dart';
 import 'package:plan_go_software_project/ItemView/ItemList.dart';
+import 'package:plan_go_software_project/colors.dart';
 
-class UsersView extends StatefulWidget {
-
+class UserView extends StatefulWidget {
   final String documentId;
   final String userId;
 
-  UsersView({
+  UserView({
     Key key,
     this.documentId,
     this.userId,
-    }) : super(key: key);
+  }) : super(key: key);
 
   @override
-  _UsersViewState createState() => new _UsersViewState();
+  _UserViewState createState() => new _UserViewState();
 }
-  
-class _UsersViewState extends State<UsersView>{
 
+class _UserViewState extends State<UserView> {
   int _eventColor = 0;
   String _eventName = '';
   String _imageUrl = '';
   double offset = 0.0;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     getEventInfo();
   }
 
-   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  // Method how to get one variable out of database, without using 
-  //StreamBuilder   
-  void getEventInfo() async{
+  // Method how to get one variable out of database, without using
+  //StreamBuilder
+  void getEventInfo() async {
     final databaseReference = Firestore.instance;
-    var documentReference = databaseReference.collection("events").document(widget.documentId);
+    var documentReference =
+        databaseReference.collection("events").document(widget.documentId);
 
     documentReference.get().then((DocumentSnapshot document) {
       setState(() {
@@ -52,9 +48,10 @@ class _UsersViewState extends State<UsersView>{
   }
 
   buildStream() {
-    return ItemList(userId: widget.userId,
-                    documentId: widget.documentId,
-                    eventColor: _eventColor.toInt(),
+    return ItemList(
+      userId: widget.userId,
+      documentId: widget.documentId,
+      eventColor: _eventColor.toInt(),
     );
   }
 
@@ -64,33 +61,36 @@ class _UsersViewState extends State<UsersView>{
       pinned: true,
       floating: true,
       forceElevated: value,
-      expandedHeight: 200.0,
+      expandedHeight: 150.0,
       backgroundColor: Color(_eventColor),
       flexibleSpace: FlexibleSpaceBar(
-        centerTitle: true,
-        title: Text(_eventName),
-        background: Image.network(
-          (_imageUrl != 'null')
-            ? _imageUrl
-            : 'https://images.unsplash.com/photo-1511871893393-82e9c16b81e3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80',
-          fit: BoxFit.cover
-        )
-      ),
+          centerTitle: true,
+          title: Text(
+            _eventName,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          background: (_imageUrl != 'null')
+              ? Image.network(_imageUrl, fit: BoxFit.cover)
+              : Image.asset('images/calendar.png', fit: BoxFit.cover)),
     );
   }
-  
+
+  Widget getScrollView() {
+    return new NestedScrollView(
+      headerSliverBuilder: (context, innerBoxScrolled) {
+        return <Widget>[createAppBar(innerBoxScrolled)];
+      },
+      body: buildStream(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: cPlanGoWhiteBlue,
       extendBody: true,
-      body: new NestedScrollView(
-        headerSliverBuilder: (context, innerBoxScrolled) {
-          return <Widget>[
-            createAppBar(innerBoxScrolled)
-          ];
-        },
-        body: buildStream(),
-      ),
+      body: getScrollView(),
     );
   }
-}   
+}
