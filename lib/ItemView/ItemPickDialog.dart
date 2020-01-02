@@ -307,7 +307,7 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
         width: MediaQuery.of(context).size.width / 1.5,
         decoration: BoxDecoration(
             border: new Border(
-                top: new BorderSide(width: 1.5, color: cPlanGoDark))),
+                top: new BorderSide(width: 1, color: cPlanGoDark))),
         child: new Scrollbar(
             child: new Scaffold(
           backgroundColor: cPlanGoWhiteBlue,
@@ -315,20 +315,20 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
         )));
   }
 
-  Widget itemValueUser() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(child: Text('Your value:')),
-          Container(
-            child: Text('$_value', style: new TextStyle()),
-          )
-        ],
-      ),
-    );
-  }
+  // Widget itemValueUser() {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: <Widget>[
+  //         Container(child: Text('Your value:')),
+  //         Container(
+  //           child: Text('$_value', style: new TextStyle()),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget itemValue() {
     return Padding(
@@ -386,7 +386,7 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         getUsersItems(),
-        itemValueUser(),
+        //itemValueUser(),
         itemValue(),
         createItemCounter(),
       ],
@@ -422,7 +422,7 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
       )),
       content: displayElements(),
       shape:
-          RoundedRectangleBorder(borderRadius: new BorderRadius.circular(35.0)),
+          RoundedRectangleBorder(borderRadius: new BorderRadius.circular(25.0)),
       actions: <Widget>[
         FlatButton(
             splashColor: cPlanGoBlueGrey,
