@@ -162,7 +162,7 @@ class _EventListState extends State<EventList> {
                   child: Text(
                 document['eventname'],
                 maxLines: 1,
-                style: TextStyle(fontSize: 20.0, color: cPlanGoWhiteBlue, fontFamily: _montserratRegular),
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18, color: cPlanGoWhiteBlue, fontFamily: _montserratRegular),
                 overflow: TextOverflow.ellipsis,
               )),
               new IconButton(
@@ -204,7 +204,7 @@ class _EventListState extends State<EventList> {
                 child: Text(
                   document['location'],
                   maxLines: 1,
-                  style: TextStyle(fontSize: 13.0, color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
+                  style: TextStyle(fontSize: 13.0, color: cPlanGoWhiteBlue, fontFamily: _montserratRegular),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -227,7 +227,7 @@ class _EventListState extends State<EventList> {
                     document['description'],
                     maxLines: 3,
                     style: TextStyle(fontSize: 14.0, color: cPlanGoWhiteBlue,
-                     fontFamily: _montserratRegular
+                     fontFamily: _montserratMedium
                      ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -240,14 +240,14 @@ class _EventListState extends State<EventList> {
 
   Widget loadImage(DocumentSnapshot document) {
     return new Container(
-      height: MediaQuery.of(context).size.height / 10,
-      width: MediaQuery.of(context).size.height / 10,
+      height: MediaQuery.of(context).size.height / 9.75,
+      width: MediaQuery.of(context).size.height / 9.75,
       alignment: Alignment.centerLeft,
-      margin: const EdgeInsets.only(top: 8, bottom: 8, left: 3.75, right: 8),
+      margin: const EdgeInsets.only(top: 35, bottom: 8, left: 3.0, right: 8),
       decoration: new BoxDecoration(
           boxShadow: [
             BoxShadow(
-              blurRadius: 10.0,
+              blurRadius: 5.0,
               spreadRadius: 1.0,
             )
           ],
@@ -272,12 +272,12 @@ class _EventListState extends State<EventList> {
       child: new Stack(children: <Widget>[
         new Container(
             width: MediaQuery.of(context).size.height / 1.0,
-            height: MediaQuery.of(context).size.height / 4.6,
+            height: MediaQuery.of(context).size.height / 4.4,
             margin: const EdgeInsets.only(
-                left: 40.0, bottom: 7.5, top: 7.5, right: 7.5),
+                left: 40.0, bottom: 7.5, top: 20, right: 7.5),
             decoration: new BoxDecoration(
               color: Color(document['eventColor']),
-              borderRadius: new BorderRadius.circular(18.0),
+              borderRadius: new BorderRadius.circular(20.0),
               boxShadow: <BoxShadow>[
                 new BoxShadow(
                   color: Color(document['eventColor']),
@@ -355,9 +355,10 @@ class _EventListState extends State<EventList> {
       title: Text("$_userName's List".toUpperCase(),
           style: TextStyle(
             color: cPlanGoWhiteBlue,
-            fontFamily: _montserratLight,
+            fontFamily: _montserratMedium,
+            fontSize: 16.0
           )),
-      elevation: 0.0,
+      elevation: 5.0,
       flexibleSpace: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

@@ -285,11 +285,11 @@ class _RegisterEventState extends State<RegisterEvent> {
           contentPadding: const EdgeInsets.all(12.0),
           title: Text(
             'Pick Color',
-            style: TextStyle(color: cPlanGoDark),
+            style: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
           ),
           content: content,
           shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(15)),
+              borderRadius: new BorderRadius.circular(15.0)),
           actions: [
             FlatButton(
               shape: RoundedRectangleBorder(
@@ -297,7 +297,8 @@ class _RegisterEventState extends State<RegisterEvent> {
               ),
               child: Text(
                 'Cancel',
-                style: TextStyle(color: cPlanGoDark),
+                style: TextStyle(
+                    color: cPlanGoRedBright, fontFamily: _montserratMedium),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -307,7 +308,9 @@ class _RegisterEventState extends State<RegisterEvent> {
               shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(40.0),
               ),
-              child: Text('Submit', style: TextStyle(color: cPlanGoDark)),
+              child: Text('Submit',
+                  style: TextStyle(
+                      color: cPlanGoBlue, fontFamily: _montserratMedium)),
               onPressed: () {
                 setState(() {
                   _shadeColor = _tempShadeColor;
@@ -360,10 +363,10 @@ class _RegisterEventState extends State<RegisterEvent> {
     return Padding(
       padding: EdgeInsets.only(top: 20),
       child: IconButton(
-        tooltip: 'select picture',
+        tooltip: 'Select event picture',
         hoverColor: cPlanGoWhiteBlue,
         splashColor: cPlanGoWhiteBlue,
-        color: cPlangGoDarkBlue,
+        color: cPlanGoDark,
         icon: Icon(
           FontAwesomeIcons.camera,
           size: 20,
@@ -476,17 +479,20 @@ class _RegisterEventState extends State<RegisterEvent> {
       maxLength: 50,
       controller: _eventNameController,
       decoration: InputDecoration(
-        counterStyle: TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
+        counterStyle:
+            TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
         enabledBorder: UnderlineInputBorder(
-          borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
+          borderSide: const BorderSide(color: cPlanGoBlue, width: 2.0),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10.0)),
           borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
         ),
-        errorStyle: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
-        labelStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
-        labelText: 'Eventname'.toLowerCase(),
+        errorStyle:
+            TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
+        labelStyle:
+            TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
+        labelText: 'Eventname',
       ),
       obscureText: false,
       validator: (value) =>
@@ -499,21 +505,24 @@ class _RegisterEventState extends State<RegisterEvent> {
     return TextFormField(
       keyboardType: TextInputType.text,
       cursorColor: cPlanGoBlue,
-      style: TextStyle(color: cPlanGoMarineBlue),
+      style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
       maxLength: 50,
       controller: _locationController,
       decoration: InputDecoration(
-          counterStyle: TextStyle(color: cPlanGoDark),
+          counterStyle:
+              TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
           enabledBorder: UnderlineInputBorder(
-            borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
+            borderSide: const BorderSide(color: cPlanGoBlue, width: 2.0),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(10.0)),
             borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
           ),
-          errorStyle: TextStyle(color: cPlanGoRedBright),
-          labelStyle: TextStyle(color: cPlanGoBlue),
-          labelText: 'Location'.toLowerCase()),
+          errorStyle:
+              TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
+          labelStyle:
+              TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
+          labelText: 'Location'),
       obscureText: false,
       validator: (value) => value.isEmpty
           ? messageToDenyLoading('Please enter a location')
@@ -526,22 +535,25 @@ class _RegisterEventState extends State<RegisterEvent> {
     return TextFormField(
       keyboardType: TextInputType.multiline,
       cursorColor: cPlanGoBlue,
-      style: TextStyle(color: cPlanGoMarineBlue),
+      style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
       maxLines: 4,
       maxLength: 200,
       controller: _descriptionController,
       decoration: InputDecoration(
-          counterStyle: TextStyle(color: cPlanGoDark),
+          counterStyle:
+              TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
           enabledBorder: UnderlineInputBorder(
-            borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
+            borderSide: const BorderSide(color: cPlanGoBlue, width: 2.0),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(10.0)),
             borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
           ),
-          errorStyle: TextStyle(color: cPlanGoRedBright),
-          labelStyle: TextStyle(color: cPlanGoBlue),
-          labelText: 'Description'.toLowerCase()),
+          errorStyle:
+              TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
+          labelStyle:
+              TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
+          labelText: 'Description'),
       obscureText: false,
       validator: (value) => value.isEmpty
           ? messageToDenyLoading('Please enter some description')
@@ -552,13 +564,16 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   Widget getDateTimeHeader() {
     return Padding(
-        padding: const EdgeInsets.only(bottom: 5.0),
+        padding: const EdgeInsets.only(bottom: 5.0, top: 17.0),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
           Text(
-            'Start Date'.toLowerCase(),
+            'Start date',
             textAlign: TextAlign.start,
-            style: TextStyle(color: cPlanGoBlue, fontSize: 16.0),
+            style: TextStyle(
+                color: cPlanGoBlue,
+                fontSize: 16.0,
+                fontFamily: _montserratMedium),
           )
         ]));
   }
@@ -597,11 +612,15 @@ class _RegisterEventState extends State<RegisterEvent> {
                         Container(
                             padding: const EdgeInsets.all(6.0),
                             child: Text('date',
-                                style: TextStyle(color: cPlanGoWhiteBlue))),
+                                style: TextStyle(
+                                    color: cPlanGoWhiteBlue,
+                                    fontFamily: _montserratMedium))),
                         Container(
                             padding: const EdgeInsets.all(6.0),
                             child: Text('time',
-                                style: TextStyle(color: cPlanGoWhiteBlue))),
+                                style: TextStyle(
+                                    color: cPlanGoWhiteBlue,
+                                    fontFamily: _montserratMedium))),
                       ],
                     ),
                     Column(
@@ -611,11 +630,15 @@ class _RegisterEventState extends State<RegisterEvent> {
                           Container(
                               padding: const EdgeInsets.all(6.0),
                               child: Text('$_day/$_month/$_year',
-                                  style: TextStyle(color: cPlanGoWhiteBlue))),
+                                  style: TextStyle(
+                                      color: cPlanGoWhiteBlue,
+                                      fontFamily: _montserratMedium))),
                           Container(
                               padding: const EdgeInsets.all(6.0),
                               child: Text('$_hour:$_minute',
-                                  style: TextStyle(color: cPlanGoWhiteBlue))),
+                                  style: TextStyle(
+                                      color: cPlanGoWhiteBlue,
+                                      fontFamily: _montserratMedium))),
                         ])
                   ],
                 ))));
@@ -631,7 +654,9 @@ class _RegisterEventState extends State<RegisterEvent> {
             Container(
               child: Text('Event color:',
                   style: new TextStyle(
-                      fontWeight: FontWeight.bold, color: cPlanGoDark)),
+                      fontSize: 16.0,
+                      color: cPlanGoBlue,
+                      fontFamily: _montserratMedium)),
             ),
             Container(
               child: FloatingActionButton(
@@ -694,13 +719,13 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   Widget getEventRegistration() {
     return SizedBox(
-        width: 250,
+        width: MediaQuery.of(context).size.width / 1.55,
         child: RaisedButton(
           splashColor: cPlanGoMarineBlue,
           color: cPlanGoBlue,
           child: Text(
             'Register',
-            style: TextStyle(color: cPlanGoWhiteBlue),
+            style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
           ),
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(40.0),
@@ -730,7 +755,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       eventLocation(),
       getDateTimeHeader(),
       eventDateTimeStart(),
-      Divider(color: cPlanGoBlue, thickness: 1.5),
+      Divider(color: cPlanGoBlue, thickness: 2),
       eventDescriptionTextField(),
     ];
   }
@@ -753,7 +778,10 @@ class _RegisterEventState extends State<RegisterEvent> {
       centerTitle: true,
       title: Text(
         'Register Event'.toLowerCase(),
-        style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratLight),
+        style: TextStyle(
+          color: cPlanGoWhiteBlue,
+          fontFamily: _montserratRegular,
+        ),
       ),
     );
   }

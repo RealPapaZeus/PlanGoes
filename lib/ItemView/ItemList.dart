@@ -26,6 +26,10 @@ class ItemList extends StatefulWidget {
 /// to return Items
 ///
 class _ItemListState extends State<ItemList> {
+  String _montserratLight = 'MontserratLight';
+  String _montserratMedium = 'MontserratMedium';
+  String _montserratRegular = 'MontserratRegular';
+
   @override
   void initState() {
     super.initState();
@@ -59,7 +63,7 @@ class _ItemListState extends State<ItemList> {
     return CircleAvatar(
       child: Text(
         textInput,
-        style: TextStyle(color: cPlanGoWhiteBlue),
+        style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratLight),
       ),
       backgroundColor: Color(widget.eventColor),
     );
@@ -87,11 +91,14 @@ class _ItemListState extends State<ItemList> {
           .collection("events")
           .document(widget.documentId)
           .collection("itemList")
-          //TODO ORDER BY
+          .orderBy("valueMax", descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
-          return const Text("Loading..");
+          return Text(
+            "Loading..",
+            style: TextStyle(fontFamily: _montserratMedium),
+          );
         return Scrollbar(
           child: ListView.builder(
               scrollDirection: Axis.vertical,
@@ -122,7 +129,7 @@ class _ItemListState extends State<ItemList> {
         child: Container(
           child: Card(
             shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(15.0),
+              borderRadius: new BorderRadius.circular(5.0),
             ),
             elevation: 5.0,
             margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
@@ -153,15 +160,18 @@ class _ItemListState extends State<ItemList> {
                             decoration: new BoxDecoration(
                                 border: new Border(
                                     right: new BorderSide(
-                                        width: 1.0, color: Colors.black))),
+                                        width: 1.0, color: cPlanGoDark))),
                             child: getUsernameChar(document)),
                         Container(
-                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width / 1.7),
+                          constraints: BoxConstraints(
+                              maxWidth:
+                                  MediaQuery.of(context).size.width / 1.7),
                           padding:
                               const EdgeInsets.only(left: 6.0, right: 12.0),
                           child: Text(
                             document['name'],
                             overflow: TextOverflow.ellipsis,
+                            //style: TextStyle(fontFamily: _montserratLight, fontWeight: FontWeight.bold)
                           ),
                         ),
                       ],
@@ -171,7 +181,9 @@ class _ItemListState extends State<ItemList> {
                       alignment: Alignment.centerRight,
                       padding: const EdgeInsets.only(right: 12.0),
                       child: Text(
-                          '${document['valueCurrent'].toString()}/${document['valueMax'].toString()}'),
+                        '${document['valueCurrent'].toString()}/${document['valueMax'].toString()}',
+                       // style: TextStyle(fontFamily: _montserratRegular),
+                      ),
                     ))
                   ]),
             ),
