@@ -220,7 +220,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
               padding: const EdgeInsets.only(bottom: 30, right: 30),
               child: Text(
                 'Login'.toLowerCase(),
-                style: TextStyle(color: cPlanGoWhiteBlue, fontSize: 18, fontFamily: _montserratMedium),
+                style: TextStyle(color: cPlanGoWhiteBlue, fontSize: 18, fontFamily: _montserratRegular),
               ),
             ),
           ),
