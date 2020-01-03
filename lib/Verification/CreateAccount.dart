@@ -26,6 +26,10 @@ class _CreateAccountState extends State<CreateAccount> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
 
+  String _montserratLight = 'MontserratLight';
+  String _montserratMedium = 'MontserratMedium';
+  String _montserratRegular = 'MontserratRegular';
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -100,27 +104,27 @@ class _CreateAccountState extends State<CreateAccount> {
             backgroundColor: cPlanGoWhiteBlue,
             title: Text(
               'Verify Your Email Address',
-              style: TextStyle(color: cPlanGoMarineBlue),
+              style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
             ),
             content: RichText(
                 text: new TextSpan(
                     style:
-                        new TextStyle(fontSize: 14.0, color: cPlanGoMarineBlue),
+                        new TextStyle(fontSize: 14.0, color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
                     children: <TextSpan>[
                   new TextSpan(
                       text:
-                          'We like you to verify your email address. We have sent an email to '),
+                          'We like you to verify your email address. We have sent an email to ', style: TextStyle(fontFamily: _montserratMedium)),
                   new TextSpan(
-                      text: '$_email',
-                      style: new TextStyle(fontWeight: FontWeight.bold)),
-                  new TextSpan(
-                      text:
-                          ' to verify your address. Please click the link in that email to continue.'),
+                      text: '$_email'.trim(),
+                      style: new TextStyle(fontWeight: FontWeight.bold, fontFamily: _montserratMedium)),
                   new TextSpan(
                       text:
-                          '\nWait some seconds and check spam if you have not received an email.'),
-                  new TextSpan(text: '\nWe are glad to welcome you!'),
-                  new TextSpan(text: '\n\nYour PlanGo team')
+                          ' to verify your address. Please click the link in that email to continue.', style: TextStyle(fontFamily: _montserratMedium)),
+                  new TextSpan(
+                      text:
+                          '\nWait some seconds and please check your spam if you have not received an email.', style: TextStyle( fontFamily: _montserratMedium)),
+                  new TextSpan(text: '\nWe are glad to welcome you!', style: TextStyle(fontFamily: _montserratMedium)),
+                  new TextSpan(text: '\n\nYour PlanGo team', style: TextStyle(fontFamily: _montserratMedium))
                 ])),
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(15)),
@@ -135,8 +139,8 @@ class _CreateAccountState extends State<CreateAccount> {
                 ),
                 textColor: cPlanGoWhiteBlue,
                 child: Text(
-                  'Okay, got it',
-                  style: TextStyle(color: cPlanGoBlue),
+                  'Okay, lets go',
+                  style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
                 ),
               )
             ],
@@ -151,7 +155,7 @@ class _CreateAccountState extends State<CreateAccount> {
     return new Container(
       child: Text(
         _authHint,
-        style: TextStyle(color: cPlanGoRedBright),
+        style: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
         textAlign: TextAlign.center,
       ),
     );
@@ -165,7 +169,7 @@ class _CreateAccountState extends State<CreateAccount> {
         child: TextFormField(
           keyboardType: TextInputType.emailAddress,
           cursorColor: cPlanGoBlue,
-          style: TextStyle(color: cPlanGoMarineBlue),
+          style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
           controller: _emailController,
           decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
@@ -175,7 +179,7 @@ class _CreateAccountState extends State<CreateAccount> {
               borderRadius: const BorderRadius.all(Radius.circular(10.0)),
               borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
             ),
-            errorStyle: TextStyle(color: cPlanGoRedBright),
+            errorStyle: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
             prefixIcon: Padding(
               padding: EdgeInsets.all(0.0),
               child: Icon(
@@ -184,7 +188,7 @@ class _CreateAccountState extends State<CreateAccount> {
               ),
             ),
             labelText: 'email',
-            labelStyle: TextStyle(color: cPlanGoBlue),
+            labelStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
           ),
           obscureText: false,
           validator: (value) =>
@@ -203,7 +207,7 @@ class _CreateAccountState extends State<CreateAccount> {
               cursorColor: cPlanGoBlue,
               controller: _passwordController,
               obscureText: _obscurePassword,
-              style: TextStyle(color: cPlanGoMarineBlue),
+              style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
               decoration: InputDecoration(
                 enabledBorder: UnderlineInputBorder(
                   borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
@@ -214,8 +218,8 @@ class _CreateAccountState extends State<CreateAccount> {
                 ),
                 fillColor: cPlanGoBlue,
                 labelText: 'password',
-                labelStyle: TextStyle(color: cPlanGoBlue),
-                errorStyle: TextStyle(color: cPlanGoRedBright),
+                labelStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
+                errorStyle: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
                 prefixIcon: Padding(
                   padding: EdgeInsets.all(0.0),
                   child: Icon(
@@ -257,13 +261,15 @@ class _CreateAccountState extends State<CreateAccount> {
         child: TextFormField(
           keyboardType: TextInputType.text,
           cursorColor: cPlanGoBlue,
-          style: TextStyle(color: cPlanGoMarineBlue),
+          maxLength: 20,
+          style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
           controller: _usernameController,
           decoration: InputDecoration(
+            counterStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
               enabledBorder: UnderlineInputBorder(
                 borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
               ),
-              errorStyle: TextStyle(color: cPlanGoRedBright),
+              errorStyle: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
               focusedBorder: OutlineInputBorder(
                 borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                 borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
@@ -275,7 +281,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   color: cPlanGoBlue,
                 ),
               ),
-              labelStyle: TextStyle(color: cPlanGoBlue),
+              labelStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
               labelText: 'username'),
           obscureText: false,
           validator: (value) => value.isEmpty
@@ -287,13 +293,13 @@ class _CreateAccountState extends State<CreateAccount> {
 
   Widget getRegistrationButton() {
     return SizedBox(
-        width: 250,
+        width: MediaQuery.of(context).size.width / 1.55,
         child: RaisedButton(
           splashColor: cPlanGoMarineBlue,
           color: cPlanGoBlue,
           child: Text(
-            'Register Something Worth',
-            style: TextStyle(color: cPlanGoWhiteBlue),
+            'Sign Up',
+            style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
           ),
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(40.0),
@@ -329,7 +335,7 @@ class _CreateAccountState extends State<CreateAccount> {
       backgroundColor: cPlangGoDarkBlue,
       centerTitle: true,
       title: Text('Registration'.toLowerCase(),
-          style: TextStyle(color: cPlanGoWhiteBlue)),
+          style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratRegular)),
     );
   }
 

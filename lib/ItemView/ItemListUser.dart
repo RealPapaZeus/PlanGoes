@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/ItemView/ItemPickDialog.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:plan_go_software_project/colors.dart';
 
 class ItemList extends StatefulWidget {
   final String userId;
@@ -26,10 +25,6 @@ class ItemList extends StatefulWidget {
 /// to return Items
 ///
 class _ItemListState extends State<ItemList> {
-  String _montserratLight = 'MontserratLight';
-  String _montserratMedium = 'MontserratMedium';
-  String _montserratRegular = 'MontserratRegular';
-
   @override
   void initState() {
     super.initState();
@@ -61,10 +56,7 @@ class _ItemListState extends State<ItemList> {
 
   Widget getCircleAvatar(String textInput) {
     return CircleAvatar(
-      child: Text(
-        textInput,
-        style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratLight),
-      ),
+      child: Text(textInput),
       backgroundColor: Color(widget.eventColor),
     );
   }
@@ -91,20 +83,16 @@ class _ItemListState extends State<ItemList> {
           .collection("events")
           .document(widget.documentId)
           .collection("itemList")
-          .orderBy("valueMax", descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
-          return Text(
-            "Loading..",
-            style: TextStyle(fontFamily: _montserratMedium),
-          );
+          return const Center(child: Text("Your ItemList is empty"));
         return Scrollbar(
           child: ListView.builder(
               scrollDirection: Axis.vertical,
               itemExtent: 100,
               padding: EdgeInsets.only(
-                  left: 10.0, right: 10.0, top: 15.0, bottom: 50.0),
+                  left: 10.0, right: 10.0, top: 10.0, bottom: 50.0),
               itemCount: snapshot.data.documents.length,
               itemBuilder: (context, index) {
                 return buildItemList(context, snapshot.data.documents[index]);
@@ -116,8 +104,6 @@ class _ItemListState extends State<ItemList> {
 
   Widget buildItemList(BuildContext context, DocumentSnapshot document) {
     return new InkWell(
-        splashColor: Color(widget.eventColor),
-        borderRadius: new BorderRadius.circular(15.0),
         onTap: () {
           showDialog(
               context: context,
@@ -129,26 +115,10 @@ class _ItemListState extends State<ItemList> {
         child: Container(
           child: Card(
             shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(5.0),
+              borderRadius: new BorderRadius.circular(15.0),
             ),
-            elevation: 5.0,
+            elevation: 10.0,
             margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-            child: Slidable(
-              actionPane: SlidableStrechActionPane(),
-              closeOnScroll: true,
-              actions: <Widget>[
-                IconSlideAction(
-                  caption: 'Delete',
-                  color: Colors.red,
-                  icon: Icons.delete,
-                  onTap: () async {
-                    await Future.delayed(Duration(milliseconds: 300), () {
-                      deleteItem(document);
-                      deleteUsersItemList(document);
-                    });
-                  },
-                )
-              ],
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -160,18 +130,15 @@ class _ItemListState extends State<ItemList> {
                             decoration: new BoxDecoration(
                                 border: new Border(
                                     right: new BorderSide(
-                                        width: 1.0, color: cPlanGoDark))),
+                                        width: 1.0, color: Colors.black26))),
                             child: getUsernameChar(document)),
                         Container(
-                          constraints: BoxConstraints(
-                              maxWidth:
-                                  MediaQuery.of(context).size.width / 1.7),
+                          constraints: BoxConstraints(maxWidth: 250),
                           padding:
-                              const EdgeInsets.only(left: 6.0, right: 12.0),
+                              const EdgeInsets.only(left: 12.0, right: 12.0),
                           child: Text(
                             document['name'],
                             overflow: TextOverflow.ellipsis,
-                            //style: TextStyle(fontFamily: _montserratLight, fontWeight: FontWeight.bold)
                           ),
                         ),
                       ],
@@ -181,14 +148,12 @@ class _ItemListState extends State<ItemList> {
                       alignment: Alignment.centerRight,
                       padding: const EdgeInsets.only(right: 12.0),
                       child: Text(
-                        '${document['valueCurrent'].toString()}/${document['valueMax'].toString()}',
-                       // style: TextStyle(fontFamily: _montserratRegular),
-                      ),
+                          '${document['valueCurrent'].toString()}/${document['valueMax'].toString()}'),
                     ))
                   ]),
             ),
           ),
-        ));
+        );
   }
 
   @override

@@ -20,6 +20,10 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
+  
+  String _montserratLight = 'MontserratLight';
+  String _montserratMedium = 'MontserratMedium';
+  String _montserratRegular = 'MontserratRegular';
 
   @override
   void dispose() {
@@ -73,22 +77,23 @@ class _ResetPasswordState extends State<ResetPassword> {
             backgroundColor: cPlanGoWhiteBlue,
             title: Text(
               'Email Reset',
-              style: TextStyle(color: cPlanGoMarineBlue),
+              style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
             ),
             content: RichText(
               text: new TextSpan(
                   style: new TextStyle(
                     fontSize: 14.0,
                     color: cPlanGoMarineBlue,
+                    fontFamily: _montserratMedium
                   ),
                   children: <TextSpan>[
-                    new TextSpan(text: 'We just sent you a link to '),
+                    new TextSpan(text: 'We just sent you a link to ', style: TextStyle(fontFamily: _montserratMedium)),
                     new TextSpan(
                         text: '$_email',
-                        style: new TextStyle(fontWeight: FontWeight.bold)),
+                        style: new TextStyle(fontWeight: FontWeight.bold, fontFamily: _montserratMedium)),
                     new TextSpan(
                         text:
-                            ' to reset your password. Please click the link in that email to continue.')
+                            ' to reset your password. Please click the link in that email to continue.', style: TextStyle(fontFamily: _montserratMedium))
                   ]),
             ),
             shape: RoundedRectangleBorder(
@@ -103,7 +108,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   borderRadius: new BorderRadius.circular(40.0),
                 ),
                 textColor: cPlanGoWhiteBlue,
-                child: Text('Okay', style: TextStyle(color: cPlanGoBlue)),
+                child: Text('Save', style: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium)),
               )
             ],
           );
@@ -114,7 +119,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     return new Container(
       child: Text(
         _authHint,
-        style: TextStyle(color: cPlanGoRedBright),
+        style: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
         textAlign: TextAlign.center,
       ),
     );
@@ -131,7 +136,7 @@ class _ResetPasswordState extends State<ResetPassword> {
         child: TextFormField(
           keyboardType: TextInputType.emailAddress,
           cursorColor: cPlanGoBlue,
-          style: TextStyle(color: cPlanGoMarineBlue),
+          style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
           controller: _emailController,
           decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
@@ -141,7 +146,7 @@ class _ResetPasswordState extends State<ResetPassword> {
               borderRadius: const BorderRadius.all(Radius.circular(10.0)),
               borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
             ),
-            errorStyle: TextStyle(color: cPlanGoRedBright),
+            errorStyle: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
             prefixIcon: Padding(
               padding: EdgeInsets.all(0.0),
               child: Icon(
@@ -150,7 +155,7 @@ class _ResetPasswordState extends State<ResetPassword> {
               ),
             ),
             labelText: 'email',
-            labelStyle: TextStyle(color: cPlanGoBlue),
+            labelStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
           ),
           obscureText: false,
           validator: (value) =>
@@ -168,13 +173,13 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   Widget getResetButton() {
     return SizedBox(
-        width: 250,
+        width: MediaQuery.of(context).size.width / 1.55,
         child: RaisedButton(
           splashColor: cPlanGoMarineBlue,
           color: cPlanGoBlue,
           child: Text(
             'Reset',
-            style: TextStyle(color: cPlanGoWhiteBlue),
+            style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
           ),
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(40.0),
@@ -248,7 +253,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       backgroundColor: cPlangGoDarkBlue,
       centerTitle: true,
       title: Text('Reset Password'.toLowerCase(),
-          style: TextStyle(color: cPlanGoWhiteBlue)),
+          style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratRegular)),
     );
   }
 
