@@ -162,7 +162,7 @@ class _EventListState extends State<EventList> {
                   child: Text(
                 document['eventname'],
                 maxLines: 1,
-                style: TextStyle(fontSize: 17.5, color: cPlanGoWhiteBlue, fontFamily: _montserratRegular),
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18, color: cPlanGoWhiteBlue, fontFamily: _montserratRegular),
                 overflow: TextOverflow.ellipsis,
               )),
               new IconButton(
@@ -204,7 +204,7 @@ class _EventListState extends State<EventList> {
                 child: Text(
                   document['location'],
                   maxLines: 1,
-                  style: TextStyle(fontSize: 13.0, color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
+                  style: TextStyle(fontSize: 13.0, color: cPlanGoWhiteBlue, fontFamily: _montserratRegular),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -240,10 +240,10 @@ class _EventListState extends State<EventList> {
 
   Widget loadImage(DocumentSnapshot document) {
     return new Container(
-      height: MediaQuery.of(context).size.height / 10,
-      width: MediaQuery.of(context).size.height / 10,
+      height: MediaQuery.of(context).size.height / 9.75,
+      width: MediaQuery.of(context).size.height / 9.75,
       alignment: Alignment.centerLeft,
-      margin: const EdgeInsets.only(top: 23, bottom: 8, left: 3.75, right: 8),
+      margin: const EdgeInsets.only(top: 35, bottom: 8, left: 3.0, right: 8),
       decoration: new BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -274,10 +274,10 @@ class _EventListState extends State<EventList> {
             width: MediaQuery.of(context).size.height / 1.0,
             height: MediaQuery.of(context).size.height / 4.4,
             margin: const EdgeInsets.only(
-                left: 40.0, bottom: 7.5, top: 7.5, right: 7.5),
+                left: 40.0, bottom: 7.5, top: 20, right: 7.5),
             decoration: new BoxDecoration(
               color: Color(document['eventColor']),
-              borderRadius: new BorderRadius.circular(18.0),
+              borderRadius: new BorderRadius.circular(20.0),
               boxShadow: <BoxShadow>[
                 new BoxShadow(
                   color: Color(document['eventColor']),
@@ -319,7 +319,7 @@ class _EventListState extends State<EventList> {
                                   .replaceAll('-', '/'),
                               maxLines: 1,
                               style: TextStyle(
-                                  fontSize: 13.0, color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
+                                  fontSize: 13.0, color: cPlanGoWhiteBlue, fontFamily: _montserratRegular),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -336,7 +336,7 @@ class _EventListState extends State<EventList> {
                             child: Text(
                               document['datetime'].substring(11, 16),
                               style: TextStyle(
-                                  fontSize: 13.0, color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
+                                  fontSize: 13.0, color: cPlanGoWhiteBlue, fontFamily: _montserratRegular),
                               overflow: TextOverflow.ellipsis,
                             ),
                           )
