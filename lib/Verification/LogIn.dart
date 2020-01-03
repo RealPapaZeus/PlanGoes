@@ -33,6 +33,10 @@ class _MyLogInPageState extends State<MyLogInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  String _montserratLight = 'MontserratLight';
+  String _montserratMedium = 'MontserratMedium';
+  String _montserratRegular = 'MontserratRegular';
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -96,7 +100,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
         cursorColor: cPlanGoBlue,
-        style: TextStyle(color: cPlanGoMarineBlue),
+        style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
         controller: _emailController,
         decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
@@ -106,7 +110,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
               borderRadius: const BorderRadius.all(Radius.circular(10.0)),
               borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
             ),
-            errorStyle: TextStyle(color: cPlanGoRedBright),
+            errorStyle: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
             prefixIcon: Padding(
               padding: EdgeInsets.all(0.0),
               child: Icon(
@@ -115,7 +119,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
               ),
             ),
             labelText: 'email',
-            labelStyle: TextStyle(color: cPlanGoBlue)),
+            labelStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium)),
         obscureText: false,
         validator: (value) =>
             value.isEmpty ? messageNotifier('Please enter an email') : null,
@@ -132,7 +136,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
         cursorColor: cPlanGoBlue,
         controller: _passwordController,
         obscureText: _obscurePassword,
-        style: TextStyle(color: cPlanGoMarineBlue),
+        style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
         decoration: InputDecoration(
           enabledBorder: UnderlineInputBorder(
             borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
@@ -143,8 +147,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
           ),
           fillColor: cPlanGoBlue,
           labelText: 'password',
-          labelStyle: TextStyle(color: cPlanGoBlue),
-          errorStyle: TextStyle(color: cPlanGoRedBright),
+          labelStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
+          errorStyle: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
           prefixIcon: Padding(
             padding: EdgeInsets.all(0.0),
             child: Icon(
@@ -216,7 +220,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
               padding: const EdgeInsets.only(bottom: 30, right: 30),
               child: Text(
                 'Login'.toLowerCase(),
-                style: TextStyle(color: cPlanGoWhiteBlue, fontSize: 18),
+                style: TextStyle(color: cPlanGoWhiteBlue, fontSize: 18, fontFamily: _montserratMedium),
               ),
             ),
           ),
@@ -227,7 +231,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
 
   Widget getButton() {
     return SizedBox(
-      width: 250,
+      width: MediaQuery.of(context).size.width / 1.55,
       child: RaisedButton(
           splashColor: cPlanGoMarineBlue,
           color: cPlanGoBlue,
@@ -238,7 +242,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
           onPressed: signIn,
           child: Text(
             'Plan and Go',
-            style: TextStyle(color: cPlanGoWhiteBlue),
+            style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
           )),
     );
   }
@@ -272,7 +276,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
                 borderRadius: new BorderRadius.circular(40.0),
               ),
               textColor: cPlanGoWhiteBlue,
-              child: new Text('Register'),
+              child: new Text('Register', style: TextStyle(fontFamily: _montserratMedium),),
             ),
             FlatButton(
               onPressed: () {
@@ -283,7 +287,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
                 borderRadius: new BorderRadius.circular(40.0),
               ),
               textColor: cPlanGoWhiteBlue,
-              child: new Text('Forgot Password?'),
+              child: new Text('Forgot Password?', style: TextStyle(fontFamily: _montserratMedium)),
             ),
           ],
         ));
@@ -293,7 +297,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
     return new Container(
       child: Text(
         _authHint,
-        style: TextStyle(color: cPlanGoRedBright),
+        style: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
         textAlign: TextAlign.center,
       ),
     );
