@@ -61,7 +61,7 @@ class _AdminViewState extends State<AdminView> {
       pinned: true,
       floating: true,
       forceElevated: value,
-      expandedHeight: 150.0,
+      expandedHeight: 200.0,
       backgroundColor: Color(_eventColor),
       flexibleSpace: FlexibleSpaceBar(
           centerTitle: true,
@@ -69,6 +69,7 @@ class _AdminViewState extends State<AdminView> {
             _eventName,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontFamily: 'MontserratRegular'),
           ),
           background: (_imageUrl != 'null')
               ? Image.network(_imageUrl, fit: BoxFit.cover)
@@ -78,8 +79,8 @@ class _AdminViewState extends State<AdminView> {
 
   Widget createItem() {
     return new FloatingActionButton(
-      elevation: 4.0,
-      child: Icon(Icons.add, color: Colors.white),
+      elevation: 5.0,
+      child: Icon(Icons.add, color: cPlanGoWhiteBlue),
       backgroundColor: Color(_eventColor),
       onPressed: () {
         showDialog(
