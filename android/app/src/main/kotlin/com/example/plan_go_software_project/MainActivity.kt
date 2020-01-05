@@ -1,4 +1,4 @@
-package com.example.plan_go_software_project
+package plan.go
 
 import android.os.Bundle
 import io.flutter.app.FlutterActivity
