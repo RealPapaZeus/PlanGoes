@@ -26,7 +26,7 @@ class _AdminViewState extends State<AdminView> {
   String _imageUrl = '';
   double offset = 0.0;
   Uri _dynamicLinkUrl;
-
+  
   @override
   void initState() {
     super.initState();
@@ -52,7 +52,7 @@ class _AdminViewState extends State<AdminView> {
   Future<void> _createDynamikLink() async {
     final DynamicLinkParameters parameters = DynamicLinkParameters(
         uriPrefix: 'https://plangosoftwareproject.page.link',
-        link: Uri.parse('https://plangosoftwareproject.page.link/invite'),
+        link: Uri.parse('https://plangosoftwareproject.page.link/invite'+widget.documentId),
         androidParameters:
             AndroidParameters(packageName: 'com.example.plan_go_software_project',
             minimumVersion: 0),
