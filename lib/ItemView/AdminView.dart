@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:plan_go_software_project/ItemView/ItemCreateDialog.dart';
 import 'package:plan_go_software_project/ItemView/ItemList.dart';
 import 'package:plan_go_software_project/colors.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 class AdminView extends StatefulWidget {
   final String documentId;
@@ -24,6 +25,7 @@ class _AdminViewState extends State<AdminView> {
   String _eventName = '';
   String _imageUrl = '';
   double offset = 0.0;
+  Uri _dynamicLinkUrl;
 
   @override
   void initState() {
@@ -44,6 +46,18 @@ class _AdminViewState extends State<AdminView> {
         _eventName = document['eventName'];
         _imageUrl = document['imageUrl'];
       });
+    });
+  }
+
+  Future<void> _createDynamikLink() async {
+    final DynamicLinkParameters parameters = DynamicLinkParameters(
+        uriPrefix: 'https://plangosoftwareproject.page.link',
+        link: Uri.parse('https://plangosoftwareproject.page.link/invite'),
+        androidParameters:
+            AndroidParameters(packageName: 'com.example.plan_go_software_project'));
+    final Uri url = await parameters.buildUrl();
+    setState(() {
+      _dynamicLinkUrl = url;
     });
   }
 
@@ -103,9 +117,15 @@ class _AdminViewState extends State<AdminView> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           IconButton(
-            icon: Icon(Icons.share, color: Colors.white),
-            onPressed: () {},
-          )
+              icon: Icon(Icons.share, color: Colors.white),
+              onPressed: () {
+                _createDynamikLink();
+                showDialog(
+                    context: context,
+                    child: new AlertDialog(
+                        title: new Text("Sharing is caring"),
+                        content: new SelectableText(_dynamicLinkUrl.toString())));
+              })
         ],
       ),
     );
