@@ -59,7 +59,8 @@ class _AdminViewState extends State<AdminView> {
         iosParameters: IosParameters(
             bundleId: 'com.example.planGoSoftwareProject',
             minimumVersion: '0'));
-    final Uri url = await parameters.buildUrl();
+    final ShortDynamicLink shortDynamicLink = await parameters.buildShortLink();
+    final Uri url = shortDynamicLink.shortUrl;
     setState(() {
       _dynamicLinkUrl = url;
     });
