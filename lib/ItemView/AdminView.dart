@@ -54,7 +54,10 @@ class _AdminViewState extends State<AdminView> {
         uriPrefix: 'https://plangosoftwareproject.page.link',
         link: Uri.parse('https://plangosoftwareproject.page.link/invite'),
         androidParameters:
-            AndroidParameters(packageName: 'com.example.plan_go_software_project'));
+            AndroidParameters(packageName: 'com.example.plan_go_software_project'),
+        iosParameters: IosParameters(
+            bundleId: 'com.example.planGoSoftwareProject',
+            minimumVersion: '0'));
     final Uri url = await parameters.buildUrl();
     setState(() {
       _dynamicLinkUrl = url;
