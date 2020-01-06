@@ -54,7 +54,8 @@ class _AdminViewState extends State<AdminView> {
         uriPrefix: 'https://plangosoftwareproject.page.link',
         link: Uri.parse('https://plangosoftwareproject.page.link/invite'),
         androidParameters:
-            AndroidParameters(packageName: 'com.example.plan_go_software_project'),
+            AndroidParameters(packageName: 'com.example.plan_go_software_project',
+            minimumVersion: 0),
         iosParameters: IosParameters(
             bundleId: 'com.example.planGoSoftwareProject',
             minimumVersion: '0'));
