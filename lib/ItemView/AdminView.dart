@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:plan_go_software_project/ItemView/ItemCreateDialog.dart';
@@ -26,7 +27,7 @@ class _AdminViewState extends State<AdminView> {
   String _imageUrl = '';
   double offset = 0.0;
   Uri _dynamicLinkUrl;
-  
+
   @override
   void initState() {
     super.initState();
@@ -50,17 +51,20 @@ class _AdminViewState extends State<AdminView> {
   }
 
   Future<void> _createDynamikLink() async {
+    String _documentID = widget.documentId;
     final DynamicLinkParameters parameters = DynamicLinkParameters(
         uriPrefix: 'https://plangosoftwareproject.page.link',
-        link: Uri.parse('https://plangosoftwareproject.page.link/invite'+widget.documentId),
-        androidParameters:
-            AndroidParameters(packageName: 'com.example.plan_go_software_project',
+        link: Uri.parse(
+            'https://plangosoftwareproject.page.link/invite/$_documentID'),
+        androidParameters: AndroidParameters(
+            packageName: 'com.example.plan_go_software_project',
             minimumVersion: 0),
         iosParameters: IosParameters(
             bundleId: 'com.example.planGoSoftwareProject',
             minimumVersion: '0'));
-    final ShortDynamicLink shortDynamicLink = await parameters.buildShortLink();
-    final Uri url = shortDynamicLink.shortUrl;
+    final Uri url = await parameters.buildUrl();
+    // final ShortDynamicLink shortDynamicLink = await parameters.buildShortLink();
+    // final Uri url = shortDynamicLink.shortUrl;
     setState(() {
       _dynamicLinkUrl = url;
     });
@@ -129,7 +133,8 @@ class _AdminViewState extends State<AdminView> {
                     context: context,
                     child: new AlertDialog(
                         title: new Text("Sharing is caring"),
-                        content: new SelectableText(_dynamicLinkUrl.toString())));
+                        content:
+                            new SelectableText(_dynamicLinkUrl.toString())));
               })
         ],
       ),

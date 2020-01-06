@@ -1,3 +1,4 @@
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/Verification/CreateAccount.dart';
 import 'package:plan_go_software_project/EventView/EventList.dart';
@@ -23,6 +24,34 @@ class MyLogInPage extends StatefulWidget {
 }
 
 class _MyLogInPageState extends State<MyLogInPage> {
+  @override
+  void initState() {
+    super.initState();
+    this.initDynamicLinks();
+  }
+  void initDynamicLinks() async {
+    final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
+    final Uri deepLink = data?.link;
+
+    if(deepLink != null){
+      Navigator.pushNamed(context, deepLink.path);
+    }
+
+    FirebaseDynamicLinks.instance.onLink(
+      onSuccess: (PendingDynamicLinkData dynamikLink) async {
+        final Uri deepLink = dynamikLink?.link;
+
+        if(deepLink != null){
+          Navigator.pushNamed(context, deepLink.path);
+        }
+      },
+      onError: (OnLinkErrorException e) async {
+        print('onLinkError');
+        print(e.message);
+      }
+    );
+  }
+
   String _email;
   String _password;
   String _authHint = '';
