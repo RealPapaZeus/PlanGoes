@@ -96,7 +96,8 @@ class _AdminViewState extends State<AdminView> {
           ),
           background: (_imageUrl != 'null')
               ? Image.network(_imageUrl, fit: BoxFit.cover)
-              : Image.asset('images/calendar.png', fit: BoxFit.cover)),
+              : Image.asset('images/calender_black_white.png',
+                  fit: BoxFit.cover)),
     );
   }
 
@@ -150,12 +151,52 @@ class _AdminViewState extends State<AdminView> {
     );
   }
 
+  Widget buildAppBar() {
+    return AppBar(
+      title: new Row(
+        children: <Widget>[
+          CircleAvatar(
+            radius: 20,
+            foregroundColor: Color(_eventColor),
+            backgroundColor: Color(_eventColor),
+            child: ClipOval(
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width/1,
+                height:  MediaQuery.of(context).size.height/1,
+                child: (_imageUrl != 'null')
+                    ? Image.network(  
+                        _imageUrl,
+                        fit: BoxFit.contain,
+                       // height: 32,
+                      )
+                    : Image.asset('images/calendar.png',
+                        fit: BoxFit.contain, height: 32),
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              _eventName,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontFamily: 'MontserratRegular'),
+            ),
+          )
+        ],
+      ),
+      centerTitle: true,
+      elevation: 5.0,
+      backgroundColor: Color(_eventColor),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: buildAppBar(),
       backgroundColor: cPlanGoWhiteBlue,
       extendBody: true,
-      body: getScrollView(),
+      body: buildStream(),
       floatingActionButton: createItem(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: bottomNavigation(),
