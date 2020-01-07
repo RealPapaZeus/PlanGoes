@@ -245,6 +245,7 @@ class _EventListState extends State<EventList> {
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.only(top: 35, bottom: 8, left: 3.0, right: 8),
       decoration: new BoxDecoration(
+        color: cPlangGoDarkBlue,
           boxShadow: [
             BoxShadow(
               blurRadius: 5.0,
@@ -257,6 +258,7 @@ class _EventListState extends State<EventList> {
               image: (document['imageUrl'] != 'null')
                   ? new NetworkImage(document['imageUrl'])
                   : new AssetImage(
+                    
                       'images/calendar.png',
                     ))),
     );
@@ -375,7 +377,7 @@ class _EventListState extends State<EventList> {
       ),
       leading: IconButton(
         color: cPlanGoWhiteBlue,
-        tooltip: "Create new event",
+        tooltip: "Create New Event",
         icon: Icon(Icons.playlist_add_check),
         onPressed: () {
           Navigator.push(
