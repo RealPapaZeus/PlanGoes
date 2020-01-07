@@ -26,7 +26,7 @@ class _AdminViewState extends State<AdminView> {
   String _eventName = '';
   String _imageUrl = '';
   double offset = 0.0;
-  Uri _dynamicLinkUrl;
+  // Uri _dynamicLinkUrl;
 
   @override
   void initState() {
@@ -50,6 +50,7 @@ class _AdminViewState extends State<AdminView> {
     });
   }
 
+  // Method creates Dynamic Link in Firebase
   Future<Uri> _createDynamikLink(@required String _eventID) async {
     final DynamicLinkParameters parameters = DynamicLinkParameters(
         uriPrefix: 'https://plangosoftwareproject.page.link',

@@ -29,6 +29,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
     super.initState();
     this.initDynamicLinks();
   }
+
+  // Method checks if the App was opened by a Dynamic Link
   void initDynamicLinks() async {
     final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri deepLink = data?.link;
