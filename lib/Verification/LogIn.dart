@@ -30,14 +30,25 @@ class _MyLogInPageState extends State<MyLogInPage> {
     this.initDynamicLinks();
   }
 
+  String _eventID;
+
   // Method checks if the App was opened by a Dynamic Link
   void initDynamicLinks() async {
     final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri deepLink = data?.link;
     if(deepLink != null){
       Navigator.pushNamed(context, deepLink.path);
+      final queryParams = deepLink.queryParameters;
+      if(queryParams.length > 0) {
+        String eventId = queryParams['eventID'];
+        print('The user must be inserted in the event: $eventId');
+        setState(() {
+          _eventID = eventId;
+        });
+      }
     }
 
+    // This will handle incoming links if the application is already opened
     FirebaseDynamicLinks.instance.onLink(
       onSuccess: (PendingDynamicLinkData dynamikLink) async {
         final Uri deepLink = dynamikLink?.link;

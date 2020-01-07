@@ -55,7 +55,7 @@ class _AdminViewState extends State<AdminView> {
     final DynamicLinkParameters parameters = DynamicLinkParameters(
         uriPrefix: 'https://plangosoftwareproject.page.link',
         link: Uri.parse(
-            'https://plangosoftwareproject.page.link/invite?$_eventID'),
+            'https://plangosoftwareproject.page.link/invite?eventID=$_eventID'),
         androidParameters: AndroidParameters(
             packageName: 'com.example.plan_go_software_project',
             minimumVersion: 0),
