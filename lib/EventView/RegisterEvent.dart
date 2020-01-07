@@ -343,6 +343,7 @@ class _RegisterEventState extends State<RegisterEvent> {
               shape: BoxShape.circle,
               boxShadow: [BoxShadow(blurRadius: 10.0, spreadRadius: 0.1)]),
           child: CircleAvatar(
+            backgroundColor: cPlanGoBlue,
             radius: 75,
             child: ClipOval(
               child: SizedBox(
