@@ -50,24 +50,26 @@ class _AdminViewState extends State<AdminView> {
     });
   }
 
-  Future<void> _createDynamikLink() async {
-    String _documentID = widget.documentId;
+  Future<Uri> _createDynamikLink(@required String _eventID) async {
     final DynamicLinkParameters parameters = DynamicLinkParameters(
         uriPrefix: 'https://plangosoftwareproject.page.link',
         link: Uri.parse(
-            'https://plangosoftwareproject.page.link/invite/$_documentID'),
+            'https://plangosoftwareproject.page.link/invite?$_eventID'),
         androidParameters: AndroidParameters(
             packageName: 'com.example.plan_go_software_project',
             minimumVersion: 0),
         iosParameters: IosParameters(
             bundleId: 'com.example.planGoSoftwareProject',
             minimumVersion: '0'));
-    final Uri url = await parameters.buildUrl();
+    final link = await parameters.buildUrl();
+    final ShortDynamicLink shortenedLink = await DynamicLinkParameters.shortenUrl(
+      link,
+      DynamicLinkParametersOptions(shortDynamicLinkPathLength: ShortDynamicLinkPathLength.unguessable),
+    );
+    return shortenedLink.shortUrl;
     // final ShortDynamicLink shortDynamicLink = await parameters.buildShortLink();
     // final Uri url = shortDynamicLink.shortUrl;
-    setState(() {
-      _dynamicLinkUrl = url;
-    });
+ 
   }
 
   buildStream() {
@@ -128,14 +130,14 @@ class _AdminViewState extends State<AdminView> {
         children: <Widget>[
           IconButton(
               icon: Icon(Icons.share, color: Colors.white),
-              onPressed: () {
-                _createDynamikLink();
+              onPressed: () async{
+                var link = await _createDynamikLink(widget.documentId);
                 showDialog(
                     context: context,
                     child: new AlertDialog(
                         title: new Text("Sharing is caring"),
                         content:
-                            new SelectableText(_dynamicLinkUrl.toString())));
+                            new SelectableText(link.toString())));
               })
         ],
       ),
