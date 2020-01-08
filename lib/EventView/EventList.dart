@@ -246,6 +246,7 @@ class _EventListState extends State<EventList> {
       margin: const EdgeInsets.only(top: 35, bottom: 8, left: 3.0, right: 8),
       decoration: new BoxDecoration(
         color: cPlangGoDarkBlue,
+        //color: cPlangGoDarkBlue,
           boxShadow: [
             BoxShadow(
               blurRadius: 5.0,
