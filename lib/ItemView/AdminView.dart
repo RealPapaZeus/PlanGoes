@@ -25,15 +25,34 @@ class _AdminViewState extends State<AdminView> {
   int _eventColor = 0;
   String _eventName = '';
   String _imageUrl = '';
+  String _userName = '';
   double offset = 0.0;
   // Uri _dynamicLinkUrl;
   var _link;
+
+  String _montserratLight = 'MontserratLight';
+  String _montserratMedium = 'MontserratMedium';
+  String _montserratRegular = 'MontserratRegular';
 
   @override
   void initState() {
     super.initState();
     getEventInfo();
     getLink();
+    getUserName();
+  }
+
+  void getUserName() async {
+    final databaseReference = Firestore.instance;
+    var documentReference =
+        databaseReference.collection("users").document(widget.userId);
+
+    documentReference.get().then((DocumentSnapshot document) {
+      setState(() {
+        _userName = document['username'].toString();
+      });
+    });
+    print(_userName);
   }
 
   // Method how to get one variable out of database, without using
@@ -56,8 +75,7 @@ class _AdminViewState extends State<AdminView> {
   Future<Uri> _createDynamikLink(String _eventID) async {
     final DynamicLinkParameters parameters = DynamicLinkParameters(
         uriPrefix: 'https://plango.page.link',
-        link: Uri.parse(
-            'https://plango.page.link/invite?eventID=$_eventID'),
+        link: Uri.parse('https://plango.page.link/invite?eventID=$_eventID'),
         androidParameters: AndroidParameters(
             packageName: 'com.example.plan_go_software_project',
             minimumVersion: 0),
@@ -81,29 +99,6 @@ class _AdminViewState extends State<AdminView> {
       userId: widget.userId,
       documentId: widget.documentId,
       eventColor: _eventColor.toInt(),
-    );
-  }
-
-  Widget createAppBar(bool value) {
-    return new SliverAppBar(
-      snap: true,
-      pinned: true,
-      floating: true,
-      forceElevated: value,
-      expandedHeight: 200.0,
-      backgroundColor: Color(_eventColor),
-      flexibleSpace: FlexibleSpaceBar(
-          centerTitle: true,
-          title: Text(
-            _eventName,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontFamily: 'MontserratRegular'),
-          ),
-          background: (_imageUrl != 'null')
-              ? Image.network(_imageUrl, fit: BoxFit.cover)
-              : Image.asset('images/calender_black_white.png',
-                  fit: BoxFit.cover)),
     );
   }
 
@@ -148,25 +143,75 @@ class _AdminViewState extends State<AdminView> {
                 showDialog(
                     context: context,
                     child: new AlertDialog(
-                        title: new Text(
-                          "Sharing is caring",
+                        title: new Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              padding: const EdgeInsets.only(
+                                   top: 8.0, right: 8.0),
+                              child: Text(
+                                'Sharing is caring',
+                                overflow: TextOverflow.ellipsis,
+                                style:
+                                    TextStyle(fontFamily: 'MontserratRegular'),
+                              ),
+                            ),
+                            CircleAvatar(
+                              radius: 20,
+                              foregroundColor: Color(_eventColor),
+                              backgroundColor: Color(_eventColor),
+                              child: ClipOval(
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 1,
+                                  height:
+                                      MediaQuery.of(context).size.height / 1,
+                                  child: (_imageUrl != 'null')
+                                      ? Image.network(
+                                          _imageUrl,
+                                          fit: BoxFit.contain,
+                                          height: 32,
+                                        )
+                                      : Image.asset('images/calendar.png',
+                                          fit: BoxFit.contain, height: 32),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        content: new SelectableText(
-                          _link.toString(),
-                          style: TextStyle(color: cPlanGoBlue, decoration: TextDecoration.underline),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(15)),
+                        content: new Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            RichText(
+                                text: new TextSpan(
+                                    style: new TextStyle(
+                                        fontSize: 14.0,
+                                        color: cPlanGoDark,
+                                        fontFamily: _montserratMedium),
+                                    children: <TextSpan>[
+                                  new TextSpan(
+                                      text: 'Hello $_userName, ',
+                                      style: TextStyle(
+                                          fontFamily: _montserratMedium)),
+                                  new TextSpan(
+                                      text:
+                                          'if you like to share this event, please copy this link. \n',
+                                      style: TextStyle(
+                                          fontFamily: _montserratMedium)),
+                                ])),
+                            new SelectableText(
+                              _link.toString(),
+                              style: TextStyle(
+                                  color: cPlanGoBlue,
+                                  decoration: TextDecoration.underline,
+                                  fontFamily: _montserratMedium),
+                            )
+                          ],
                         )));
               })
         ],
       ),
-    );
-  }
-
-  Widget getScrollView() {
-    return new NestedScrollView(
-      headerSliverBuilder: (context, innerBoxScrolled) {
-        return <Widget>[createAppBar(innerBoxScrolled)];
-      },
-      body: buildStream(),
     );
   }
 
@@ -186,7 +231,7 @@ class _AdminViewState extends State<AdminView> {
                     ? Image.network(
                         _imageUrl,
                         fit: BoxFit.contain,
-                        // height: 32,
+                        height: 32,
                       )
                     : Image.asset('images/calendar.png',
                         fit: BoxFit.contain, height: 32),
