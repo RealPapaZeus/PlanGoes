@@ -116,7 +116,7 @@ class _ItemListState extends State<ItemList> {
 
   Widget buildItemList(BuildContext context, DocumentSnapshot document) {
     return new InkWell(
-        splashColor: Color(widget.eventColor),
+        splashColor: cPlanGoWhiteBlue,
         borderRadius: new BorderRadius.circular(15.0),
         onTap: () {
           showDialog(
@@ -128,6 +128,7 @@ class _ItemListState extends State<ItemList> {
         },
         child: Container(
           child: Card(
+            color: cPlanGoWhiteBlue  ,
             shape: RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(5.0),
             ),

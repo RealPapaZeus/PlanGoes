@@ -353,7 +353,7 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
 
   Widget decrementCounterButton() {
     return FloatingActionButton(
-        backgroundColor: cPlanGoMarineBlue,
+        backgroundColor: cPlangGoDarkBlue,
         splashColor: cPlanGoBlue,
         child: Icon(Icons.remove, color: cPlanGoWhiteBlue),
         onPressed: () {
@@ -363,7 +363,7 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
 
   Widget incrementCounterButton() {
     return FloatingActionButton(
-        backgroundColor: cPlanGoMarineBlue,
+        backgroundColor: cPlangGoDarkBlue,
         splashColor: cPlanGoBlue,
         child: Icon(Icons.add, color: cPlanGoWhiteBlue,),
         onPressed: () {
@@ -422,7 +422,7 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
             },
             child: Text(
               'Save',
-              style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+              style: TextStyle(color: cPlangGoDarkBlue, fontFamily: _montserratMedium),
             ))
       ],
     );

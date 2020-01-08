@@ -27,11 +27,13 @@ class _AdminViewState extends State<AdminView> {
   String _imageUrl = '';
   double offset = 0.0;
   // Uri _dynamicLinkUrl;
+  var _link;
 
   @override
   void initState() {
     super.initState();
     getEventInfo();
+    getLink();
   }
 
   // Method how to get one variable out of database, without using
@@ -51,11 +53,11 @@ class _AdminViewState extends State<AdminView> {
   }
 
   // Method creates Dynamic Link in Firebase
-  Future<Uri> _createDynamikLink(@required String _eventID) async {
+  Future<Uri> _createDynamikLink(String _eventID) async {
     final DynamicLinkParameters parameters = DynamicLinkParameters(
-        uriPrefix: 'https://plangosoftwareproject.page.link',
+        uriPrefix: 'https://plango.page.link',
         link: Uri.parse(
-            'https://plangosoftwareproject.page.link/invite?eventID=$_eventID'),
+            'https://plango.page.link/invite?eventID=$_eventID'),
         androidParameters: AndroidParameters(
             packageName: 'com.example.plan_go_software_project',
             minimumVersion: 0),
@@ -63,14 +65,15 @@ class _AdminViewState extends State<AdminView> {
             bundleId: 'com.example.planGoSoftwareProject',
             minimumVersion: '0'));
     final link = await parameters.buildUrl();
-    final ShortDynamicLink shortenedLink = await DynamicLinkParameters.shortenUrl(
+    final ShortDynamicLink shortenedLink =
+        await DynamicLinkParameters.shortenUrl(
       link,
-      DynamicLinkParametersOptions(shortDynamicLinkPathLength: ShortDynamicLinkPathLength.unguessable),
+      DynamicLinkParametersOptions(
+          shortDynamicLinkPathLength: ShortDynamicLinkPathLength.unguessable),
     );
     return shortenedLink.shortUrl;
     // final ShortDynamicLink shortDynamicLink = await parameters.buildShortLink();
     // final Uri url = shortDynamicLink.shortUrl;
- 
   }
 
   buildStream() {
@@ -108,7 +111,7 @@ class _AdminViewState extends State<AdminView> {
     return new FloatingActionButton(
       elevation: 5.0,
       child: Icon(Icons.add, color: cPlanGoWhiteBlue),
-      backgroundColor: Color(_eventColor),
+      backgroundColor: cPlangGoDarkBlue,
       onPressed: () {
         showDialog(
             context: context,
@@ -119,26 +122,39 @@ class _AdminViewState extends State<AdminView> {
     );
   }
 
+  void getLink() async {
+    var link = await _createDynamikLink(widget.documentId);
+
+    setState(() {
+      _link = link.toString();
+    });
+
+    print(_link.toString());
+  }
+
   Widget bottomNavigation() {
     return new BottomAppBar(
       elevation: 5.0,
       shape: CircularNotchedRectangle(),
-      color: Color(_eventColor),
+      color: cPlangGoDarkBlue,
       notchMargin: 4.0,
       child: new Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           IconButton(
-              icon: Icon(Icons.share, color: Colors.white),
-              onPressed: () async{
-                var link = await _createDynamikLink(widget.documentId);
+              icon: Icon(Icons.share, color: cPlanGoWhiteBlue),
+              onPressed: () async {
                 showDialog(
                     context: context,
                     child: new AlertDialog(
-                        title: new Text("Sharing is caring"),
-                        content:
-                            new SelectableText(link.toString())));
+                        title: new Text(
+                          "Sharing is caring",
+                        ),
+                        content: new SelectableText(
+                          _link.toString(),
+                          style: TextStyle(color: cPlanGoBlue, decoration: TextDecoration.underline),
+                        )));
               })
         ],
       ),
@@ -164,13 +180,13 @@ class _AdminViewState extends State<AdminView> {
             backgroundColor: Color(_eventColor),
             child: ClipOval(
               child: SizedBox(
-                width: MediaQuery.of(context).size.width/1,
-                height:  MediaQuery.of(context).size.height/1,
+                width: MediaQuery.of(context).size.width / 1,
+                height: MediaQuery.of(context).size.height / 1,
                 child: (_imageUrl != 'null')
-                    ? Image.network(  
+                    ? Image.network(
                         _imageUrl,
                         fit: BoxFit.contain,
-                       // height: 32,
+                        // height: 32,
                       )
                     : Image.asset('images/calendar.png',
                         fit: BoxFit.contain, height: 32),
@@ -197,7 +213,7 @@ class _AdminViewState extends State<AdminView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      backgroundColor: cPlanGoWhiteBlue,
+      backgroundColor: Color(_eventColor),
       extendBody: true,
       body: buildStream(),
       floatingActionButton: createItem(),
