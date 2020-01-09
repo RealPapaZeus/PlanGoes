@@ -24,6 +24,26 @@ class MyLogInPage extends StatefulWidget {
 }
 
 class _MyLogInPageState extends State<MyLogInPage> {
+  
+  String _email;
+  String _password;
+  String _authHint = '';
+  bool _isLoading = false;
+  bool _obscurePassword = true;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  String _montserratMedium = 'MontserratMedium';
+  String _montserratRegular = 'MontserratRegular';
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
   @override
   void initState() {
     super.initState();
@@ -62,27 +82,6 @@ class _MyLogInPageState extends State<MyLogInPage> {
         print(e.message);
       }
     );
-  }
-
-  String _email;
-  String _password;
-  String _authHint = '';
-  bool _isLoading = false;
-  bool _obscurePassword = true;
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
-  String _montserratLight = 'MontserratLight';
-  String _montserratMedium = 'MontserratMedium';
-  String _montserratRegular = 'MontserratRegular';
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
   }
 
   void signIn() async {
