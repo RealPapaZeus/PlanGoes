@@ -190,7 +190,6 @@ class _EventListState extends State<EventList> {
   }
 
   Widget eventName(DocumentSnapshot document) {
-    getAdminStatus();
     return new Container(
         padding: const EdgeInsets.only(right: 5.0),
         child: new Row(
@@ -215,24 +214,10 @@ class _EventListState extends State<EventList> {
                 highlightColor: Colors.transparent,
                 iconSize: 20.0,
                 onPressed: () async {
-                  if(_adminRight=true){
-                    await Future.delayed(Duration(milliseconds: 300), () {
-                      deleteItems(document);
-                      deleteCanban(document);
-                  });}
-                  else{
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: new Text("No Permission"),
-                          content: new Text('You have to be an administrator to delete an event.'),
-                          
-
-                        );
-                      }
-                    );
-                  }
+                  await Future.delayed(Duration(milliseconds: 300), () {
+                    deleteItems(document);
+                    deleteCanban(document);
+                  });
                 },
               ),
             ]));
