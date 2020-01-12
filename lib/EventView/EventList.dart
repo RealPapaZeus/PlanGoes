@@ -41,6 +41,18 @@ class _EventListState extends State<EventList> {
     print(_userName);
   }
 
+  void getAdminStatus() async {
+    final databaseReference = Firestore.instance;
+    var documentReference =
+        databaseReference.collection("users").document(widget.userId);
+
+    documentReference.get().then((DocumentSnapshot document) {
+      setState(() {
+        _adminRight = document['admin'];
+      });
+    });
+  }
+
   // void getDate() async {
   //   final databaseReference = Firestore.instance;
 
@@ -124,6 +136,7 @@ class _EventListState extends State<EventList> {
   }
 
   void deleteCanban(DocumentSnapshot document) {
+    deleteUsersItemLists(document);
     deleteItems(document);
 
     Firestore.instance
@@ -152,7 +165,32 @@ class _EventListState extends State<EventList> {
     });
   }
 
+  void deleteUsersItemLists(DocumentSnapshot document) {
+    Firestore.instance
+        .collection('events')
+        .document(document.documentID)
+        .collection("itemList")
+        .getDocuments()
+        .then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.documents) {
+        Firestore.instance
+            .collection('events')
+            .document(document.documentID)
+            .collection("itemList")
+            .document(doc.documentID)
+            .collection('usersItemList')
+            .getDocuments()
+            .then((snapshot) {
+          for (DocumentSnapshot doc in snapshot.documents) {
+            doc.reference.delete();
+          }
+        });
+      }
+    });
+  }
+
   Widget eventName(DocumentSnapshot document) {
+    getAdminStatus();
     return new Container(
         padding: const EdgeInsets.only(right: 5.0),
         child: new Row(
@@ -162,7 +200,11 @@ class _EventListState extends State<EventList> {
                   child: Text(
                 document['eventname'],
                 maxLines: 1,
-                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18, color: cPlanGoWhiteBlue, fontFamily: _montserratRegular),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: cPlanGoWhiteBlue,
+                    fontFamily: _montserratRegular),
                 overflow: TextOverflow.ellipsis,
               )),
               new IconButton(
@@ -173,10 +215,24 @@ class _EventListState extends State<EventList> {
                 highlightColor: Colors.transparent,
                 iconSize: 20.0,
                 onPressed: () async {
-                  await Future.delayed(Duration(milliseconds: 300), () {
-                    deleteItems(document);
-                    deleteCanban(document);
-                  });
+                  if(_adminRight=true){
+                    await Future.delayed(Duration(milliseconds: 300), () {
+                      deleteItems(document);
+                      deleteCanban(document);
+                  });}
+                  else{
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: new Text("No Permission"),
+                          content: new Text('You have to be an administrator to delete an event.'),
+                          
+
+                        );
+                      }
+                    );
+                  }
                 },
               ),
             ]));
@@ -204,7 +260,10 @@ class _EventListState extends State<EventList> {
                 child: Text(
                   document['location'],
                   maxLines: 1,
-                  style: TextStyle(fontSize: 13.0, color: cPlanGoWhiteBlue, fontFamily: _montserratRegular),
+                  style: TextStyle(
+                      fontSize: 13.0,
+                      color: cPlanGoWhiteBlue,
+                      fontFamily: _montserratRegular),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -226,9 +285,10 @@ class _EventListState extends State<EventList> {
                   child: Text(
                     document['description'],
                     maxLines: 3,
-                    style: TextStyle(fontSize: 14.0, color: cPlanGoWhiteBlue,
-                     fontFamily: _montserratMedium
-                     ),
+                    style: TextStyle(
+                        fontSize: 14.0,
+                        color: cPlanGoWhiteBlue,
+                        fontFamily: _montserratMedium),
                     overflow: TextOverflow.ellipsis,
                   ),
                 )
@@ -245,8 +305,8 @@ class _EventListState extends State<EventList> {
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.only(top: 35, bottom: 8, left: 3.0, right: 8),
       decoration: new BoxDecoration(
-        color: cPlangGoDarkBlue,
-        //color: cPlangGoDarkBlue,
+          color: cPlangGoDarkBlue,
+          //color: cPlangGoDarkBlue,
           boxShadow: [
             BoxShadow(
               blurRadius: 5.0,
@@ -259,7 +319,6 @@ class _EventListState extends State<EventList> {
               image: (document['imageUrl'] != 'null')
                   ? new NetworkImage(document['imageUrl'])
                   : new AssetImage(
-                    
                       'images/calendar.png',
                     ))),
     );
@@ -322,7 +381,9 @@ class _EventListState extends State<EventList> {
                                   .replaceAll('-', '/'),
                               maxLines: 1,
                               style: TextStyle(
-                                  fontSize: 13.0, color: cPlanGoWhiteBlue, fontFamily: _montserratRegular),
+                                  fontSize: 13.0,
+                                  color: cPlanGoWhiteBlue,
+                                  fontFamily: _montserratRegular),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -339,7 +400,9 @@ class _EventListState extends State<EventList> {
                             child: Text(
                               document['datetime'].substring(11, 16),
                               style: TextStyle(
-                                  fontSize: 13.0, color: cPlanGoWhiteBlue, fontFamily: _montserratRegular),
+                                  fontSize: 13.0,
+                                  color: cPlanGoWhiteBlue,
+                                  fontFamily: _montserratRegular),
                               overflow: TextOverflow.ellipsis,
                             ),
                           )
@@ -357,10 +420,9 @@ class _EventListState extends State<EventList> {
     return AppBar(
       title: Text("$_userName's List".toUpperCase(),
           style: TextStyle(
-            color: cPlanGoWhiteBlue,
-            fontFamily: _montserratMedium,
-            fontSize: 16.0
-          )),
+              color: cPlanGoWhiteBlue,
+              fontFamily: _montserratMedium,
+              fontSize: 16.0)),
       elevation: 5.0,
       flexibleSpace: Container(
         decoration: BoxDecoration(
