@@ -1,4 +1,4 @@
-# plan_go_software_project
+# PlanGoes
 
 A new Flutter project.
 
