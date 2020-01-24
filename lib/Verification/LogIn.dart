@@ -1,3 +1,5 @@
+import 'dart:html';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/Verification/CreateAccount.dart';
@@ -30,6 +32,12 @@ class _MyLogInPageState extends State<MyLogInPage> {
   String _authHint = '';
   bool _isLoading = false;
   bool _obscurePassword = true;
+  String _datetime='';
+  String _description='';
+  int _eventColor;
+  String _eventName='';
+  String _imageUrl='';
+  String _location='';
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -83,7 +91,41 @@ class _MyLogInPageState extends State<MyLogInPage> {
       }
     );
   }
+void insertEvent(String eventID, String userId) async {
+    final databaseReference = Firestore.instance;
 
+    await databaseReference
+        .collection("users")
+        .document("$userId")
+        .collection("usersEventList")
+        .document("$eventID")
+        .setData({
+      'admin': false,
+      'eventname': '$_eventName',
+      'location': '$_location',
+      'datetime': '$_datetime',
+      'description': '$_description',
+      'eventColor': _eventColor.toInt(),
+      'imageUrl': '$_imageUrl'
+    });
+  }
+
+void getEventInfo(String eventID) async {
+    final databaseReference = Firestore.instance;
+    var documentReference =
+        databaseReference.collection("events").document(eventID);
+
+    documentReference.get().then((DocumentSnapshot document) {
+      setState(() {
+        _datetime = document['datetime'];
+        _description = document['description'];
+        _eventColor = document['eventColor'];
+        _eventName = document['eventName'];
+        _imageUrl = document['imageUrl'];
+        _location = document['location'];
+      });
+    });
+  }
   void signIn() async {
     final _formState = _formKey.currentState;
 
@@ -103,6 +145,10 @@ class _MyLogInPageState extends State<MyLogInPage> {
                 password: _passwordController.text);
 
         if (user.user.isEmailVerified) {
+          if(_eventID != null){
+            getEventInfo(_eventID);
+            insertEvent(_eventID,user.user.uid);
+          }
           Navigator.push(
               context,
               MaterialPageRoute(
