@@ -1,6 +1,6 @@
 # PlanGoes
 
-PlanGoes is a software project developed by students from the University of Applied Sciences Flensburg.
+PlanGoes is an cross platform app designed and developed by students from the University of Applied Sciences Flensburg.
 
 ## Getting Started
 
