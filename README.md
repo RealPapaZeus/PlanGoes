@@ -1,6 +1,6 @@
 # PlanGoes
 
-A new Flutter project.
+PlanGoes is a software project developed by students from the University of Applied Sciences Flensburg.
 
 ## Getting Started
 
