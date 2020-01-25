@@ -100,7 +100,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
       print(e.message);
     });
   }
-
+  
+  // insert Reference of Event into UsersEventList
   void insertEvent(String eventID, String userId) async {
     final databaseReference = Firestore.instance;
 
@@ -120,6 +121,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
     });
   }
 
+  // get EventInfo of the Event the user was invited
   void getEventInfo(String eventID) async {
     final databaseReference = Firestore.instance;
     var documentReference =
@@ -137,10 +139,6 @@ class _MyLogInPageState extends State<MyLogInPage> {
     });
   }
 
-  // void test() async {
-  //   initDynamicLinks();
-  //   signIn();
-  // }
   void signIn() async {
     final _formState = _formKey.currentState;
 
