@@ -65,7 +65,6 @@ class _MyLogInPageState extends State<MyLogInPage> {
         await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri deepLink = data?.link;
     if (deepLink != null) {
-      Navigator.pushNamed(context, deepLink.path);
       print('DL =! null');
       final queryParams = deepLink.queryParameters;
       if (queryParams.length > 0) {
@@ -75,7 +74,9 @@ class _MyLogInPageState extends State<MyLogInPage> {
           _eventID = eventId;
         });
       }
+      Navigator.pushNamed(context, deepLink.path);
     }
+    else{print('DL = null');}
 
     // This will handle incoming links if the application is already opened
     FirebaseDynamicLinks.instance.onLink(
@@ -83,7 +84,6 @@ class _MyLogInPageState extends State<MyLogInPage> {
       final Uri deepLink = dynamikLink?.link;
 
       if (deepLink != null) {
-        Navigator.pushNamed(context, deepLink.path);
         print('DL != null');
         final queryParams = deepLink.queryParameters;
         if (queryParams.length > 0) {
@@ -93,6 +93,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
             _eventID = eventId;
           });
         }
+        Navigator.pushNamed(context, deepLink.path);
       }
     }, onError: (OnLinkErrorException e) async {
       print('onLinkError');
@@ -136,6 +137,10 @@ class _MyLogInPageState extends State<MyLogInPage> {
     });
   }
 
+  // void test() async {
+  //   initDynamicLinks();
+  //   signIn();
+  // }
   void signIn() async {
     final _formState = _formKey.currentState;
 
