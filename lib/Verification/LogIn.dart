@@ -25,18 +25,17 @@ class MyLogInPage extends StatefulWidget {
 }
 
 class _MyLogInPageState extends State<MyLogInPage> {
-  
   String _email;
   String _password;
   String _authHint = '';
   bool _isLoading = false;
   bool _obscurePassword = true;
-  String _datetime='';
-  String _description='';
+  String _datetime = '';
+  String _description = '';
   int _eventColor;
-  String _eventName='';
-  String _imageUrl='';
-  String _location='';
+  String _eventName = '';
+  String _imageUrl = '';
+  String _location = '';
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -51,6 +50,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
     _passwordController.dispose();
     super.dispose();
   }
+
   @override
   void initState() {
     super.initState();
@@ -61,12 +61,14 @@ class _MyLogInPageState extends State<MyLogInPage> {
 
   // Method checks if the App was opened by a Dynamic Link
   void initDynamicLinks() async {
-    final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
+    final PendingDynamicLinkData data =
+        await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri deepLink = data?.link;
-    if(deepLink != null){
+    if (deepLink != null) {
       Navigator.pushNamed(context, deepLink.path);
+      print('DL =! null');
       final queryParams = deepLink.queryParameters;
-      if(queryParams.length > 0) {
+      if (queryParams.length > 0) {
         String eventId = queryParams['eventID'];
         print('The user must be inserted in the event: $eventId');
         setState(() {
@@ -77,20 +79,28 @@ class _MyLogInPageState extends State<MyLogInPage> {
 
     // This will handle incoming links if the application is already opened
     FirebaseDynamicLinks.instance.onLink(
-      onSuccess: (PendingDynamicLinkData dynamikLink) async {
-        final Uri deepLink = dynamikLink?.link;
+        onSuccess: (PendingDynamicLinkData dynamikLink) async {
+      final Uri deepLink = dynamikLink?.link;
 
-        if(deepLink != null){
-          Navigator.pushNamed(context, deepLink.path);
+      if (deepLink != null) {
+        Navigator.pushNamed(context, deepLink.path);
+        print('DL != null');
+        final queryParams = deepLink.queryParameters;
+        if (queryParams.length > 0) {
+          String eventId = queryParams['eventID'];
+          print('The user must be inserted in the event: $eventId');
+          setState(() {
+            _eventID = eventId;
+          });
         }
-      },
-      onError: (OnLinkErrorException e) async {
-        print('onLinkError');
-        print(e.message);
       }
-    );
+    }, onError: (OnLinkErrorException e) async {
+      print('onLinkError');
+      print(e.message);
+    });
   }
-void insertEvent(String eventID, String userId) async {
+
+  void insertEvent(String eventID, String userId) async {
     final databaseReference = Firestore.instance;
 
     await databaseReference
@@ -109,7 +119,7 @@ void insertEvent(String eventID, String userId) async {
     });
   }
 
-void getEventInfo(String eventID) async {
+  void getEventInfo(String eventID) async {
     final databaseReference = Firestore.instance;
     var documentReference =
         databaseReference.collection("events").document(eventID);
@@ -125,6 +135,7 @@ void getEventInfo(String eventID) async {
       });
     });
   }
+
   void signIn() async {
     final _formState = _formKey.currentState;
 
@@ -144,9 +155,9 @@ void getEventInfo(String eventID) async {
                 password: _passwordController.text);
 
         if (user.user.isEmailVerified) {
-          if(_eventID != null){
+          if (_eventID != null) {
             getEventInfo(_eventID);
-            insertEvent(_eventID,user.user.uid);
+            insertEvent(_eventID, user.user.uid);
           }
           Navigator.push(
               context,
@@ -185,7 +196,8 @@ void getEventInfo(String eventID) async {
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
         cursorColor: cPlanGoBlue,
-        style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+        style:
+            TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
         controller: _emailController,
         decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
@@ -195,7 +207,8 @@ void getEventInfo(String eventID) async {
               borderRadius: const BorderRadius.all(Radius.circular(10.0)),
               borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
             ),
-            errorStyle: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
+            errorStyle: TextStyle(
+                color: cPlanGoRedBright, fontFamily: _montserratMedium),
             prefixIcon: Padding(
               padding: EdgeInsets.all(0.0),
               child: Icon(
@@ -204,7 +217,8 @@ void getEventInfo(String eventID) async {
               ),
             ),
             labelText: 'email',
-            labelStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium)),
+            labelStyle:
+                TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium)),
         obscureText: false,
         validator: (value) =>
             value.isEmpty ? messageNotifier('Please enter an email') : null,
@@ -221,7 +235,8 @@ void getEventInfo(String eventID) async {
         cursorColor: cPlanGoBlue,
         controller: _passwordController,
         obscureText: _obscurePassword,
-        style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+        style:
+            TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
         decoration: InputDecoration(
           enabledBorder: UnderlineInputBorder(
             borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
@@ -232,8 +247,10 @@ void getEventInfo(String eventID) async {
           ),
           fillColor: cPlanGoBlue,
           labelText: 'password',
-          labelStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
-          errorStyle: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
+          labelStyle:
+              TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
+          errorStyle:
+              TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
           prefixIcon: Padding(
             padding: EdgeInsets.all(0.0),
             child: Icon(
@@ -305,7 +322,10 @@ void getEventInfo(String eventID) async {
               padding: const EdgeInsets.only(bottom: 30, right: 30),
               child: Text(
                 'Login'.toLowerCase(),
-                style: TextStyle(color: cPlanGoWhiteBlue, fontSize: 18, fontFamily: _montserratRegular),
+                style: TextStyle(
+                    color: cPlanGoWhiteBlue,
+                    fontSize: 18,
+                    fontFamily: _montserratRegular),
               ),
             ),
           ),
@@ -327,7 +347,8 @@ void getEventInfo(String eventID) async {
           onPressed: signIn,
           child: Text(
             'Plan and Go',
-            style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
+            style: TextStyle(
+                color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
           )),
     );
   }
@@ -361,7 +382,10 @@ void getEventInfo(String eventID) async {
                 borderRadius: new BorderRadius.circular(40.0),
               ),
               textColor: cPlanGoWhiteBlue,
-              child: new Text('Register', style: TextStyle(fontFamily: _montserratMedium),),
+              child: new Text(
+                'Register',
+                style: TextStyle(fontFamily: _montserratMedium),
+              ),
             ),
             FlatButton(
               onPressed: () {
@@ -372,7 +396,8 @@ void getEventInfo(String eventID) async {
                 borderRadius: new BorderRadius.circular(40.0),
               ),
               textColor: cPlanGoWhiteBlue,
-              child: new Text('Forgot Password?', style: TextStyle(fontFamily: _montserratMedium)),
+              child: new Text('Forgot Password?',
+                  style: TextStyle(fontFamily: _montserratMedium)),
             ),
           ],
         ));
@@ -382,7 +407,8 @@ void getEventInfo(String eventID) async {
     return new Container(
       child: Text(
         _authHint,
-        style: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
+        style:
+            TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
         textAlign: TextAlign.center,
       ),
     );
