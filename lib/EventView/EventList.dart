@@ -80,17 +80,21 @@ class _EventListState extends State<EventList> {
             "Loading..",
             style: TextStyle(color: cPlanGoWhiteBlue),
           );
-        return Scrollbar(
-            child: ListView.separated(
-          padding: EdgeInsets.all(10.0),
-          itemCount: snapshot.data.documents.length,
-          separatorBuilder: (context, index) => Divider(
-            height: 15.0,
-            color: Colors.transparent,
-          ),
-          itemBuilder: (context, index) =>
-              buildCanbanList(context, snapshot.data.documents[index]),
-        ));
+        return ScrollConfiguration(
+            behavior: ScrollBehavior(),
+            child: GlowingOverscrollIndicator(
+                axisDirection: AxisDirection.down,
+                color: cPlanGoBlue,
+                child: ListView.separated(
+                  padding: EdgeInsets.all(10.0),
+                  itemCount: snapshot.data.documents.length,
+                  separatorBuilder: (context, index) => Divider(
+                    height: 15.0,
+                    color: Colors.transparent,
+                  ),
+                  itemBuilder: (context, index) =>
+                      buildCanbanList(context, snapshot.data.documents[index]),
+                )));
       },
     );
   }
@@ -191,6 +195,8 @@ class _EventListState extends State<EventList> {
 
   Widget eventName(DocumentSnapshot document) {
     return new Container(
+        width: MediaQuery.of(context).size.width / 1.0,
+        height: MediaQuery.of(context).size.height / 14.0,
         padding: const EdgeInsets.only(right: 5.0),
         child: new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -229,7 +235,9 @@ class _EventListState extends State<EventList> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         new Container(
-          padding: const EdgeInsets.only(left: 1.0, right: 30.0),
+          width: MediaQuery.of(context).size.width / 1.0,
+          height: MediaQuery.of(context).size.height / 45.0,
+          padding: const EdgeInsets.only(left: 1.0, right: 29),
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -262,6 +270,8 @@ class _EventListState extends State<EventList> {
               thickness: 1.5,
             )),
         new Container(
+            width: MediaQuery.of(context).size.width / 1.0,
+            height: MediaQuery.of(context).size.height / 12.5,
             padding: const EdgeInsets.only(left: 1.0, right: 30.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -286,7 +296,7 @@ class _EventListState extends State<EventList> {
   Widget loadImage(DocumentSnapshot document) {
     return new Container(
       height: MediaQuery.of(context).size.height / 10.0,
-      width: MediaQuery.of(context).size.width / 5.0,
+      width: MediaQuery.of(context).size.width / 5.5,
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.only(top: 35, bottom: 8, left: 3.0, right: 8),
       decoration: new BoxDecoration(
@@ -319,7 +329,7 @@ class _EventListState extends State<EventList> {
       child: new Stack(children: <Widget>[
         new Container(
             width: MediaQuery.of(context).size.width / 1.0,
-            height: MediaQuery.of(context).size.height / 4.4,
+            height: MediaQuery.of(context).size.height / 4.0,
             margin: const EdgeInsets.only(
                 left: 40.0, bottom: 7.5, top: 20, right: 7.5),
             decoration: new BoxDecoration(
@@ -374,7 +384,7 @@ class _EventListState extends State<EventList> {
                           ),
                           Container(
                             padding:
-                                const EdgeInsets.only(left: 40.0, right: 5.0),
+                                const EdgeInsets.only(left: 50.0, right: 5.0),
                             child: Icon(
                               Icons.access_time,
                               color: cPlanGoWhiteBlue,
@@ -423,10 +433,11 @@ class _EventListState extends State<EventList> {
           bottomRight: Radius.circular(25),
         ),
       ),
-      leading: IconButton(
+      leading: new IconButton(
         color: cPlanGoWhiteBlue,
-        tooltip: "Create New Event",
-        icon: Icon(Icons.playlist_add_check),
+        tooltip: "Create Event",
+        icon: new Icon(Icons.calendar_view_day, color: cPlanGoWhiteBlue),
+        splashColor: cPlanGoWhiteBlue,
         onPressed: () {
           Navigator.push(
               context,
