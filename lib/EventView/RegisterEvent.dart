@@ -774,7 +774,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       leading: new IconButton(
         icon: new Icon(Icons.arrow_back, color: cPlanGoWhiteBlue),
         onPressed: () => Navigator.of(context).pop(),
-        splashColor: cPlanGoWhiteBlue,
+        splashColor: cPlanGoBlue,
         highlightColor: Colors.transparent,
       ),
       title: Text(

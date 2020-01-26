@@ -139,7 +139,7 @@ class _ResetPasswordState extends State<ResetPassword> {
         child: TextFormField(
           keyboardType: TextInputType.emailAddress,
           cursorColor: cPlanGoBlue,
-          style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+          style: TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
           controller: _emailController,
           decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(

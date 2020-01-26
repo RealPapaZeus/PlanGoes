@@ -207,7 +207,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
         keyboardType: TextInputType.emailAddress,
         cursorColor: cPlanGoBlue,
         style:
-            TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+            TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
         controller: _emailController,
         decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
@@ -248,7 +248,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
         controller: _passwordController,
         obscureText: _obscurePassword,
         style:
-            TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+            TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
         decoration: InputDecoration(
           enabledBorder: UnderlineInputBorder(
             borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),

@@ -188,7 +188,7 @@ class _CreateAccountState extends State<CreateAccount> {
           keyboardType: TextInputType.emailAddress,
           cursorColor: cPlanGoBlue,
           style: TextStyle(
-              color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+              color: cPlanGoDark, fontFamily: _montserratMedium),
           controller: _emailController,
           decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
@@ -230,7 +230,7 @@ class _CreateAccountState extends State<CreateAccount> {
               controller: _passwordController,
               obscureText: _obscurePassword,
               style: TextStyle(
-                  color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+                  color: cPlanGoDark, fontFamily: _montserratMedium),
               decoration: InputDecoration(
                 enabledBorder: UnderlineInputBorder(
                   borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
@@ -289,7 +289,7 @@ class _CreateAccountState extends State<CreateAccount> {
           cursorColor: cPlanGoBlue,
           maxLength: 20,
           style: TextStyle(
-              color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+              color: cPlanGoDark, fontFamily: _montserratMedium),
           controller: _usernameController,
           decoration: InputDecoration(
               counterStyle:
