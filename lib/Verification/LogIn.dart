@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/Verification/CreateAccount.dart';
@@ -29,6 +30,12 @@ class _MyLogInPageState extends State<MyLogInPage> {
   String _authHint = '';
   bool _isLoading = false;
   bool _obscurePassword = true;
+  String _datetime = '';
+  String _description = '';
+  int _eventColor;
+  String _eventName;
+  String _imageUrl = '';
+  String _location = '';
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -58,7 +65,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
         await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri deepLink = data?.link;
     if (deepLink != null) {
-      Navigator.pushNamed(context, deepLink.path);
+      print('DL =! null');
       final queryParams = deepLink.queryParameters;
       if (queryParams.length > 0) {
         String eventId = queryParams['eventID'];
@@ -66,8 +73,12 @@ class _MyLogInPageState extends State<MyLogInPage> {
         setState(() {
           _eventID = eventId;
         });
+        getEventInfo(_eventID);
+        print('InitDL Print: $_eventName');
       }
+      Navigator.pushNamed(context, deepLink.path);
     }
+    else{print('DL = null');}
 
     // This will handle incoming links if the application is already opened
     FirebaseDynamicLinks.instance.onLink(
@@ -75,12 +86,62 @@ class _MyLogInPageState extends State<MyLogInPage> {
       final Uri deepLink = dynamikLink?.link;
 
       if (deepLink != null) {
+        print('DL != null');
+        final queryParams = deepLink.queryParameters;
+        if (queryParams.length > 0) {
+          String eventId = queryParams['eventID'];
+          print('The user must be inserted in the event: $eventId');
+          setState(() {
+            _eventID = eventId;
+          });
+          getEventInfo(_eventID);
+          print('InitDL Print: $_eventName');
+        }
         Navigator.pushNamed(context, deepLink.path);
       }
     }, onError: (OnLinkErrorException e) async {
       print('onLinkError');
       print(e.message);
     });
+  }
+  
+  // insert Reference of Event into UsersEventList
+  void insertEvent(String eventID, String userId) async {
+    final databaseReference = Firestore.instance;
+
+    await databaseReference
+        .collection("users")
+        .document("$userId")
+        .collection("usersEventList")
+        .document("$eventID")
+        .setData({
+      'admin': false,
+      'eventname': '$_eventName',
+      'location': '$_location',
+      'datetime': '$_datetime',
+      'description': '$_description',
+      'eventColor': _eventColor.toInt(),
+      'imageUrl': '$_imageUrl'
+    });
+  }
+
+  // get EventInfo of the Event the user was invited
+  void getEventInfo(String eventID) async {
+    final databaseReference = Firestore.instance;
+    var documentReference =
+        databaseReference.collection("events").document('$eventID');
+    print('Print in getEventInfo $eventID');
+    documentReference.get().then((DocumentSnapshot document) {
+      setState(() {
+        _datetime = document['datetime'];
+        _description = document['description'];
+        _eventColor = document['eventColor'];
+        _eventName = document['eventName'];
+        _imageUrl = document['imageUrl'];
+        _location = document['location'];
+      });
+    });
+    print('method was called');
   }
 
   void signIn() async {
@@ -102,6 +163,9 @@ class _MyLogInPageState extends State<MyLogInPage> {
                 password: _passwordController.text);
 
         if (user.user.isEmailVerified) {
+          if (_eventID != null) {
+            insertEvent(_eventID, user.user.uid);
+          }
           Navigator.push(
               context,
               MaterialPageRoute(

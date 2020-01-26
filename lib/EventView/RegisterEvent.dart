@@ -150,6 +150,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       'valueCurrent': 0,
       'username': []
     });
+
   }
 
   // calls all methods which are useful to pass data into

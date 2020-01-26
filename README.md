@@ -1,6 +1,6 @@
-# plan_go_software_project
+# PlanGoes
 
-A new Flutter project.
+PlanGoes is an cross platform app designed and developed by students from the University of Applied Sciences Flensburg.
 
 ## Getting Started
 
