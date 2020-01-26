@@ -117,6 +117,8 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   Widget answerResetPassword() {
     return new Container(
+      width: MediaQuery.of(context).size.width / 1.0,
+      height: MediaQuery.of(context).size.height / 10.0,
       child: Text(
         _authHint,
         style: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
@@ -131,7 +133,8 @@ class _ResetPasswordState extends State<ResetPassword> {
   }
 
   Widget emailTextFormField() {
-    return Padding(
+    return Container(
+      width: MediaQuery.of(context).size.width / 1.0,
         padding: const EdgeInsets.only(left: 6.0, right: 6.0),
         child: TextFormField(
           keyboardType: TextInputType.emailAddress,
@@ -198,7 +201,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   List<Widget> userResetPassword() {
     return [
       Padding(
-          padding: EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(15.0),
           child: _isLoading ? loadingButton() : getResetButton()),
     ];
   }
@@ -226,25 +229,55 @@ class _ResetPasswordState extends State<ResetPassword> {
         ));
   }
 
+  Widget buildBackground() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 3,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: cPlanGoMarineBlueDark,
+            blurRadius: 8, // has the effect of softening the shadow
+            spreadRadius: 0.3,
+          )
+        ],
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [cPlangGoDarkBlue, cPlanGoMarineBlueDark],
+        ),
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(90)),
+      ),
+    );
+  }
+
   Widget showReset() {
-    return Stack(children: <Widget>[
-      Align(
-        alignment: Alignment.topCenter,
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height / 3.3,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [cPlangGoDarkBlue, cPlanGoMarineBlueDark],
-            ),
-            borderRadius: BorderRadius.only(bottomRight: Radius.circular(90)),
-          ),
+    return SingleChildScrollView(
+      child: Container(
+        alignment: Alignment.center,
+        child: Center(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    buildBackground(),
+                    Center(
+                      widthFactor: MediaQuery.of(context).size.width / 1,
+                      heightFactor: MediaQuery.of(context).size.height / 300,
+                      child: 
+                    Container(
+                      
+                      child: Column(
+                        children: <Widget>[new Center(child: getAccountView())],
+                      ),
+                    ))
+                  ],
+                )
+              ]),
         ),
       ),
-      Positioned(top: 137, right: 10, left: 10, child: getAccountView())
-    ]);
+    );
   }
 
   Widget getAppBar() {
@@ -252,6 +285,12 @@ class _ResetPasswordState extends State<ResetPassword> {
       elevation: 0.0,
       backgroundColor: cPlangGoDarkBlue,
       centerTitle: true,
+      leading: new IconButton(
+          icon: new Icon(Icons.arrow_back, color: cPlanGoWhiteBlue),
+          onPressed: () => Navigator.of(context).pop(),
+          splashColor: cPlanGoBlue,
+          highlightColor: Colors.transparent,
+        ),
       title: Text('Reset Password'.toLowerCase(),
           style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratRegular)),
     );

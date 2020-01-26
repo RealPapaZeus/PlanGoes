@@ -77,8 +77,9 @@ class _MyLogInPageState extends State<MyLogInPage> {
         print('InitDL Print: $_eventName');
       }
       Navigator.pushNamed(context, deepLink.path);
+    } else {
+      print('DL = null');
     }
-    else{print('DL = null');}
 
     // This will handle incoming links if the application is already opened
     FirebaseDynamicLinks.instance.onLink(
@@ -104,7 +105,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
       print(e.message);
     });
   }
-  
+
   // insert Reference of Event into UsersEventList
   void insertEvent(String eventID, String userId) async {
     final databaseReference = Firestore.instance;
@@ -198,8 +199,10 @@ class _MyLogInPageState extends State<MyLogInPage> {
 
   //it only returns the TextFormField Widget
   Widget emailTextFormField() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 6.0, right: 6.0),
+    return new Container(
+      width: MediaQuery.of(context).size.width / 1.0,
+      height: MediaQuery.of(context).size.height / 10.0,
+      padding: const EdgeInsets.all(6.0),
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
         cursorColor: cPlanGoBlue,
@@ -235,7 +238,9 @@ class _MyLogInPageState extends State<MyLogInPage> {
   }
 
   Widget passwordTextFormField() {
-    return Padding(
+    return new Container(
+      width: MediaQuery.of(context).size.width / 1.0,
+      height: MediaQuery.of(context).size.height / 10.0,
       padding: const EdgeInsets.all(6.0),
       child: TextFormField(
         keyboardType: TextInputType.visiblePassword,
@@ -300,7 +305,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
   Widget showLabel() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 3.1,
+      height: MediaQuery.of(context).size.height / 3,
       decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -322,28 +327,31 @@ class _MyLogInPageState extends State<MyLogInPage> {
           Align(
               alignment: Alignment.center,
               child: Container(
-                  height: 150.0,
-                  width: 150.0,
+                  width: MediaQuery.of(context).size.width / 3.0,
+                  height: MediaQuery.of(context).size.height / 5.0,
                   decoration: new BoxDecoration(
                       shape: BoxShape.rectangle,
                       image: new DecorationImage(
                           fit: BoxFit.fill,
                           image: new AssetImage(
                               'images/PlanGo_Transparent.png'))))),
-          Spacer(),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 30, right: 30),
-              child: Text(
-                'Login'.toLowerCase(),
-                style: TextStyle(
-                    color: cPlanGoWhiteBlue,
-                    fontSize: 18,
-                    fontFamily: _montserratRegular),
+          Container(
+            width: MediaQuery.of(context).size.width / 1.0,
+            height: MediaQuery.of(context).size.height / 10.0,
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 30, right: 30),
+                child: Text(
+                  'LOGIN'.toLowerCase(),
+                  style: TextStyle(
+                      color: cPlanGoWhiteBlue,
+                      fontSize: 18,
+                      fontFamily: _montserratRegular),
+                ),
               ),
             ),
-          ),
+          )
         ],
       ),
     );
@@ -382,7 +390,9 @@ class _MyLogInPageState extends State<MyLogInPage> {
   }
 
   Widget positionCreateAndReset() {
-    return Padding(
+    return Container(
+        width: MediaQuery.of(context).size.width / 1.0,
+        height: MediaQuery.of(context).size.height / 15.0,
         padding: const EdgeInsets.only(left: 10, right: 10.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -419,6 +429,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
 
   Widget signInSuccess() {
     return new Container(
+      width: MediaQuery.of(context).size.width / 1.0,
+      height: MediaQuery.of(context).size.height / 10.0,
       child: Text(
         _authHint,
         style:
@@ -429,7 +441,9 @@ class _MyLogInPageState extends State<MyLogInPage> {
   }
 
   Widget getCard() {
-    return Padding(
+    return Container(
+        width: MediaQuery.of(context).size.width / 1.0,
+        height: MediaQuery.of(context).size.height / 2.33,
         padding: const EdgeInsets.only(
           top: 40.0,
         ),
