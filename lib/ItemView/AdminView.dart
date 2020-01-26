@@ -245,7 +245,7 @@ class _AdminViewState extends State<AdminView> {
           ),
           Container(
             constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width / 1.45),
+                maxWidth: MediaQuery.of(context).size.width / 1.5),
             padding: const EdgeInsets.all(8.0),
             child: Text(
               _eventName,

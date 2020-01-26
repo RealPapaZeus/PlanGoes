@@ -136,7 +136,7 @@ class _ItemListState extends State<ItemList> {
           child: Card(
             color: cPlanGoWhiteBlue,
             shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(10.0),
+              borderRadius: new BorderRadius.circular(5.0),
             ),
             elevation: 4.0,
             margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
