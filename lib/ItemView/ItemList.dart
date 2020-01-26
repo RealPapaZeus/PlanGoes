@@ -63,7 +63,7 @@ class _ItemListState extends State<ItemList> {
     return CircleAvatar(
       child: Text(
         textInput,
-        style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratLight),
+        style: TextStyle(color: cPlanGoWhiteBlue,),
       ),
       backgroundColor: Color(widget.eventColor),
     );
@@ -99,24 +99,29 @@ class _ItemListState extends State<ItemList> {
             "Loading..",
             style: TextStyle(fontFamily: _montserratMedium),
           );
-        return Scrollbar(
-          child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemExtent: 100,
-              padding: EdgeInsets.only(
-                  left: 10.0, right: 10.0, top: 15.0, bottom: 50.0),
-              itemCount: snapshot.data.documents.length,
-              itemBuilder: (context, index) {
-                return buildItemList(context, snapshot.data.documents[index]);
-              }),
-        );
+        return ScrollConfiguration(
+            behavior: ScrollBehavior(),
+            child: GlowingOverscrollIndicator(
+              axisDirection: AxisDirection.down,
+              color: Color(widget.eventColor),
+              child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemExtent: 100,
+                  padding: EdgeInsets.only(
+                      left: 10.0, right: 10.0, top: 15.0, bottom: 50.0),
+                  itemCount: snapshot.data.documents.length,
+                  itemBuilder: (context, index) {
+                    return buildItemList(
+                        context, snapshot.data.documents[index]);
+                  }),
+            ));
       },
     );
   }
 
   Widget buildItemList(BuildContext context, DocumentSnapshot document) {
     return new InkWell(
-        splashColor: cPlanGoWhiteBlue,
+        splashColor: Color(widget.eventColor),
         borderRadius: new BorderRadius.circular(15.0),
         onTap: () {
           showDialog(
@@ -124,15 +129,16 @@ class _ItemListState extends State<ItemList> {
               child: new ItemPickDialog(
                   userId: widget.userId,
                   documentId: widget.documentId,
-                  itemDocumentId: document.documentID.toString()));
+                  itemDocumentId: document.documentID.toString(),
+                  eventColor: widget.eventColor,));
         },
         child: Container(
           child: Card(
-            color: cPlanGoWhiteBlue  ,
+            color: cPlanGoWhiteBlue,
             shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(5.0),
+              borderRadius: new BorderRadius.circular(10.0),
             ),
-            elevation: 5.0,
+            elevation: 4.0,
             margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             child: Slidable(
               actionPane: SlidableStrechActionPane(),
@@ -183,7 +189,7 @@ class _ItemListState extends State<ItemList> {
                       padding: const EdgeInsets.only(right: 12.0),
                       child: Text(
                         '${document['valueCurrent'].toString()}/${document['valueMax'].toString()}',
-                       // style: TextStyle(fontFamily: _montserratRegular),
+                        //style: TextStyle(fontFamily: _montserratMedium),
                       ),
                     ))
                   ]),
