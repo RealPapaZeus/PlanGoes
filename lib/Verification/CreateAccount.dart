@@ -104,27 +104,39 @@ class _CreateAccountState extends State<CreateAccount> {
             backgroundColor: cPlanGoWhiteBlue,
             title: Text(
               'Verify Your Email Address',
-              style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+              style: TextStyle(
+                  color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
             ),
             content: RichText(
                 text: new TextSpan(
-                    style:
-                        new TextStyle(fontSize: 14.0, color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+                    style: new TextStyle(
+                        fontSize: 14.0,
+                        color: cPlanGoMarineBlue,
+                        fontFamily: _montserratMedium),
                     children: <TextSpan>[
                   new TextSpan(
                       text:
-                          'We like you to verify your email address. We have sent an email to ', style: TextStyle(fontFamily: _montserratMedium)),
+                          'We like you to verify your email address. We have sent an email to ',
+                      style: TextStyle(fontFamily: _montserratMedium)),
                   new TextSpan(
                       text: '$_email'.trim(),
-                      style: new TextStyle(fontWeight: FontWeight.bold, fontFamily: _montserratMedium)),
+                      style: new TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: _montserratMedium)),
                   new TextSpan(
                       text:
-                          ' to verify your address. Please click the link in that email to continue.', style: TextStyle(fontFamily: _montserratMedium)),
+                          ' to verify your address. Please click the link in that email to continue.',
+                      style: TextStyle(fontFamily: _montserratMedium)),
                   new TextSpan(
                       text:
-                          '\nWait some seconds and please check your spam if you have not received an email.', style: TextStyle( fontFamily: _montserratMedium)),
-                  new TextSpan(text: '\nWe are glad to welcome you!', style: TextStyle(fontFamily: _montserratMedium)),
-                  new TextSpan(text: '\n\nYour PlanGo team', style: TextStyle(fontFamily: _montserratMedium))
+                          '\nWait some seconds and please check your spam if you have not received an email.',
+                      style: TextStyle(fontFamily: _montserratMedium)),
+                  new TextSpan(
+                      text: '\nWe are glad to welcome you!',
+                      style: TextStyle(fontFamily: _montserratMedium)),
+                  new TextSpan(
+                      text: '\n\nYour PlanGo team',
+                      style: TextStyle(fontFamily: _montserratMedium))
                 ])),
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(15)),
@@ -140,7 +152,8 @@ class _CreateAccountState extends State<CreateAccount> {
                 textColor: cPlanGoWhiteBlue,
                 child: Text(
                   'Okay, lets go',
-                  style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+                  style: TextStyle(
+                      color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
                 ),
               )
             ],
@@ -153,9 +166,12 @@ class _CreateAccountState extends State<CreateAccount> {
   //is already in use by another user
   Widget registrationSucessMessage() {
     return new Container(
+      width: MediaQuery.of(context).size.width / 1.0,
+      height: MediaQuery.of(context).size.height / 10.0,
       child: Text(
         _authHint,
-        style: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
+        style:
+            TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
         textAlign: TextAlign.center,
       ),
     );
@@ -164,12 +180,15 @@ class _CreateAccountState extends State<CreateAccount> {
   //Widgets do only return a TextFormField
   //whenever a new TextFormField gets created
   Widget emailTextFormField() {
-    return Padding(
-        padding: const EdgeInsets.only(left: 6.0, right: 6.0),
+    return Container(
+        width: MediaQuery.of(context).size.width / 1.0,
+        //height: MediaQuery.of(context).size.height / 8.0,
+        padding: const EdgeInsets.all(6.0),
         child: TextFormField(
           keyboardType: TextInputType.emailAddress,
           cursorColor: cPlanGoBlue,
-          style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+          style: TextStyle(
+              color: cPlanGoDark, fontFamily: _montserratMedium),
           controller: _emailController,
           decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
@@ -179,7 +198,8 @@ class _CreateAccountState extends State<CreateAccount> {
               borderRadius: const BorderRadius.all(Radius.circular(10.0)),
               borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
             ),
-            errorStyle: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
+            errorStyle: TextStyle(
+                color: cPlanGoRedBright, fontFamily: _montserratMedium),
             prefixIcon: Padding(
               padding: EdgeInsets.all(0.0),
               child: Icon(
@@ -188,7 +208,8 @@ class _CreateAccountState extends State<CreateAccount> {
               ),
             ),
             labelText: 'email',
-            labelStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
+            labelStyle:
+                TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
           ),
           obscureText: false,
           validator: (value) =>
@@ -198,7 +219,8 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   Widget passwordTextFormField() {
-    return Padding(
+    return Container(
+        width: MediaQuery.of(context).size.width / 1.0,
         padding: const EdgeInsets.all(6.0),
         child: Theme(
             data: Theme.of(context).copyWith(primaryColor: cPlanGoBlue),
@@ -207,7 +229,8 @@ class _CreateAccountState extends State<CreateAccount> {
               cursorColor: cPlanGoBlue,
               controller: _passwordController,
               obscureText: _obscurePassword,
-              style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+              style: TextStyle(
+                  color: cPlanGoDark, fontFamily: _montserratMedium),
               decoration: InputDecoration(
                 enabledBorder: UnderlineInputBorder(
                   borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
@@ -218,8 +241,10 @@ class _CreateAccountState extends State<CreateAccount> {
                 ),
                 fillColor: cPlanGoBlue,
                 labelText: 'password',
-                labelStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
-                errorStyle: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
+                labelStyle: TextStyle(
+                    color: cPlanGoBlue, fontFamily: _montserratMedium),
+                errorStyle: TextStyle(
+                    color: cPlanGoRedBright, fontFamily: _montserratMedium),
                 prefixIcon: Padding(
                   padding: EdgeInsets.all(0.0),
                   child: Icon(
@@ -256,20 +281,24 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   Widget userNameField() {
-    return Padding(
+    return Container(
+        width: MediaQuery.of(context).size.width / 1.0,
         padding: const EdgeInsets.all(6.0),
         child: TextFormField(
           keyboardType: TextInputType.text,
           cursorColor: cPlanGoBlue,
           maxLength: 20,
-          style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+          style: TextStyle(
+              color: cPlanGoDark, fontFamily: _montserratMedium),
           controller: _usernameController,
           decoration: InputDecoration(
-            counterStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
+              counterStyle:
+                  TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
               enabledBorder: UnderlineInputBorder(
                 borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
               ),
-              errorStyle: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
+              errorStyle: TextStyle(
+                  color: cPlanGoRedBright, fontFamily: _montserratMedium),
               focusedBorder: OutlineInputBorder(
                 borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                 borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
@@ -281,7 +310,8 @@ class _CreateAccountState extends State<CreateAccount> {
                   color: cPlanGoBlue,
                 ),
               ),
-              labelStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
+              labelStyle:
+                  TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
               labelText: 'username'),
           obscureText: false,
           validator: (value) => value.isEmpty
@@ -299,10 +329,11 @@ class _CreateAccountState extends State<CreateAccount> {
           color: cPlanGoBlue,
           child: Text(
             'Sign Up',
-            style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
+            style: TextStyle(
+                color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(40.0),
+            borderRadius: new BorderRadius.circular(20.0),
           ),
           elevation: 5.0,
           onPressed: createNewAccount,
@@ -334,8 +365,18 @@ class _CreateAccountState extends State<CreateAccount> {
       elevation: 0.0,
       backgroundColor: cPlangGoDarkBlue,
       centerTitle: true,
+      actions: <Widget>[
+        new IconButton(
+          icon: new Icon(Icons.arrow_forward, color: cPlanGoWhiteBlue),
+          onPressed: () => Navigator.of(context).pop(),
+          splashColor: cPlanGoBlue,
+          highlightColor: Colors.transparent,
+        ),
+      ],
+      automaticallyImplyLeading: false,
       title: Text('Registration'.toLowerCase(),
-          style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratRegular)),
+          style: TextStyle(
+              color: cPlanGoWhiteBlue, fontFamily: _montserratRegular)),
     );
   }
 
@@ -363,25 +404,56 @@ class _CreateAccountState extends State<CreateAccount> {
         ));
   }
 
+  Widget buildBackground() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 3,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: cPlanGoMarineBlueDark,
+            blurRadius: 8, // has the effect of softening the shadow
+            spreadRadius: 0.3,
+          )
+        ],
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [cPlangGoDarkBlue, cPlanGoMarineBlueDark],
+        ),
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(90)),
+      ),
+    );
+  }
+
   Widget showRegistration() {
-    return Stack(children: <Widget>[
-      Align(
-        alignment: Alignment.topCenter,
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height / 3.3,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [cPlangGoDarkBlue, cPlanGoMarineBlueDark],
-            ),
-            borderRadius: BorderRadius.only(bottomRight: Radius.circular(90)),
-          ),
+    return SingleChildScrollView(
+      child: Container(
+        alignment: Alignment.center,
+        child: Center(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    buildBackground(),
+                    Center(
+                      widthFactor: MediaQuery.of(context).size.width / 1,
+                      heightFactor: MediaQuery.of(context).size.height / 585,
+                      child: 
+                    Container(
+                      padding:
+                          const EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 15.0),
+                      child: Column(
+                        children: <Widget>[new Center(child: getAccountView())],
+                      ),
+                    ))
+                  ],
+                )
+              ]),
         ),
       ),
-      Positioned(top: 137, right: 10, left: 10, child: getAccountView())
-    ]);
+    );
   }
 
   @override

@@ -20,10 +20,9 @@ class _ItemCreateViewState extends State<ItemCreateView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _itemController = TextEditingController();
 
-   String _montserratLight = 'MontserratLight';
+  String _montserratLight = 'MontserratLight';
   String _montserratMedium = 'MontserratMedium';
   String _montserratRegular = 'MontserratRegular';
-
 
   @override
   void initState() {
@@ -84,24 +83,30 @@ class _ItemCreateViewState extends State<ItemCreateView> {
     return Flexible(
         child: TextFormField(
       keyboardType: TextInputType.text,
-      cursorColor: cPlanGoMarineBlue,
+      cursorColor: cPlanGoDark,
       style: TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
       maxLength: 50,
       controller: _itemController,
       decoration: InputDecoration(
-        counterStyle: TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
+        counterStyle:
+            TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: cPlanGoMarineBlue, width: MediaQuery.of(context).size.width/350),
+          borderSide: BorderSide(
+              color: Color(widget.eventColor),
+              width: MediaQuery.of(context).size.width / 350),
         ),
         focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: cPlanGoMarineBlue, width: MediaQuery.of(context).size.width/200),
+          borderSide: BorderSide(
+              color: Color(widget.eventColor),
+              width: MediaQuery.of(context).size.width / 200),
         ),
-        errorStyle: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
+        errorStyle:
+            TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
         prefixIcon: Padding(
           padding: EdgeInsets.all(0.0),
           child: Icon(
             Icons.event,
-            color: cPlanGoMarineBlue,
+            color: cPlanGoDark,
           ),
         ),
       ),
@@ -114,7 +119,10 @@ class _ItemCreateViewState extends State<ItemCreateView> {
     return Container(
         padding: const EdgeInsets.only(left: 10.0, bottom: 20.0),
         child: Text(' $_value',
-            style: new TextStyle(fontSize: 25.0, color: cPlanGoMarineBlue, fontFamily: _montserratRegular)));
+            style: new TextStyle(
+                fontSize: 25.0,
+                color: cPlanGoDark,
+                fontFamily: _montserratRegular)));
   }
 
   Widget inputField() {
@@ -125,22 +133,22 @@ class _ItemCreateViewState extends State<ItemCreateView> {
 
   Widget decrementCounterWidget() {
     return FloatingActionButton(
-                backgroundColor: cPlanGoMarineBlue,
-                splashColor: cPlanGoBlue,
-                  child: Icon(Icons.remove),
-                  onPressed: () {
-                    decrementCounter();
-                  });
+        backgroundColor: Color(widget.eventColor),
+        splashColor: cPlanGoBlue,
+        child: Icon(Icons.remove),
+        onPressed: () {
+          decrementCounter();
+        });
   }
 
   Widget incrementCounterWidget() {
     return FloatingActionButton(
-                backgroundColor: cPlanGoMarineBlue,
-                splashColor: cPlanGoBlue,
-                  child: Icon(Icons.add),
-                  onPressed: () {
-                    incrementCounter();
-                  });
+        backgroundColor: Color(widget.eventColor),
+        splashColor: cPlanGoBlue,
+        child: Icon(Icons.add),
+        onPressed: () {
+          incrementCounter();
+        });
   }
 
   Widget createItemCounter() {
@@ -188,20 +196,21 @@ class _ItemCreateViewState extends State<ItemCreateView> {
       )),
       content: itemGeneratorContent(),
       shape: RoundedRectangleBorder(
-        borderRadius: new BorderRadius.circular(35.0),
+        borderRadius: new BorderRadius.circular(20.0),
       ),
       actions: <Widget>[
         FlatButton(
-          splashColor: Color(widget.eventColor),
+          splashColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(40.0),
+            borderRadius: new BorderRadius.circular(20.0),
           ),
           onPressed: () {
             registerItemByPress();
           },
           child: Text(
             'Create',
-            style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+            style: TextStyle(
+                color: cPlanGoDark, fontFamily: _montserratMedium),
           ),
         )
       ],

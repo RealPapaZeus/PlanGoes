@@ -39,7 +39,6 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   bool _isLoading = false;
 
-  String _montserratLight = 'MontserratLight';
   String _montserratMedium = 'MontserratMedium';
   String _montserratRegular = 'MontserratRegular';
 
@@ -150,7 +149,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       'valueCurrent': 0,
       'username': []
     });
-  }
+    }
 
   void addUserToUserslistInDatabase() async {
     final databaseReference = Firestore.instance;
@@ -352,7 +351,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       child: Container(
           decoration: BoxDecoration(
               shape: BoxShape.circle,
-              boxShadow: [BoxShadow(blurRadius: 10.0, spreadRadius: 0.1)]),
+              boxShadow: [BoxShadow(blurRadius: 5.0, spreadRadius: 1)]),
           child: CircleAvatar(
             backgroundColor: cPlanGoBlue,
             radius: 75,
@@ -484,110 +483,124 @@ class _RegisterEventState extends State<RegisterEvent> {
   // }
 
   Widget eventNameTextField() {
-    return TextFormField(
-      keyboardType: TextInputType.text,
-      cursorColor: cPlanGoBlue,
-      style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
-      maxLength: 50,
-      controller: _eventNameController,
-      decoration: InputDecoration(
-        counterStyle:
-            TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: const BorderSide(color: cPlanGoBlue, width: 2.0),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-          borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
-        ),
-        errorStyle:
-            TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
-        labelStyle:
-            TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
-        labelText: 'Eventname',
-      ),
-      obscureText: false,
-      validator: (value) =>
-          value.isEmpty ? messageToDenyLoading('Please enter a name') : null,
-      onSaved: (value) => _eventName == value,
-    );
+    return Container(
+        width: MediaQuery.of(context).size.width / 1.0,
+        height: MediaQuery.of(context).size.height / 10.0,
+        child: TextFormField(
+          keyboardType: TextInputType.text,
+          cursorColor: cPlanGoBlue,
+          style: TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
+          maxLength: 50,
+          controller: _eventNameController,
+          decoration: InputDecoration(
+            counterStyle:
+                TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: const BorderSide(color: cPlanGoBlue, width: 2.0),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
+            ),
+            errorStyle: TextStyle(
+                color: cPlanGoRedBright, fontFamily: _montserratMedium),
+            labelStyle:
+                TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
+            labelText: 'Eventname',
+          ),
+          obscureText: false,
+          validator: (value) => value.isEmpty
+              ? messageToDenyLoading('Please enter a name')
+              : null,
+          onSaved: (value) => _eventName == value,
+        ));
   }
 
   Widget eventLocation() {
-    return TextFormField(
-      keyboardType: TextInputType.text,
-      cursorColor: cPlanGoBlue,
-      style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
-      maxLength: 50,
-      controller: _locationController,
-      decoration: InputDecoration(
-          counterStyle:
-              TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: const BorderSide(color: cPlanGoBlue, width: 2.0),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-            borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
-          ),
-          errorStyle:
-              TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
-          labelStyle:
-              TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
-          labelText: 'Location'),
-      obscureText: false,
-      validator: (value) => value.isEmpty
-          ? messageToDenyLoading('Please enter a location')
-          : null,
-      onSaved: (value) => _location == value,
-    );
+    return Container(
+        width: MediaQuery.of(context).size.width / 1.0,
+        height: MediaQuery.of(context).size.height / 10.0,
+        child: TextFormField(
+          keyboardType: TextInputType.text,
+          cursorColor: cPlanGoBlue,
+          style: TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
+          maxLength: 50,
+          controller: _locationController,
+          decoration: InputDecoration(
+              counterStyle:
+                  TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: const BorderSide(color: cPlanGoBlue, width: 2.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
+              ),
+              errorStyle: TextStyle(
+                  color: cPlanGoRedBright, fontFamily: _montserratMedium),
+              labelStyle:
+                  TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
+              labelText: 'Location'),
+          obscureText: false,
+          validator: (value) => value.isEmpty
+              ? messageToDenyLoading('Please enter a location')
+              : null,
+          onSaved: (value) => _location == value,
+        ));
   }
 
   Widget eventDescriptionTextField() {
-    return TextFormField(
-      keyboardType: TextInputType.multiline,
-      cursorColor: cPlanGoBlue,
-      style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
-      maxLines: 4,
-      maxLength: 200,
-      controller: _descriptionController,
-      decoration: InputDecoration(
-          counterStyle:
-              TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: const BorderSide(color: cPlanGoBlue, width: 2.0),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-            borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
-          ),
-          errorStyle:
-              TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
-          labelStyle:
-              TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
-          labelText: 'Description'),
-      obscureText: false,
-      validator: (value) => value.isEmpty
-          ? messageToDenyLoading('Please enter some description')
-          : null,
-      onSaved: (value) => _description == value,
-    );
+    return Container(
+        width: MediaQuery.of(context).size.width / 1.0,
+        height: MediaQuery.of(context).size.height / 5.0,
+        child: TextFormField(
+          keyboardType: TextInputType.multiline,
+          cursorColor: cPlanGoBlue,
+          style: TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
+          maxLines: 4,
+          maxLength: 200,
+          controller: _descriptionController,
+          decoration: InputDecoration(
+              counterStyle:
+                  TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: const BorderSide(color: cPlanGoBlue, width: 2.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
+              ),
+              errorStyle: TextStyle(
+                  color: cPlanGoRedBright, fontFamily: _montserratMedium),
+              labelStyle:
+                  TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
+              labelText: 'Description'),
+          obscureText: false,
+          validator: (value) => value.isEmpty
+              ? messageToDenyLoading('Please enter some description')
+              : null,
+          onSaved: (value) => _description == value,
+        ));
   }
 
   Widget getDateTimeHeader() {
-    return Padding(
-        padding: const EdgeInsets.only(bottom: 5.0, top: 17.0),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-          Text(
-            'Start date',
-            textAlign: TextAlign.start,
-            style: TextStyle(
-                color: cPlanGoBlue,
-                fontSize: 16.0,
-                fontFamily: _montserratMedium),
-          )
-        ]));
+    return Container(
+        width: MediaQuery.of(context).size.width / 1.0,
+        height: MediaQuery.of(context).size.height / 15.0,
+        child: Padding(
+            padding: const EdgeInsets.only(bottom: 5.0, top: 17.0),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Start date',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        color: cPlanGoBlue,
+                        fontSize: 16.0,
+                        fontFamily: _montserratMedium),
+                  )
+                ])));
   }
 
   void checkDateTimeZero() {
@@ -602,88 +615,98 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   Widget eventDateTimeStart() {
     checkDateTimeZero();
-    return Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: InkWell(
-            onTap: callDateTimePickerStart,
-            child: Container(
-                decoration: BoxDecoration(
-                  //border: Border.all(color: cPlanGoBlue, width: 1.0),
-                  color: cPlanGoBlue,
-                  borderRadius: new BorderRadius.circular(10.0),
-                ),
-                height: MediaQuery.of(context).size.height / 13,
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Container(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Text('date',
-                                style: TextStyle(
-                                    color: cPlanGoWhiteBlue,
-                                    fontFamily: _montserratMedium))),
-                        Container(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Text('time',
-                                style: TextStyle(
-                                    color: cPlanGoWhiteBlue,
-                                    fontFamily: _montserratMedium))),
-                      ],
+    return Container(
+        width: MediaQuery.of(context).size.width / 1.0,
+        height: MediaQuery.of(context).size.height / 10.0,
+        child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: InkWell(
+                onTap: callDateTimePickerStart,
+                child: Container(
+                    decoration: BoxDecoration(
+                      //border: Border.all(color: cPlanGoBlue, width: 1.0),
+                      color: cPlanGoBlue,
+                      borderRadius: new BorderRadius.circular(10.0),
                     ),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Container(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Text('$_day/$_month/$_year',
-                                  style: TextStyle(
-                                      color: cPlanGoWhiteBlue,
-                                      fontFamily: _montserratMedium))),
-                          Container(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Text('$_hour:$_minute',
-                                  style: TextStyle(
-                                      color: cPlanGoWhiteBlue,
-                                      fontFamily: _montserratMedium))),
-                        ])
-                  ],
-                ))));
+                    height: MediaQuery.of(context).size.height / 13,
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Container(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Text('date',
+                                    style: TextStyle(
+                                        color: cPlanGoWhiteBlue,
+                                        fontFamily: _montserratMedium))),
+                            Container(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Text('time',
+                                    style: TextStyle(
+                                        color: cPlanGoWhiteBlue,
+                                        fontFamily: _montserratMedium))),
+                          ],
+                        ),
+                        Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Container(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: Text('$_day/$_month/$_year',
+                                      style: TextStyle(
+                                          color: cPlanGoWhiteBlue,
+                                          fontFamily: _montserratMedium))),
+                              Container(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: Text('$_hour:$_minute',
+                                      style: TextStyle(
+                                          color: cPlanGoWhiteBlue,
+                                          fontFamily: _montserratMedium))),
+                            ])
+                      ],
+                    )))));
   }
 
   // calls methods which allow user to pick from list of colors
   Widget pickColorRow() {
-    return Padding(
-        padding: EdgeInsets.only(top: 12.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              child: Text('Event color:',
-                  style: new TextStyle(
-                      fontSize: 16.0,
-                      color: cPlanGoBlue,
-                      fontFamily: _montserratMedium)),
-            ),
-            Container(
-              child: FloatingActionButton(
-                backgroundColor: _shadeColor,
-                onPressed: () {
-                  _openColorPicker();
-                },
-              ),
-            )
-          ],
-        ));
+    return Container(
+        width: MediaQuery.of(context).size.width / 1.0,
+        height: MediaQuery.of(context).size.height / 10.0,
+        child: Padding(
+            padding: EdgeInsets.only(top: 12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: Text('Event color:',
+                      style: new TextStyle(
+                          fontSize: 16.0,
+                          color: cPlanGoBlue,
+                          fontFamily: _montserratMedium)),
+                ),
+                Container(
+                  child: FloatingActionButton(
+                    backgroundColor: _shadeColor,
+                    splashColor: cPlanGoWhiteBlue,
+                    onPressed: () {
+                      _openColorPicker();
+                    },
+                  ),
+                )
+              ],
+            )));
   }
 
   Widget getRegistrationEventView() {
-    return new Padding(
+    return new Container(
+      width: MediaQuery.of(context).size.width / 1.0,
+        child: 
+    new Padding(
         padding: const EdgeInsets.all(15.0),
         child: Card(
           color: cPlanGoWhiteBlue,
@@ -705,7 +728,7 @@ class _RegisterEventState extends State<RegisterEvent> {
                               userViewConfirmNewAccount())))
             ],
           ),
-        ));
+        )));
   }
 
   Widget showRegistration() {
@@ -754,6 +777,27 @@ class _RegisterEventState extends State<RegisterEvent> {
     );
   }
 
+  Widget getAppBar() {
+    return AppBar(
+      backgroundColor: cPlangGoDarkBlue,
+      elevation: 0.0,
+      centerTitle: true,
+      leading: new IconButton(
+        icon: new Icon(Icons.arrow_back, color: cPlanGoWhiteBlue),
+        onPressed: () => Navigator.of(context).pop(),
+        splashColor: cPlanGoBlue,
+        highlightColor: Colors.transparent,
+      ),
+      title: Text(
+        'Register Event'.toLowerCase(),
+        style: TextStyle(
+          color: cPlanGoWhiteBlue,
+          fontFamily: _montserratRegular,
+        ),
+      ),
+    );
+  }
+
   List<Widget> userViewConfirmNewAccount() {
     return [
       Padding(
@@ -765,6 +809,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   List<Widget> inputWidgets() {
     return [
       eventNameTextField(),
+      Divider(color: Colors.transparent),
       eventLocation(),
       getDateTimeHeader(),
       eventDateTimeStart(),
@@ -782,21 +827,6 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   List<Widget> pickColor() {
     return [pickColorRow()];
-  }
-
-  Widget getAppBar() {
-    return AppBar(
-      backgroundColor: cPlangGoDarkBlue,
-      elevation: 0.1,
-      centerTitle: true,
-      title: Text(
-        'Register Event'.toLowerCase(),
-        style: TextStyle(
-          color: cPlanGoWhiteBlue,
-          fontFamily: _montserratRegular,
-        ),
-      ),
-    );
   }
 
   @override
