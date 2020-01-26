@@ -285,8 +285,8 @@ class _EventListState extends State<EventList> {
 
   Widget loadImage(DocumentSnapshot document) {
     return new Container(
-      height: MediaQuery.of(context).size.height / 9.75,
-      width: MediaQuery.of(context).size.height / 9.75,
+      height: MediaQuery.of(context).size.height / 10.0,
+      width: MediaQuery.of(context).size.width / 5.0,
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.only(top: 35, bottom: 8, left: 3.0, right: 8),
       decoration: new BoxDecoration(
@@ -318,7 +318,7 @@ class _EventListState extends State<EventList> {
       },
       child: new Stack(children: <Widget>[
         new Container(
-            width: MediaQuery.of(context).size.height / 1.0,
+            width: MediaQuery.of(context).size.width / 1.0,
             height: MediaQuery.of(context).size.height / 4.4,
             margin: const EdgeInsets.only(
                 left: 40.0, bottom: 7.5, top: 20, right: 7.5),
