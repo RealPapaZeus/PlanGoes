@@ -341,7 +341,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       child: Container(
           decoration: BoxDecoration(
               shape: BoxShape.circle,
-              boxShadow: [BoxShadow(blurRadius: 10.0, spreadRadius: 0.1)]),
+              boxShadow: [BoxShadow(blurRadius: 5.0, spreadRadius: 1)]),
           child: CircleAvatar(
             backgroundColor: cPlanGoBlue,
             radius: 75,
@@ -476,7 +476,7 @@ class _RegisterEventState extends State<RegisterEvent> {
     return TextFormField(
       keyboardType: TextInputType.text,
       cursorColor: cPlanGoBlue,
-      style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+      style: TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
       maxLength: 50,
       controller: _eventNameController,
       decoration: InputDecoration(
@@ -506,7 +506,7 @@ class _RegisterEventState extends State<RegisterEvent> {
     return TextFormField(
       keyboardType: TextInputType.text,
       cursorColor: cPlanGoBlue,
-      style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+      style: TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
       maxLength: 50,
       controller: _locationController,
       decoration: InputDecoration(
@@ -536,7 +536,7 @@ class _RegisterEventState extends State<RegisterEvent> {
     return TextFormField(
       keyboardType: TextInputType.multiline,
       cursorColor: cPlanGoBlue,
-      style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+      style: TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
       maxLines: 4,
       maxLength: 200,
       controller: _descriptionController,

@@ -24,7 +24,6 @@ class MyLogInPage extends StatefulWidget {
 }
 
 class _MyLogInPageState extends State<MyLogInPage> {
-  
   String _email;
   String _password;
   String _authHint = '';
@@ -44,6 +43,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
     _passwordController.dispose();
     super.dispose();
   }
+
   @override
   void initState() {
     super.initState();
@@ -54,12 +54,13 @@ class _MyLogInPageState extends State<MyLogInPage> {
 
   // Method checks if the App was opened by a Dynamic Link
   void initDynamicLinks() async {
-    final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
+    final PendingDynamicLinkData data =
+        await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri deepLink = data?.link;
-    if(deepLink != null){
+    if (deepLink != null) {
       Navigator.pushNamed(context, deepLink.path);
       final queryParams = deepLink.queryParameters;
-      if(queryParams.length > 0) {
+      if (queryParams.length > 0) {
         String eventId = queryParams['eventID'];
         print('The user must be inserted in the event: $eventId');
         setState(() {
@@ -70,18 +71,16 @@ class _MyLogInPageState extends State<MyLogInPage> {
 
     // This will handle incoming links if the application is already opened
     FirebaseDynamicLinks.instance.onLink(
-      onSuccess: (PendingDynamicLinkData dynamikLink) async {
-        final Uri deepLink = dynamikLink?.link;
+        onSuccess: (PendingDynamicLinkData dynamikLink) async {
+      final Uri deepLink = dynamikLink?.link;
 
-        if(deepLink != null){
-          Navigator.pushNamed(context, deepLink.path);
-        }
-      },
-      onError: (OnLinkErrorException e) async {
-        print('onLinkError');
-        print(e.message);
+      if (deepLink != null) {
+        Navigator.pushNamed(context, deepLink.path);
       }
-    );
+    }, onError: (OnLinkErrorException e) async {
+      print('onLinkError');
+      print(e.message);
+    });
   }
 
   void signIn() async {
@@ -140,7 +139,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
         cursorColor: cPlanGoBlue,
-        style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+        style:
+            TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
         controller: _emailController,
         decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
@@ -150,7 +150,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
               borderRadius: const BorderRadius.all(Radius.circular(10.0)),
               borderSide: const BorderSide(color: cPlanGoBlue, width: 1.0),
             ),
-            errorStyle: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
+            errorStyle: TextStyle(
+                color: cPlanGoRedBright, fontFamily: _montserratMedium),
             prefixIcon: Padding(
               padding: EdgeInsets.all(0.0),
               child: Icon(
@@ -159,7 +160,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
               ),
             ),
             labelText: 'email',
-            labelStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium)),
+            labelStyle:
+                TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium)),
         obscureText: false,
         validator: (value) =>
             value.isEmpty ? messageNotifier('Please enter an email') : null,
@@ -176,7 +178,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
         cursorColor: cPlanGoBlue,
         controller: _passwordController,
         obscureText: _obscurePassword,
-        style: TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
+        style:
+            TextStyle(color: cPlanGoMarineBlue, fontFamily: _montserratMedium),
         decoration: InputDecoration(
           enabledBorder: UnderlineInputBorder(
             borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
@@ -187,8 +190,10 @@ class _MyLogInPageState extends State<MyLogInPage> {
           ),
           fillColor: cPlanGoBlue,
           labelText: 'password',
-          labelStyle: TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
-          errorStyle: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
+          labelStyle:
+              TextStyle(color: cPlanGoBlue, fontFamily: _montserratMedium),
+          errorStyle:
+              TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
           prefixIcon: Padding(
             padding: EdgeInsets.all(0.0),
             child: Icon(
@@ -209,8 +214,16 @@ class _MyLogInPageState extends State<MyLogInPage> {
             },
           ),
         ),
-        validator: (value) =>
-            value.isEmpty ? messageNotifier('Please enter a password') : null,
+        validator: (value) {
+          if (value.isEmpty)
+            return messageNotifier('Please enter a password');
+          else {
+            if (value.toString().length <= 7)
+              return messageNotifier('Password has to be 8 digits long');
+            else
+              return null;
+          }
+        },
         onSaved: (value) => _password == value,
       ),
     );
@@ -260,7 +273,10 @@ class _MyLogInPageState extends State<MyLogInPage> {
               padding: const EdgeInsets.only(bottom: 30, right: 30),
               child: Text(
                 'Login'.toLowerCase(),
-                style: TextStyle(color: cPlanGoWhiteBlue, fontSize: 18, fontFamily: _montserratRegular),
+                style: TextStyle(
+                    color: cPlanGoWhiteBlue,
+                    fontSize: 18,
+                    fontFamily: _montserratRegular),
               ),
             ),
           ),
@@ -282,15 +298,15 @@ class _MyLogInPageState extends State<MyLogInPage> {
           onPressed: signIn,
           child: Text(
             'Plan and Go',
-            style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
+            style: TextStyle(
+                color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
           )),
     );
   }
 
   Widget loadingButton() {
     return CircularProgressIndicator(
-      valueColor: new AlwaysStoppedAnimation<Color>(cPlanGoMarineBlue),
-    );
+        valueColor: new AlwaysStoppedAnimation<Color>(cPlanGoBlue));
   }
 
   List<Widget> navigateWidgets() {
@@ -316,7 +332,10 @@ class _MyLogInPageState extends State<MyLogInPage> {
                 borderRadius: new BorderRadius.circular(40.0),
               ),
               textColor: cPlanGoWhiteBlue,
-              child: new Text('Register', style: TextStyle(fontFamily: _montserratMedium),),
+              child: new Text(
+                'Register',
+                style: TextStyle(fontFamily: _montserratMedium),
+              ),
             ),
             FlatButton(
               onPressed: () {
@@ -327,7 +346,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
                 borderRadius: new BorderRadius.circular(40.0),
               ),
               textColor: cPlanGoWhiteBlue,
-              child: new Text('Forgot Password?', style: TextStyle(fontFamily: _montserratMedium)),
+              child: new Text('Forgot Password?',
+                  style: TextStyle(fontFamily: _montserratMedium)),
             ),
           ],
         ));
@@ -337,7 +357,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
     return new Container(
       child: Text(
         _authHint,
-        style: TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
+        style:
+            TextStyle(color: cPlanGoRedBright, fontFamily: _montserratMedium),
         textAlign: TextAlign.center,
       ),
     );
