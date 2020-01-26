@@ -6,8 +6,14 @@ class ItemPickDialog extends StatefulWidget {
   final String userId;
   final String documentId;
   final String itemDocumentId;
+  final int eventColor;
 
-  ItemPickDialog({Key key, this.userId, this.documentId, this.itemDocumentId})
+  ItemPickDialog(
+      {Key key,
+      this.userId,
+      this.documentId,
+      this.itemDocumentId,
+      this.eventColor})
       : super(key: key);
 
   @override
@@ -265,15 +271,25 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
           .orderBy("value", descending: true)
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return Center(child: Text("Loading..", style: TextStyle(fontFamily: _montserratMedium),));
-        return ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemExtent: 50,
-          padding: EdgeInsets.only(bottom: 5.0),
-          itemCount: snapshot.data.documents.length,
-          itemBuilder: (context, index) =>
-              buildItemList(context, snapshot.data.documents[index]),
-        );
+        if (!snapshot.hasData)
+          return Center(
+              child: Text(
+            "Loading..",
+            style: TextStyle(fontFamily: _montserratMedium),
+          ));
+        return ScrollConfiguration(
+            behavior: ScrollBehavior(),
+            child: GlowingOverscrollIndicator(
+                axisDirection: AxisDirection.down,
+                color: Color(widget.eventColor),
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemExtent: 50,
+                  padding: EdgeInsets.only(bottom: 5.0),
+                  itemCount: snapshot.data.documents.length,
+                  itemBuilder: (context, index) =>
+                      buildItemList(context, snapshot.data.documents[index]),
+                )));
       },
     );
   }
@@ -289,7 +305,8 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
             child: Text(
               document['user'],
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontFamily: _montserratMedium, color: cPlanGoDark),
+              style:
+                  TextStyle(fontFamily: _montserratMedium, color: cPlanGoDark),
             ),
           ),
           Container(
@@ -337,14 +354,21 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
   // }
 
   Widget itemValue() {
-    return Padding(
+    return Container(
+      height: MediaQuery.of(context).size.height / 10.0,
+      width: MediaQuery.of(context).size.width / 1.5,
       padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Container(child: Text('Total value:', style: TextStyle(fontFamily: _montserratMedium),)),
           Container(
-            child: Text('$_valueCurrent / $_valueMax', style: new TextStyle(fontFamily: _montserratMedium)),
+              child: Text(
+            'Total value:',
+            style: TextStyle(fontFamily: _montserratMedium),
+          )),
+          Container(
+            child: Text('$_valueCurrent / $_valueMax',
+                style: new TextStyle(fontFamily: _montserratMedium)),
           )
         ],
       ),
@@ -353,7 +377,7 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
 
   Widget decrementCounterButton() {
     return FloatingActionButton(
-        backgroundColor: cPlangGoDarkBlue,
+        backgroundColor: Color(widget.eventColor),
         splashColor: cPlanGoBlue,
         child: Icon(Icons.remove, color: cPlanGoWhiteBlue),
         onPressed: () {
@@ -363,9 +387,12 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
 
   Widget incrementCounterButton() {
     return FloatingActionButton(
-        backgroundColor: cPlangGoDarkBlue,
+        backgroundColor: Color(widget.eventColor),
         splashColor: cPlanGoBlue,
-        child: Icon(Icons.add, color: cPlanGoWhiteBlue,),
+        child: Icon(
+          Icons.add,
+          color: cPlanGoWhiteBlue,
+        ),
         onPressed: () {
           incrementCounter();
         });
@@ -373,10 +400,9 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
 
   Widget createItemCounter() {
     return new Container(
-      height: MediaQuery.of(context).size.height/10,
-      width: MediaQuery.of(context).size.height/2.5,
+      height: MediaQuery.of(context).size.height / 10.0,
       child: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
+          padding: const EdgeInsets.only(top: 5.0),
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -410,10 +436,10 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
       )),
       content: displayElements(),
       shape:
-          RoundedRectangleBorder(borderRadius: new BorderRadius.circular(25.0)),
+          RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
       actions: <Widget>[
         FlatButton(
-            splashColor: cPlanGoBlueGrey,
+            splashColor: Colors.transparent,
             shape: RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(40.0),
             ),
@@ -422,11 +448,12 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
             },
             child: Text(
               'Save',
-              style: TextStyle(color: cPlangGoDarkBlue, fontFamily: _montserratMedium),
+              style: TextStyle(
+                  color: cPlangGoDarkBlue, fontFamily: _montserratMedium),
             ))
       ],
     );
-  } 
+  }
 
   @override
   Widget build(BuildContext context) {
