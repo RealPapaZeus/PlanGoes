@@ -295,7 +295,7 @@ class _EventListState extends State<EventList> {
 
   Widget loadImage(DocumentSnapshot document) {
     return new Container(
-      height: MediaQuery.of(context).size.height / 10.0,
+      height: MediaQuery.of(context).size.height / 8.5,
       width: MediaQuery.of(context).size.width / 5.5,
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.only(top: 35, bottom: 8, left: 3.0, right: 8),
@@ -334,7 +334,7 @@ class _EventListState extends State<EventList> {
                 left: 40.0, bottom: 7.5, top: 20, right: 7.5),
             decoration: new BoxDecoration(
               color: Color(document['eventColor']),
-              borderRadius: new BorderRadius.circular(20.0),
+              borderRadius: new BorderRadius.circular(10.0),
               boxShadow: <BoxShadow>[
                 new BoxShadow(
                   color: Color(document['eventColor']),
@@ -418,7 +418,7 @@ class _EventListState extends State<EventList> {
               color: cPlanGoWhiteBlue,
               fontFamily: _montserratMedium,
               fontSize: 16.0)),
-      elevation: 5.0,
+      elevation: 8.0,
       flexibleSpace: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
