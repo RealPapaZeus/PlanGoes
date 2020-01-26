@@ -154,6 +154,7 @@ class _EventListState extends State<EventList> {
   }
 
   void deleteItems(DocumentSnapshot document) {
+    
     Firestore.instance
         .collection('events')
         .document(document.documentID)
