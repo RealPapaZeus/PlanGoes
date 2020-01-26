@@ -77,8 +77,9 @@ class _MyLogInPageState extends State<MyLogInPage> {
         print('InitDL Print: $_eventName');
       }
       Navigator.pushNamed(context, deepLink.path);
+    } else {
+      print('DL = null');
     }
-    else{print('DL = null');}
 
     // This will handle incoming links if the application is already opened
     FirebaseDynamicLinks.instance.onLink(
@@ -104,7 +105,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
       print(e.message);
     });
   }
-  
+
   // insert Reference of Event into UsersEventList
   void insertEvent(String eventID, String userId) async {
     final databaseReference = Firestore.instance;
@@ -123,6 +124,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
       'eventColor': _eventColor.toInt(),
       'imageUrl': '$_imageUrl'
     });
+
   }
 
   // get EventInfo of the Event the user was invited
@@ -142,6 +144,18 @@ class _MyLogInPageState extends State<MyLogInPage> {
       });
     });
     print('method was called');
+  }
+
+  // same procedure as in other classes, to insert values into
+  //database under given path
+  void addUserToUserslistInDatabase(String eventID, String userId) async {
+    final databaseReference = Firestore.instance;
+
+    await databaseReference
+        .collection("events")
+        .document('$eventID')
+        .collection("UsersList")
+        .add({'name': userId});
   }
 
   void signIn() async {
@@ -165,6 +179,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
         if (user.user.isEmailVerified) {
           if (_eventID != null) {
             insertEvent(_eventID, user.user.uid);
+            addUserToUserslistInDatabase(_eventID, user.user.uid);
           }
           Navigator.push(
               context,

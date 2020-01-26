@@ -152,6 +152,15 @@ class _RegisterEventState extends State<RegisterEvent> {
     });
 
   }
+  void addUserToUserslistInDatabase() async {
+    final databaseReference = Firestore.instance;
+
+    await databaseReference
+        .collection("events")
+        .document(_documentID)
+        .collection("UsersList")
+        .add({'name': widget.userId});
+  }
 
   // calls all methods which are useful to pass data into
   // database
@@ -179,6 +188,8 @@ class _RegisterEventState extends State<RegisterEvent> {
         _documentID.toString());
 
     createFirstItemInEvent();
+    addUserToUserslistInDatabase();
+
   }
 
   void registerEventByPress() async {
