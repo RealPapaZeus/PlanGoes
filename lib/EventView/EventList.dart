@@ -197,7 +197,7 @@ class _EventListState extends State<EventList> {
     return new Container(
         width: MediaQuery.of(context).size.width / 1.0,
         height: MediaQuery.of(context).size.height / 14.0,
-        padding: const EdgeInsets.only(right: 5.0),
+        padding: const EdgeInsets.only(right: 5.0, left: 30.0),
         child: new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -237,12 +237,12 @@ class _EventListState extends State<EventList> {
         new Container(
           width: MediaQuery.of(context).size.width / 1.0,
           height: MediaQuery.of(context).size.height / 45.0,
-          padding: const EdgeInsets.only(left: 1.0, right: 29),
+          padding: const EdgeInsets.only(left: 1.0, right: 15.0),
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
-                padding: const EdgeInsets.only(right: 5.0),
+                padding: const EdgeInsets.only(right: 5.0, left: 30.0),
                 child: Icon(
                   Icons.location_on,
                   color: cPlanGoWhiteBlue,
@@ -264,7 +264,7 @@ class _EventListState extends State<EventList> {
           ),
         ),
         Padding(
-            padding: const EdgeInsets.only(right: 30.0),
+            padding: const EdgeInsets.only(right: 22.0, left: 15.0),
             child: new Divider(
               color: cPlanGoWhiteBlue,
               thickness: 1.5,
@@ -272,7 +272,7 @@ class _EventListState extends State<EventList> {
         new Container(
             width: MediaQuery.of(context).size.width / 1.0,
             height: MediaQuery.of(context).size.height / 12.5,
-            padding: const EdgeInsets.only(left: 1.0, right: 30.0),
+            padding: const EdgeInsets.only(left: 1.0, right: 15.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
@@ -295,13 +295,12 @@ class _EventListState extends State<EventList> {
 
   Widget loadImage(DocumentSnapshot document) {
     return new Container(
-      height: MediaQuery.of(context).size.height / 8.5,
-      width: MediaQuery.of(context).size.width / 5.5,
+      height: MediaQuery.of(context).size.height / 10.0,
+      width: MediaQuery.of(context).size.width / 5.0,
       alignment: Alignment.centerLeft,
-      margin: const EdgeInsets.only(top: 35, bottom: 8, left: 3.0, right: 8),
+      margin: const EdgeInsets.only(top: 20.0, left: 2.0),
       decoration: new BoxDecoration(
           color: cPlangGoDarkBlue,
-          //color: cPlangGoDarkBlue,
           boxShadow: [
             BoxShadow(
               blurRadius: 5.0,
@@ -334,17 +333,17 @@ class _EventListState extends State<EventList> {
                 left: 40.0, bottom: 7.5, top: 20, right: 7.5),
             decoration: new BoxDecoration(
               color: Color(document['eventColor']),
-              borderRadius: new BorderRadius.circular(10.0),
+              borderRadius: new BorderRadius.circular(20.0),
               boxShadow: <BoxShadow>[
                 new BoxShadow(
                   color: Color(document['eventColor']),
                   blurRadius: 5.0,
-                  spreadRadius: 1.0,
+                  spreadRadius: 0.2,
                 ),
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.only(left: 48.0),
+              padding: const EdgeInsets.only(left: 18.0),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -364,7 +363,7 @@ class _EventListState extends State<EventList> {
                           Container(
                             padding: const EdgeInsets.only(right: 5.0),
                             child: Icon(
-                              Icons.date_range,
+                              Icons.event_available,
                               color: cPlanGoWhiteBlue,
                               size: 12.5,
                             ),
