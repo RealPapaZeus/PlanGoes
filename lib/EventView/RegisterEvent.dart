@@ -186,9 +186,9 @@ class _RegisterEventState extends State<RegisterEvent> {
         widget.userId,
         true,
         _documentID.toString());
-
-    createFirstItemInEvent();
     addUserToUserslistInDatabase();
+    createFirstItemInEvent();
+    
   }
 
   void registerEventByPress() async {

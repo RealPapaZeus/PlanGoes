@@ -155,7 +155,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
         .collection("events")
         .document('$eventID')
         .collection("usersList")
-        .add({'name': userId});
+        .add({'name': '$userId'});
   }
 
   void signIn() async {
