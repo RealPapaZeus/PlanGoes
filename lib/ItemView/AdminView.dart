@@ -27,12 +27,10 @@ class _AdminViewState extends State<AdminView> {
   String _imageUrl = '';
   String _userName = '';
   double offset = 0.0;
-  // Uri _dynamicLinkUrl;
+
   var _link;
 
-  String _montserratLight = 'MontserratLight';
   String _montserratMedium = 'MontserratMedium';
-  String _montserratRegular = 'MontserratRegular';
 
   @override
   void initState() {
@@ -106,7 +104,8 @@ class _AdminViewState extends State<AdminView> {
     return new FloatingActionButton(
       elevation: 5.0,
       child: Icon(Icons.add, color: cPlanGoWhiteBlue),
-      backgroundColor: cPlangGoDarkBlue,
+      backgroundColor: Color(_eventColor),
+      splashColor: cPlanGoBlue,
       onPressed: () {
         showDialog(
             context: context,
@@ -131,8 +130,8 @@ class _AdminViewState extends State<AdminView> {
     return new BottomAppBar(
       elevation: 5.0,
       shape: CircularNotchedRectangle(),
-      color: cPlangGoDarkBlue,
-      notchMargin: 4.0,
+      color: Color(_eventColor),
+      notchMargin: 5.0,
       child: new Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -147,8 +146,8 @@ class _AdminViewState extends State<AdminView> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Container(
-                              padding: const EdgeInsets.only(
-                                   top: 8.0, right: 8.0),
+                              padding:
+                                  const EdgeInsets.only(top: 8.0, right: 8.0),
                               child: Text(
                                 'Sharing is caring',
                                 overflow: TextOverflow.ellipsis,
@@ -217,6 +216,12 @@ class _AdminViewState extends State<AdminView> {
 
   Widget buildAppBar() {
     return AppBar(
+      leading: new IconButton(
+        icon: new Icon(Icons.arrow_back, color: cPlanGoWhiteBlue),
+        onPressed: () => Navigator.of(context).pop(),
+        splashColor: cPlanGoBlue,
+        highlightColor: Colors.transparent,
+      ),
       title: new Row(
         children: <Widget>[
           CircleAvatar(
@@ -239,6 +244,8 @@ class _AdminViewState extends State<AdminView> {
             ),
           ),
           Container(
+            constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width / 1.45),
             padding: const EdgeInsets.all(8.0),
             child: Text(
               _eventName,
@@ -249,7 +256,7 @@ class _AdminViewState extends State<AdminView> {
         ],
       ),
       centerTitle: true,
-      elevation: 5.0,
+      elevation: 8.0,
       backgroundColor: Color(_eventColor),
     );
   }
@@ -258,7 +265,7 @@ class _AdminViewState extends State<AdminView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      backgroundColor: Color(_eventColor),
+      //backgroundColor: Color(_eventColor),
       extendBody: true,
       body: buildStream(),
       floatingActionButton: createItem(),
