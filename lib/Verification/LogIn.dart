@@ -33,7 +33,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
   String _datetime = '';
   String _description = '';
   int _eventColor;
-  String _eventName = '';
+  String _eventName;
   String _imageUrl = '';
   String _location = '';
 
@@ -73,6 +73,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
         setState(() {
           _eventID = eventId;
         });
+        getEventInfo(_eventID);
+        print('InitDL Print: $_eventName');
       }
       Navigator.pushNamed(context, deepLink.path);
     }
@@ -92,6 +94,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
           setState(() {
             _eventID = eventId;
           });
+          getEventInfo(_eventID);
+          print('InitDL Print: $_eventName');
         }
         Navigator.pushNamed(context, deepLink.path);
       }
@@ -125,8 +129,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
   void getEventInfo(String eventID) async {
     final databaseReference = Firestore.instance;
     var documentReference =
-        databaseReference.collection("events").document(eventID);
-
+        databaseReference.collection("events").document('$eventID');
+    print('Print in getEventInfo $eventID');
     documentReference.get().then((DocumentSnapshot document) {
       setState(() {
         _datetime = document['datetime'];
@@ -137,6 +141,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
         _location = document['location'];
       });
     });
+    print('method was called');
   }
 
   void signIn() async {
@@ -159,7 +164,6 @@ class _MyLogInPageState extends State<MyLogInPage> {
 
         if (user.user.isEmailVerified) {
           if (_eventID != null) {
-            getEventInfo(_eventID);
             insertEvent(_eventID, user.user.uid);
           }
           Navigator.push(
