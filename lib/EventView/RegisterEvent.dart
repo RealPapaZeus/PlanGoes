@@ -150,15 +150,15 @@ class _RegisterEventState extends State<RegisterEvent> {
       'valueCurrent': 0,
       'username': []
     });
-
   }
+
   void addUserToUserslistInDatabase() async {
     final databaseReference = Firestore.instance;
 
     await databaseReference
         .collection("events")
         .document(_documentID)
-        .collection("UsersList")
+        .collection("usersList")
         .add({'name': widget.userId});
   }
 
@@ -189,7 +189,6 @@ class _RegisterEventState extends State<RegisterEvent> {
 
     createFirstItemInEvent();
     addUserToUserslistInDatabase();
-
   }
 
   void registerEventByPress() async {
@@ -738,7 +737,8 @@ class _RegisterEventState extends State<RegisterEvent> {
           color: cPlanGoBlue,
           child: Text(
             'Register',
-            style: TextStyle(color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
+            style: TextStyle(
+                color: cPlanGoWhiteBlue, fontFamily: _montserratMedium),
           ),
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(40.0),

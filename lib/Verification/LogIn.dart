@@ -154,7 +154,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
     await databaseReference
         .collection("events")
         .document('$eventID')
-        .collection("UsersList")
+        .collection("usersList")
         .add({'name': userId});
   }
 
