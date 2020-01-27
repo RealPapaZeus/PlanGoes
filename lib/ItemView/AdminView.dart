@@ -72,8 +72,8 @@ class _AdminViewState extends State<AdminView> {
   // Method creates Dynamic Link in Firebase
   Future<Uri> _createDynamikLink(String _eventID) async {
     final DynamicLinkParameters parameters = DynamicLinkParameters(
-        uriPrefix: 'https://plango.page.link',
-        link: Uri.parse('https://plango.page.link/invite?eventID=$_eventID'),
+        uriPrefix: 'https://plangoes.page.link',
+        link: Uri.parse('https://plangoes.page.link/invite?eventID=$_eventID'),
         androidParameters: AndroidParameters(
             packageName: 'com.example.PlanGoes',
             minimumVersion: 0),
