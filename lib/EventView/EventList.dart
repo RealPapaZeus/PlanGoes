@@ -131,6 +131,7 @@ class _EventListState extends State<EventList> {
             .document(document.documentID.toString())
             .delete();
 
+
         deleteValuesFromItemList(document);
       }
     } catch (e) {
@@ -203,7 +204,7 @@ class _EventListState extends State<EventList> {
     });
   }
 
-  //EDIT THIS ONE FOR ITEMVALUES
+
   void deleteValuesFromItemList(DocumentSnapshot document) {
     Firestore.instance
         .collection('events')
