@@ -148,12 +148,12 @@ class _MyLogInPageState extends State<MyLogInPage> {
 
   // same procedure as in other classes, to insert values into
   //database under given path
-  void addUserToUserslistInDatabase(String eventID, String userId) async {
+  void addUserToUserslistInDatabase(String eventId,String userId) async {
     final databaseReference = Firestore.instance;
 
     await databaseReference
         .collection("events")
-        .document('$eventID')
+        .document('$eventId')
         .collection("usersList")
         .add({'name': '$userId'});
   }
@@ -179,7 +179,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
         if (user.user.isEmailVerified) {
           if (_eventID != null) {
             insertEvent(_eventID, user.user.uid);
-            addUserToUserslistInDatabase(_eventID, user.user.uid);
+            addUserToUserslistInDatabase(_eventID ,user.user.uid);
           }
           Navigator.push(
               context,
