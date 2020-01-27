@@ -132,6 +132,7 @@ class _EventListState extends State<EventList> {
             .delete();
 
         deleteUsersItemLists(document);
+        deleteUserName(document);
       }
     } catch (e) {
       print(e);
@@ -212,9 +213,17 @@ class _EventListState extends State<EventList> {
         .getDocuments()
         .then((snapshot) {
       for (DocumentSnapshot doc in snapshot.documents) {
-        doc.reference.updateData({
-          "username": FieldValue.arrayRemove([_userName.toString()])
-        });
+          int currentValue = doc['valueCurrent'];
+          Firestore.instance.collection('events').document(document.documentID).collection("itemList").document(doc.documentID).collection("usersItemList").getDocuments().then((snapshot){
+            for(DocumentSnapshot doc in snapshot.documents){
+              if(doc.documentID == widget.userId){
+                int itemvalue = doc['value'];
+                int newValue = currentValue-itemvalue;
+                Firestore.instance.collection('events').document(document.documentID).collection("itemList").document(doc.documentID).updateData({'valueCurrent': newValue});
+                doc.reference.delete();
+              }
+            }
+          });
       }
     });
   }
