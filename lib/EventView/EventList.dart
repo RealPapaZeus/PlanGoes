@@ -131,8 +131,7 @@ class _EventListState extends State<EventList> {
             .document(document.documentID.toString())
             .delete();
 
-        deleteUsersItemLists(document);
-        deleteUserName(document);
+        deleteValuesFromItemList(document);
       }
     } catch (e) {
       print(e);
@@ -205,25 +204,38 @@ class _EventListState extends State<EventList> {
   }
 
   //EDIT THIS ONE FOR ITEMVALUES
-  void deleteUserName(DocumentSnapshot document) {
+  void deleteValuesFromItemList(DocumentSnapshot document) {
     Firestore.instance
         .collection('events')
         .document(document.documentID)
         .collection("itemList")
         .getDocuments()
         .then((snapshot) {
-      for (DocumentSnapshot doc in snapshot.documents) {
-          int currentValue = doc['valueCurrent'];
-          Firestore.instance.collection('events').document(document.documentID).collection("itemList").document(doc.documentID).collection("usersItemList").getDocuments().then((snapshot){
-            for(DocumentSnapshot doc in snapshot.documents){
-              if(doc.documentID == widget.userId){
-                int itemvalue = doc['value'];
-                int newValue = currentValue-itemvalue;
-                Firestore.instance.collection('events').document(document.documentID).collection("itemList").document(doc.documentID).updateData({'valueCurrent': newValue});
-                doc.reference.delete();
-              }
+      for (DocumentSnapshot docItem in snapshot.documents) {
+        int newValue;
+        int currentValue = docItem['valueCurrent'];
+        Firestore.instance
+            .collection('events')
+            .document(document.documentID)
+            .collection("itemList")
+            .document(docItem.documentID)
+            .collection("usersItemList")
+            .getDocuments()
+            .then((snapshot) {
+          for (DocumentSnapshot docUsersItem in snapshot.documents) {
+            if (docUsersItem.documentID == widget.userId) {
+              int itemvalue = docUsersItem['value'];
+              newValue = currentValue - itemvalue;
+              Firestore.instance
+                  .collection('events')
+                  .document(document.documentID)
+                  .collection("itemList")
+                  .document(docItem.documentID)
+                  .updateData({'valueCurrent': newValue});
+              docUsersItem.reference.delete();
             }
-          });
+          }
+        });
       }
     });
   }
