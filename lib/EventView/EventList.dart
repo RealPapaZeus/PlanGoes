@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/EventView/RegisterEvent.dart';
 import 'package:plan_go_software_project/ItemView/AdminView.dart';
-import 'package:plan_go_software_project/ItemView/UsersView.dart';
+import 'package:plan_go_software_project/ItemView/UserView.dart';
 import 'package:plan_go_software_project/colors.dart';
 
 class EventList extends StatefulWidget {
@@ -16,7 +16,6 @@ class EventList extends StatefulWidget {
 
 class _EventListState extends State<EventList> {
   String _userName;
-  bool _adminRight = true;
 
   String _montserratLight = 'MontserratLight';
   String _montserratMedium = 'MontserratMedium';
@@ -40,27 +39,6 @@ class _EventListState extends State<EventList> {
     });
     print(_userName);
   }
-
-  void getAdminStatus() async {
-    final databaseReference = Firestore.instance;
-    var documentReference =
-        databaseReference.collection("users").document(widget.userId);
-
-    documentReference.get().then((DocumentSnapshot document) {
-      setState(() {
-        _adminRight = document['admin'];
-      });
-    });
-  }
-
-  // void getDate() async {
-  //   final databaseReference = Firestore.instance;
-
-  //   var documentReference = databaseReference.collection("users")
-  //         .document(widget.userId)
-  //         .collection("usersEventList")
-  //         .document(widget)
-  // }
 
   // builds a stream in which we connect to subcollection and
   //get our data loaded into the EventList
@@ -104,22 +82,10 @@ class _EventListState extends State<EventList> {
   // view for navigating through the app
   // users are for instance not allowed to append items to
   // the itemlist
-  void callView(DocumentSnapshot document) async {
-    final databaseReference = Firestore.instance;
-    var documentReference = databaseReference
-        .collection("users")
-        .document(widget.userId)
-        .collection("usersEventList")
-        .document(document.documentID.toString());
-
-    documentReference.get().then((DocumentSnapshot document) {
-      setState(() {
-        _adminRight = document['admin'];
-      });
-    });
+  void callView(DocumentSnapshot document) {
 
     try {
-      if (_adminRight) {
+      if (document['admin'] == true) {
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -140,25 +106,42 @@ class _EventListState extends State<EventList> {
   }
 
   void deleteCanban(DocumentSnapshot document) {
-    deleteUsersEvent(document);
-    deleteUsersItemLists(document);
-    deleteItems(document);
 
-    Firestore.instance
-        .collection('events')
-        .document(document.documentID.toString())
-        .delete();
+    try {
+      if (document['admin'] == true) {
+        Firestore.instance
+            .collection('events')
+            .document(document.documentID.toString())
+            .delete();
 
-    Firestore.instance
-        .collection('users')
-        .document(widget.userId)
-        .collection('usersEventList')
-        .document(document.documentID.toString())
-        .delete();
+        Firestore.instance
+            .collection('users')
+            .document(widget.userId)
+            .collection('usersEventList')
+            .document(document.documentID.toString())
+            .delete();
+
+        deleteUsersEvent(document);
+
+        deleteUsersItemLists(document);
+        deleteItems(document);
+      } else {
+        Firestore.instance
+            .collection('users')
+            .document(widget.userId)
+            .collection('usersEventList')
+            .document(document.documentID.toString())
+            .delete();
+
+        deleteUsersItemLists(document);
+        deleteItems(document);
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   void deleteItems(DocumentSnapshot document) {
-    
     Firestore.instance
         .collection('events')
         .document(document.documentID)
@@ -192,7 +175,7 @@ class _EventListState extends State<EventList> {
             }
           }
         });
-        for(DocumentSnapshot doc in snapshot.documents){
+        for (DocumentSnapshot doc in snapshot.documents) {
           doc.reference.delete();
         }
       }
@@ -251,7 +234,6 @@ class _EventListState extends State<EventList> {
                 iconSize: 20.0,
                 onPressed: () async {
                   await Future.delayed(Duration(milliseconds: 300), () {
-                    deleteItems(document);
                     deleteCanban(document);
                   });
                 },
@@ -353,6 +335,7 @@ class _EventListState extends State<EventList> {
       borderRadius: new BorderRadius.circular(20.0),
       splashColor: cPlanGoBlue,
       onTap: () {
+        //getAdminRight(document);
         callView(document);
       },
       child: new Stack(children: <Widget>[

@@ -341,7 +341,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
           Align(
               alignment: Alignment.center,
               child: Container(
-                  width: MediaQuery.of(context).size.width / 3.0,
+                  width: MediaQuery.of(context).size.width / 2.5,
                   height: MediaQuery.of(context).size.height / 5.0,
                   decoration: new BoxDecoration(
                       shape: BoxShape.rectangle,
