@@ -340,7 +340,7 @@ class _RegisterEventState extends State<RegisterEvent> {
       MaterialColorPicker(
         selectedColor: _shadeColor,
         onColorChange: (color) => setState(() => _tempShadeColor = color),
-        onBack: () => print("Back button pressed"),
+        onBack: () => Navigator.of(context).pop(),
       ),
     );
   }
