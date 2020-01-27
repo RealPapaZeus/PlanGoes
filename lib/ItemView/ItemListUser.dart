@@ -1,20 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/ItemView/ItemPickDialog.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
-class ItemList extends StatefulWidget {
+class ItemListUser extends StatefulWidget {
   final String userId;
   final String documentId;
   final int eventColor;
   final String userName;
 
-  ItemList(
+  ItemListUser(
       {Key key, this.userId, this.documentId, this.eventColor, this.userName})
       : super(key: key);
 
   @override
-  _ItemListState createState() => new _ItemListState();
+  _ItemListUserState createState() => new _ItemListUserState();
 }
 
 ///
@@ -24,7 +23,7 @@ class ItemList extends StatefulWidget {
 /// and also in the user view. That way we can just call ItemList
 /// to return Items
 ///
-class _ItemListState extends State<ItemList> {
+class _ItemListUserState extends State<ItemListUser> {
   @override
   void initState() {
     super.initState();
