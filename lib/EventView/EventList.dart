@@ -99,12 +99,7 @@ class _EventListState extends State<EventList> {
     );
   }
 
-  // it gets checked whether user is admin or not
-  // The reason is to give logged user the important
-  // view for navigating through the app
-  // users are for instance not allowed to append items to
-  // the itemlist
-  void callView(DocumentSnapshot document) async {
+  void getAdminRight(DocumentSnapshot document) {
     final databaseReference = Firestore.instance;
     var documentReference = databaseReference
         .collection("users")
@@ -117,6 +112,15 @@ class _EventListState extends State<EventList> {
         _adminRight = document['admin'];
       });
     });
+  }
+
+  // it gets checked whether user is admin or not
+  // The reason is to give logged user the important
+  // view for navigating through the app
+  // users are for instance not allowed to append items to
+  // the itemlist
+  void callView(DocumentSnapshot document) async {
+    getAdminRight(document);
 
     try {
       if (_adminRight) {
@@ -140,21 +144,46 @@ class _EventListState extends State<EventList> {
   }
 
   void deleteCanban(DocumentSnapshot document) {
-    deleteUsersEvent(document);
+    getAdminRight(document);
+
     deleteUsersItemLists(document);
     deleteItems(document);
 
-    Firestore.instance
+    try{
+      if(_adminRight) {
+        Firestore.instance
         .collection('events')
         .document(document.documentID.toString())
         .delete();
 
-    Firestore.instance
+        Firestore.instance
         .collection('users')
         .document(widget.userId)
         .collection('usersEventList')
         .document(document.documentID.toString())
         .delete();
+
+        deleteUsersEvent(document);
+
+        deleteUsersItemLists(document);
+        deleteItems(document);
+      } else {
+        Firestore.instance
+        .collection('users')
+        .document(widget.userId)
+        .collection('usersEventList')
+        .document(document.documentID.toString())
+        .delete();
+
+        deleteUsersItemLists(document);
+        deleteItems(document);
+      }
+    } catch(e) {
+      print(e);
+    }
+    
+
+    
   }
 
   void deleteItems(DocumentSnapshot document) {
