@@ -134,7 +134,7 @@ class _EventListState extends State<EventList> {
             .delete();
 
         deleteUsersItemLists(document);
-        deleteItems(document);
+        //deleteItems(document);
       }
     } catch (e) {
       print(e);

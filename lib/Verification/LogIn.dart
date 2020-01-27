@@ -71,7 +71,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
         String eventId = queryParams['eventID'];
         print('The user must be inserted in the event: $eventId');
         setState(() {
-          _eventID = eventId;
+          _eventID = eventId.toString();
         });
         getEventInfo(_eventID);
         print('InitDL Print: $_eventName');
@@ -148,12 +148,12 @@ class _MyLogInPageState extends State<MyLogInPage> {
 
   // same procedure as in other classes, to insert values into
   //database under given path
-  void addUserToUserslistInDatabase(String eventID, String userId) async {
+  void addUserToUserslistInDatabase(String userId) async {
     final databaseReference = Firestore.instance;
 
     await databaseReference
         .collection("events")
-        .document('$eventID')
+        .document('$userId')
         .collection("usersList")
         .add({'name': '$userId'});
   }
@@ -179,7 +179,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
         if (user.user.isEmailVerified) {
           if (_eventID != null) {
             insertEvent(_eventID, user.user.uid);
-            addUserToUserslistInDatabase(_eventID, user.user.uid);
+            addUserToUserslistInDatabase(user.user.uid);
           }
           Navigator.push(
               context,
