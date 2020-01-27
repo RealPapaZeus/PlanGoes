@@ -140,6 +140,7 @@ class _EventListState extends State<EventList> {
   }
 
   void deleteCanban(DocumentSnapshot document) {
+    deleteUsersEvent(document);
     deleteUsersItemLists(document);
     deleteItems(document);
 
@@ -157,6 +158,7 @@ class _EventListState extends State<EventList> {
   }
 
   void deleteItems(DocumentSnapshot document) {
+    
     Firestore.instance
         .collection('events')
         .document(document.documentID)
@@ -165,6 +167,34 @@ class _EventListState extends State<EventList> {
         .then((snapshot) {
       for (DocumentSnapshot doc in snapshot.documents) {
         doc.reference.delete();
+      }
+    });
+  }
+
+  void deleteUsersEvent(DocumentSnapshot document) {
+    Firestore.instance
+        .collection('events')
+        .document(document.documentID)
+        .collection('usersList')
+        .getDocuments()
+        .then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.documents) {
+        String name = doc['name'];
+        Firestore.instance
+            .collection('users')
+            .document('$name')
+            .collection('usersEventList')
+            .getDocuments()
+            .then((snapshot) {
+          for (DocumentSnapshot doc in snapshot.documents) {
+            if (doc.documentID == document.documentID) {
+              doc.reference.delete();
+            }
+          }
+        });
+        for(DocumentSnapshot doc in snapshot.documents){
+          doc.reference.delete();
+        }
       }
     });
   }
