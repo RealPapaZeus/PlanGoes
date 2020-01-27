@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:plan_go_software_project/colors.dart';
+import 'package:PlanGoes/colors.dart';
 
 class ItemPickDialog extends StatefulWidget {
   final String userId;

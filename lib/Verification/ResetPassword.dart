@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:plan_go_software_project/Verification/LogIn.dart';
+import 'package:PlanGoes/Verification/LogIn.dart';
 
 import '../colors.dart';
 

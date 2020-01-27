@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
-import 'package:plan_go_software_project/Verification/CreateAccount.dart';
-import 'package:plan_go_software_project/EventView/EventList.dart';
+import 'package:PlanGoes/Verification/CreateAccount.dart';
+import 'package:PlanGoes/EventView/EventList.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:plan_go_software_project/Verification/ResetPassword.dart';
-import 'package:plan_go_software_project/colors.dart';
+import 'package:PlanGoes/Verification/ResetPassword.dart';
+import 'package:PlanGoes/colors.dart';
 
 class LogIn extends StatelessWidget {
   @override
@@ -71,7 +71,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
         String eventId = queryParams['eventID'];
         print('The user must be inserted in the event: $eventId');
         setState(() {
-          _eventID = eventId.toString();
+          _eventID = eventId;
         });
         getEventInfo(_eventID);
         print('InitDL Print: $_eventName');
