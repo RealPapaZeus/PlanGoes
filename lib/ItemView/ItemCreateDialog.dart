@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:plan_go_software_project/colors.dart';
+import 'package:PlanGoes/colors.dart';
 
 class ItemCreateView extends StatefulWidget {
   final String documentID;

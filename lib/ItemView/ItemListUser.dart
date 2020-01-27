@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:plan_go_software_project/ItemView/ItemPickDialog.dart';
+import 'package:PlanGoes/ItemView/ItemPickDialog.dart';
 
 import '../colors.dart';
 
