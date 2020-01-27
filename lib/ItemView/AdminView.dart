@@ -265,7 +265,7 @@ class _AdminViewState extends State<AdminView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      //backgroundColor: Color(_eventColor),
+      backgroundColor: cPlanGoWhiteBlue,
       extendBody: true,
       body: buildStream(),
       floatingActionButton: createItem(),

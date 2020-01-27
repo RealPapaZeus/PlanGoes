@@ -63,7 +63,9 @@ class _ItemListState extends State<ItemList> {
     return CircleAvatar(
       child: Text(
         textInput,
-        style: TextStyle(color: cPlanGoWhiteBlue,),
+        style: TextStyle(
+          color: cPlanGoWhiteBlue,
+        ),
       ),
       backgroundColor: Color(widget.eventColor),
     );
@@ -102,19 +104,20 @@ class _ItemListState extends State<ItemList> {
         return ScrollConfiguration(
             behavior: ScrollBehavior(),
             child: GlowingOverscrollIndicator(
-              axisDirection: AxisDirection.down,
-              color: Color(widget.eventColor),
-              child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemExtent: 100,
-                  padding: EdgeInsets.only(
-                      left: 10.0, right: 10.0, top: 15.0, bottom: 50.0),
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (context, index) {
-                    return buildItemList(
-                        context, snapshot.data.documents[index]);
-                  }),
-            ));
+                axisDirection: AxisDirection.down,
+                color: Color(widget.eventColor),
+                child: Scrollbar(
+                  child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemExtent: 100,
+                      padding: EdgeInsets.only(
+                          left: 10.0, right: 10.0, top: 10.0, bottom: 50.0),
+                      itemCount: snapshot.data.documents.length,
+                      itemBuilder: (context, index) {
+                        return buildItemList(
+                            context, snapshot.data.documents[index]);
+                      }),
+                )));
       },
     );
   }
@@ -122,19 +125,19 @@ class _ItemListState extends State<ItemList> {
   Widget buildItemList(BuildContext context, DocumentSnapshot document) {
     return new InkWell(
         splashColor: Color(widget.eventColor),
-        borderRadius: new BorderRadius.circular(15.0),
+        borderRadius: new BorderRadius.circular(5.0),
         onTap: () {
           showDialog(
               context: context,
               child: new ItemPickDialog(
-                  userId: widget.userId,
-                  documentId: widget.documentId,
-                  itemDocumentId: document.documentID.toString(),
-                  eventColor: widget.eventColor,));
+                userId: widget.userId,
+                documentId: widget.documentId,
+                itemDocumentId: document.documentID.toString(),
+                eventColor: widget.eventColor,
+              ));
         },
         child: Container(
           child: Card(
-            color: cPlanGoWhiteBlue,
             shape: RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(5.0),
             ),
@@ -174,11 +177,10 @@ class _ItemListState extends State<ItemList> {
                               maxWidth:
                                   MediaQuery.of(context).size.width / 1.7),
                           padding:
-                              const EdgeInsets.only(left: 6.0, right: 12.0),
+                              const EdgeInsets.only(left: 12.0, right: 12.0),
                           child: Text(
                             document['name'],
                             overflow: TextOverflow.ellipsis,
-                            //style: TextStyle(fontFamily: _montserratLight, fontWeight: FontWeight.bold)
                           ),
                         ),
                       ],
@@ -189,7 +191,6 @@ class _ItemListState extends State<ItemList> {
                       padding: const EdgeInsets.only(right: 12.0),
                       child: Text(
                         '${document['valueCurrent'].toString()}/${document['valueMax'].toString()}',
-                        //style: TextStyle(fontFamily: _montserratMedium),
                       ),
                     ))
                   ]),
