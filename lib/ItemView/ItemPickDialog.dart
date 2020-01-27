@@ -338,21 +338,6 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
         )));
   }
 
-  // Widget itemValueUser() {
-  //   return Padding(
-  //     padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: <Widget>[
-  //         Container(child: Text('Your value:')),
-  //         Container(
-  //           child: Text('$_value', style: new TextStyle()),
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
-
   Widget itemValue() {
     return Container(
       height: MediaQuery.of(context).size.height / 10.0,
@@ -449,7 +434,7 @@ class _ItemPickDialogState extends State<ItemPickDialog> {
             child: Text(
               'Save',
               style: TextStyle(
-                  color: cPlangGoDarkBlue, fontFamily: _montserratMedium),
+                  color: cPlanGoDark, fontFamily: _montserratMedium),
             ))
       ],
     );

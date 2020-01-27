@@ -83,7 +83,6 @@ class _EventListState extends State<EventList> {
   // users are for instance not allowed to append items to
   // the itemlist
   void callView(DocumentSnapshot document) {
-
     try {
       if (document['admin'] == true) {
         Navigator.push(
@@ -106,7 +105,6 @@ class _EventListState extends State<EventList> {
   }
 
   void deleteCanban(DocumentSnapshot document) {
-
     try {
       if (document['admin'] == true) {
         Firestore.instance
@@ -134,7 +132,6 @@ class _EventListState extends State<EventList> {
             .delete();
 
         deleteUsersItemLists(document);
-        //deleteItems(document);
       }
     } catch (e) {
       print(e);
@@ -201,6 +198,22 @@ class _EventListState extends State<EventList> {
           for (DocumentSnapshot doc in snapshot.documents) {
             doc.reference.delete();
           }
+        });
+      }
+    });
+  }
+
+  //EDIT THIS ONE FOR ITEMVALUES
+  void deleteUserName(DocumentSnapshot document) {
+    Firestore.instance
+        .collection('events')
+        .document(document.documentID)
+        .collection("itemList")
+        .getDocuments()
+        .then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.documents) {
+        doc.reference.updateData({
+          "username": FieldValue.arrayRemove([_userName.toString()])
         });
       }
     });
