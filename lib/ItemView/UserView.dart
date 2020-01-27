@@ -121,6 +121,7 @@ class _UserViewState extends State<UserView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: cPlanGoWhiteBlue,
       appBar: buildAppBar(),
       body: buildStream(),
     );

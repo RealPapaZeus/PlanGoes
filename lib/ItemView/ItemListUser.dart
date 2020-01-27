@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_go_software_project/ItemView/ItemPickDialog.dart';
 
+import '../colors.dart';
+
 class ItemListUser extends StatefulWidget {
   final String userId;
   final String documentId;
@@ -24,38 +26,23 @@ class ItemListUser extends StatefulWidget {
 /// to return Items
 ///
 class _ItemListUserState extends State<ItemListUser> {
+  String _montserratLight = 'MontserratLight';
+  String _montserratMedium = 'MontserratMedium';
+  String _montserratRegular = 'MontserratRegular';
+
   @override
   void initState() {
     super.initState();
   }
 
-  void deleteUsersItemList(DocumentSnapshot document) {
-    Firestore.instance
-        .collection('events')
-        .document(widget.documentId)
-        .collection("itemList")
-        .document(document.documentID.toString())
-        .collection("usersItemList")
-        .getDocuments()
-        .then((snapshot) {
-      for (DocumentSnapshot doc in snapshot.documents) {
-        doc.reference.delete();
-      }
-    });
-  }
-
-  void deleteItem(DocumentSnapshot document) {
-    Firestore.instance
-        .collection('events')
-        .document(widget.documentId)
-        .collection('itemList')
-        .document(document.documentID.toString())
-        .delete();
-  }
-
   Widget getCircleAvatar(String textInput) {
     return CircleAvatar(
-      child: Text(textInput),
+      child: Text(
+        textInput,
+        style: TextStyle(
+          color: cPlanGoWhiteBlue,
+        ),
+      ),
       backgroundColor: Color(widget.eventColor),
     );
   }
@@ -82,77 +69,89 @@ class _ItemListUserState extends State<ItemListUser> {
           .collection("events")
           .document(widget.documentId)
           .collection("itemList")
+          .orderBy("valueMax", descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
-          return const Center(child: Text("Your ItemList is empty"));
-        return Scrollbar(
-          child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemExtent: 100,
-              padding: EdgeInsets.only(
-                  left: 10.0, right: 10.0, top: 10.0, bottom: 50.0),
-              itemCount: snapshot.data.documents.length,
-              itemBuilder: (context, index) {
-                return buildItemList(context, snapshot.data.documents[index]);
-              }),
-        );
+          return Text(
+            "Loading..",
+            style: TextStyle(fontFamily: _montserratMedium),
+          );
+        return ScrollConfiguration(
+            behavior: ScrollBehavior(),
+            child: GlowingOverscrollIndicator(
+                axisDirection: AxisDirection.down,
+                color: Color(widget.eventColor),
+                child: Scrollbar(
+                  child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemExtent: 100,
+                      padding: EdgeInsets.only(
+                          left: 10.0, right: 10.0, top: 10.0, bottom: 10.0),
+                      itemCount: snapshot.data.documents.length,
+                      itemBuilder: (context, index) {
+                        return buildItemList(
+                            context, snapshot.data.documents[index]);
+                      }),
+                )));
       },
     );
   }
 
   Widget buildItemList(BuildContext context, DocumentSnapshot document) {
     return new InkWell(
-        onTap: () {
-          showDialog(
-              context: context,
-              child: new ItemPickDialog(
-                  userId: widget.userId,
-                  documentId: widget.documentId,
-                  itemDocumentId: document.documentID.toString()));
-        },
-        child: Container(
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(15.0),
-            ),
-            elevation: 10.0,
-            margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Container(
-                            padding:
-                                const EdgeInsets.only(right: 12.0, left: 12.0),
-                            decoration: new BoxDecoration(
-                                border: new Border(
-                                    right: new BorderSide(
-                                        width: 1.0, color: Colors.black26))),
-                            child: getUsernameChar(document)),
-                        Container(
-                          constraints: BoxConstraints(maxWidth: 250),
-                          padding:
-                              const EdgeInsets.only(left: 12.0, right: 12.0),
-                          child: Text(
-                            document['name'],
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                        child: Container(
-                      alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.only(right: 12.0),
-                      child: Text(
-                          '${document['valueCurrent'].toString()}/${document['valueMax'].toString()}'),
-                    ))
-                  ]),
-            ),
+      splashColor: Color(widget.eventColor),
+      borderRadius: new BorderRadius.circular(5.0),
+      onTap: () {
+        showDialog(
+            context: context,
+            child: new ItemPickDialog(
+                userId: widget.userId,
+                documentId: widget.documentId,
+                itemDocumentId: document.documentID.toString(),
+                eventColor: widget.eventColor,));
+      },
+      child: Container(
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(5.0),
           ),
-        );
+          elevation: 4.0,
+          margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Container(
+                        padding: const EdgeInsets.only(right: 12.0, left: 12.0),
+                        decoration: new BoxDecoration(
+                            border: new Border(
+                                right: new BorderSide(
+                                    width: 1.0, color: cPlanGoDark))),
+                        child: getUsernameChar(document)),
+                    Container(
+                      constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width / 1.7),
+                      padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                      child: Text(
+                        document['name'],
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                    child: Container(
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: Text(
+                      '${document['valueCurrent'].toString()}/${document['valueMax'].toString()}'),
+                ))
+              ]),
+        ),
+      ),
+    );
   }
 
   @override
