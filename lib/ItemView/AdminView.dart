@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:plan_go_software_project/ItemView/ItemCreateDialog.dart';
-import 'package:plan_go_software_project/ItemView/ItemList.dart';
-import 'package:plan_go_software_project/colors.dart';
+import 'package:PlanGoes/ItemView/ItemCreateDialog.dart';
+import 'package:PlanGoes/ItemView/ItemList.dart';
+import 'package:PlanGoes/colors.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 class AdminView extends StatefulWidget {
@@ -75,7 +75,7 @@ class _AdminViewState extends State<AdminView> {
         uriPrefix: 'https://plango.page.link',
         link: Uri.parse('https://plango.page.link/invite?eventID=$_eventID'),
         androidParameters: AndroidParameters(
-            packageName: 'com.example.plan_go_software_project',
+            packageName: 'com.example.PlanGoes',
             minimumVersion: 0),
         iosParameters: IosParameters(
             bundleId: 'com.example.planGoSoftwareProject',

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:plan_go_software_project/ItemView/ItemList.dart';
-import 'package:plan_go_software_project/colors.dart';
+import 'package:PlanGoes/ItemView/ItemList.dart';
+import 'package:PlanGoes/colors.dart';
 
 import 'ItemListUser.dart';
 

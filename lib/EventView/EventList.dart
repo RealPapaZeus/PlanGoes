@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:plan_go_software_project/EventView/RegisterEvent.dart';
-import 'package:plan_go_software_project/ItemView/AdminView.dart';
-import 'package:plan_go_software_project/ItemView/UserView.dart';
-import 'package:plan_go_software_project/colors.dart';
+import 'package:PlanGoes/EventView/RegisterEvent.dart';
+import 'package:PlanGoes/ItemView/AdminView.dart';
+import 'package:PlanGoes/ItemView/UserView.dart';
+import 'package:PlanGoes/colors.dart';
 
 class EventList extends StatefulWidget {
   final String userId;

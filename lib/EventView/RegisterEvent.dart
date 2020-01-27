@@ -10,7 +10,7 @@ import 'package:path/path.dart' as p;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:plan_go_software_project/colors.dart';
+import 'package:PlanGoes/colors.dart';
 
 class RegisterEvent extends StatefulWidget {
   final String userId;
