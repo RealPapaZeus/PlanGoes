@@ -105,7 +105,7 @@ class _AdminViewState extends State<AdminView> {
       elevation: 5.0,
       child: Icon(Icons.add, color: cPlanGoWhiteBlue),
       backgroundColor: Color(_eventColor),
-      splashColor: cPlanGoBlue,
+      splashColor: cPlanGoMarineBlueDark,
       onPressed: () {
         showDialog(
             context: context,
@@ -137,6 +137,8 @@ class _AdminViewState extends State<AdminView> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           IconButton(
+            splashColor: cPlanGoMarineBlueDark,
+            highlightColor: Colors.transparent,
               icon: Icon(Icons.share, color: cPlanGoWhiteBlue),
               onPressed: () async {
                 showDialog(
