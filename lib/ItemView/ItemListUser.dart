@@ -18,17 +18,13 @@ class ItemListUser extends StatefulWidget {
   _ItemListUserState createState() => new _ItemListUserState();
 }
 
-///
 /// This class is used to build the stream, which loads data
 /// into a scaffold, represented as the items. It is neccessary
 /// to use a class, because ItemList is needed in the admins view
 /// and also in the user view. That way we can just call ItemList
 /// to return Items
-///
 class _ItemListUserState extends State<ItemListUser> {
-  String _montserratLight = 'MontserratLight';
   String _montserratMedium = 'MontserratMedium';
-  String _montserratRegular = 'MontserratRegular';
 
   @override
   void initState() {
