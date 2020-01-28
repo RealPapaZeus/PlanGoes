@@ -7,6 +7,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:PlanGoes/Verification/ResetPassword.dart';
 import 'package:PlanGoes/colors.dart';
 
+// calls first class which is used as LogIn
+// StatelessWidget is used because it is static
+// and will never change
 class LogIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -44,6 +47,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
   String _montserratMedium = 'MontserratMedium';
   String _montserratRegular = 'MontserratRegular';
 
+  String _eventID;
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -57,25 +62,31 @@ class _MyLogInPageState extends State<MyLogInPage> {
     this.initDynamicLinks();
   }
 
-  String _eventID;
-
   // Method checks if the App was opened by a Dynamic Link
   void initDynamicLinks() async {
     final PendingDynamicLinkData data =
         await FirebaseDynamicLinks.instance.getInitialLink();
+
     final Uri deepLink = data?.link;
+
     if (deepLink != null) {
       print('DL =! null');
+
       final queryParams = deepLink.queryParameters;
+
       if (queryParams.length > 0) {
         String eventId = queryParams['eventID'];
         print('The user must be inserted in the event: $eventId');
+
         setState(() {
           _eventID = eventId;
         });
+
         getEventInfo(_eventID);
+
         print('InitDL Print: $_eventName');
       }
+
       Navigator.pushNamed(context, deepLink.path);
     } else {
       print('DL = null');
@@ -88,16 +99,23 @@ class _MyLogInPageState extends State<MyLogInPage> {
 
       if (deepLink != null) {
         print('DL != null');
+
         final queryParams = deepLink.queryParameters;
+
         if (queryParams.length > 0) {
           String eventId = queryParams['eventID'];
+
           print('The user must be inserted in the event: $eventId');
+
           setState(() {
             _eventID = eventId;
           });
+
           getEventInfo(_eventID);
+
           print('InitDL Print: $_eventName');
         }
+
         Navigator.pushNamed(context, deepLink.path);
       }
     }, onError: (OnLinkErrorException e) async {
@@ -106,7 +124,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
     });
   }
 
-  // insert Reference of Event into UsersEventList
+  // insert reference of event into UsersEventList
   void insertEvent(String eventID, String userId) async {
     final databaseReference = Firestore.instance;
 
@@ -124,7 +142,6 @@ class _MyLogInPageState extends State<MyLogInPage> {
       'eventColor': _eventColor.toInt(),
       'imageUrl': '$_imageUrl'
     });
-
   }
 
   // get EventInfo of the Event the user was invited
@@ -147,8 +164,8 @@ class _MyLogInPageState extends State<MyLogInPage> {
   }
 
   // same procedure as in other classes, to insert values into
-  //database under given path
-  void addUserToUserslistInDatabase(String eventId,String userId) async {
+  //database under given path for the collections
+  void addUserToUserslistInDatabase(String eventId, String userId) async {
     final databaseReference = Firestore.instance;
 
     await databaseReference
@@ -166,29 +183,33 @@ class _MyLogInPageState extends State<MyLogInPage> {
     });
 
     if (_formState.validate()) {
+      //save current state
       _formState.save();
 
       //.trim() leaves no space at the end of the email
-      //so a bad formatting exception wont be thrown
+      //prevents a bad formatting exception to be thrown
       try {
         AuthResult user = await FirebaseAuth.instance
             .signInWithEmailAndPassword(
                 email: _emailController.text.toString().trim(),
                 password: _passwordController.text);
 
+        //user has to be verified to before his data gets inserted into database
         if (user.user.isEmailVerified) {
           if (_eventID != null) {
             insertEvent(_eventID, user.user.uid);
-            addUserToUserslistInDatabase(_eventID ,user.user.uid);
+            addUserToUserslistInDatabase(_eventID, user.user.uid);
           }
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => EventList(userId: user.user.uid)));
+
           setState(() {
             _isLoading = false;
             _authHint = '';
           });
+
         } else {
           setState(() {
             _isLoading = false;
@@ -196,22 +217,23 @@ class _MyLogInPageState extends State<MyLogInPage> {
           });
         }
       } catch (e) {
+
         setState(() {
           _isLoading = false;
           _authHint = 'Email or password is invalid';
         });
+
         print(e.message);
       }
     }
   }
 
-  //gets called when user tries to call signIn
+  //gets called when user tries to call signIn or presses the button "Plan and Go"
   String messageNotifier(String message) {
     _isLoading = false;
     return '$message';
   }
 
-  //it only returns the TextFormField Widget
   Widget emailTextFormField() {
     return new Container(
       width: MediaQuery.of(context).size.width / 1.0,
@@ -220,8 +242,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
         cursorColor: cPlanGoBlue,
-        style:
-            TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
+        style: TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
         controller: _emailController,
         decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
@@ -261,8 +282,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
         cursorColor: cPlanGoBlue,
         controller: _passwordController,
         obscureText: _obscurePassword,
-        style:
-            TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
+        style: TextStyle(color: cPlanGoDark, fontFamily: _montserratMedium),
         decoration: InputDecoration(
           enabledBorder: UnderlineInputBorder(
             borderSide: const BorderSide(color: cPlanGoBlue, width: 1.5),
@@ -318,6 +338,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
 
   Widget showLabel() {
     return Container(
+      //MediaQuery scales the container based on widgets screen size
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 3,
       decoration: BoxDecoration(

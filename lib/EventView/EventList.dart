@@ -17,10 +17,11 @@ class EventList extends StatefulWidget {
 class _EventListState extends State<EventList> {
   String _userName;
 
-  String _montserratLight = 'MontserratLight';
   String _montserratMedium = 'MontserratMedium';
   String _montserratRegular = 'MontserratRegular';
 
+  // username should only be called once when debugging into
+  // event view
   @override
   void initState() {
     super.initState();
@@ -104,6 +105,9 @@ class _EventListState extends State<EventList> {
     }
   }
 
+  // Whenever a user or admin deletes his canban
+  // it is important to check his status in order to
+  // delete all dependencies
   void deleteCanban(DocumentSnapshot document) {
     try {
       if (document['admin'] == true) {
@@ -345,7 +349,7 @@ class _EventListState extends State<EventList> {
       alignment: Alignment.centerLeft,
       margin: const EdgeInsets.only(top: 20.0, left: 2.0),
       decoration: new BoxDecoration(
-          color: cPlangGoDarkBlue,
+          color: Color(document['eventColor']),
           boxShadow: [
             BoxShadow(
               blurRadius: 5.0,
@@ -368,7 +372,6 @@ class _EventListState extends State<EventList> {
       borderRadius: new BorderRadius.circular(20.0),
       splashColor: cPlanGoBlue,
       onTap: () {
-        //getAdminRight(document);
         callView(document);
       },
       child: new Stack(children: <Widget>[
@@ -459,6 +462,7 @@ class _EventListState extends State<EventList> {
   Widget createAppBar() {
     return AppBar(
       title: Text("$_userName's List".toUpperCase(),
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
               color: cPlanGoWhiteBlue,
               fontFamily: _montserratMedium,

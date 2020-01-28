@@ -14,6 +14,10 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
+
+  // Same procedure as in LogIn View thats way most of the comments
+  // used in LogIn wont be used again.
+  // Check for better understanding LogIn.dart
   String _email;
   String _password;
   String _username;
@@ -135,16 +139,19 @@ class _CreateAccountState extends State<CreateAccount> {
                       text: '\nWe are glad to welcome you!',
                       style: TextStyle(fontFamily: _montserratMedium)),
                   new TextSpan(
-                      text: '\n\nYour PlanGo team',
+                      text: '\n\nYour PlanGoes team',
                       style: TextStyle(fontFamily: _montserratMedium))
                 ])),
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(15)),
             actions: <Widget>[
               FlatButton(
+                // Navigator needs to be popped
+                // Otherwise when a user creates an account, submits to it
+                // and directly logs in, creates a new event and picks a color,
+                // he always gets kicked out his view an pushed back to the eventList
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LogIn()));
+                  Navigator.of(context).pop();
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(40.0),
