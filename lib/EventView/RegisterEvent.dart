@@ -360,7 +360,7 @@ class _RegisterEventState extends State<RegisterEvent> {
                   width: 180,
                   height: 180,
                   child: (_image != null)
-                      ? Image.file(_image, fit: BoxFit.fill)
+                      ? Image.file(_image, fit: BoxFit.cover)
                       : Image.asset(
                           'images/calendar.png',
                           fit: BoxFit.fill,

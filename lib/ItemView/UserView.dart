@@ -92,7 +92,7 @@ class _UserViewState extends State<UserView> {
                 child: (_imageUrl != 'null')
                     ? Image.network(
                         _imageUrl,
-                        fit: BoxFit.contain,
+                        fit: BoxFit.cover,
                         height: 32,
                       )
                     : Image.asset('images/calendar.png',
