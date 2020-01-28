@@ -14,6 +14,10 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
+
+  // Same procedure as in LogIn View thats way most of the comments
+  // used in LogIn wont be used again.
+  // Check for better understanding LogIn.dart
   String _email;
   bool _isLoading = false;
   String _authHint = '';
@@ -21,7 +25,6 @@ class _ResetPasswordState extends State<ResetPassword> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   
-  String _montserratLight = 'MontserratLight';
   String _montserratMedium = 'MontserratMedium';
   String _montserratRegular = 'MontserratRegular';
 
