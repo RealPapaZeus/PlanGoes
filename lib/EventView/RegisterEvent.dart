@@ -212,8 +212,10 @@ class _RegisterEventState extends State<RegisterEvent> {
       uploadTask = firebaseStorageRef.putFile(_image);
 
       final StorageTaskSnapshot downloadUrl = (await uploadTask.onComplete);
+      // url will to download the uploaded picture will be generated
       url = (await downloadUrl.ref.getDownloadURL());
     } else {
+      // if the default image is used url = null
       url = null;
     }
 
@@ -237,6 +239,8 @@ class _RegisterEventState extends State<RegisterEvent> {
     }
   }
 
+  // Method calls DateTimePicker, which enables
+  // to pick Date & Time for the event
   void callDateTimePickerStart() {
     DatePicker.showDateTimePicker(
       context,
@@ -287,6 +291,7 @@ class _RegisterEventState extends State<RegisterEvent> {
     });
   }
 
+  // opens Dialog to pick color for the event
   void _openDialog(Widget content) {
     showDialog(
       context: context,
@@ -345,6 +350,7 @@ class _RegisterEventState extends State<RegisterEvent> {
     );
   }
 
+  // shows the setted Image
   Widget eventImage() {
     return Align(
       alignment: Alignment.center,
@@ -360,6 +366,7 @@ class _RegisterEventState extends State<RegisterEvent> {
                   width: 180,
                   height: 180,
                   child: (_image != null)
+                  // if no picture is uploaded, it shows a default image
                       ? Image.file(_image, fit: BoxFit.cover)
                       : Image.asset(
                           'images/calendar.png',
