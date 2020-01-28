@@ -142,7 +142,7 @@ class _EventListState extends State<EventList> {
       print(e);
     }
   }
-
+ //delete all items from the itemList collection
   void deleteItems(DocumentSnapshot document) {
     Firestore.instance
         .collection('events')
@@ -155,7 +155,7 @@ class _EventListState extends State<EventList> {
       }
     });
   }
-
+  //delete the event from the usersEventList collection
   void deleteUsersEvent(DocumentSnapshot document) {
     Firestore.instance
         .collection('events')
@@ -183,7 +183,7 @@ class _EventListState extends State<EventList> {
       }
     });
   }
-
+ //delte the items from the usersItemList collection
   void deleteUsersItemLists(DocumentSnapshot document) {
     Firestore.instance
         .collection('events')
@@ -208,7 +208,8 @@ class _EventListState extends State<EventList> {
     });
   }
 
-
+ //updating the data in currentValue variable, if an nonAdmin user is deleting the event
+ //deleting the user out o the usersList collection in event
   void deleteValuesFromItemList(DocumentSnapshot document) {
     Firestore.instance
         .collection('events')
