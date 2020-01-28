@@ -412,7 +412,7 @@ class _EventListState extends State<EventList> {
                           Container(
                             padding: const EdgeInsets.only(right: 5.0),
                             child: Icon(
-                              Icons.event_available,
+                              Icons.date_range,
                               color: cPlanGoWhiteBlue,
                               size: 12.5,
                             ),

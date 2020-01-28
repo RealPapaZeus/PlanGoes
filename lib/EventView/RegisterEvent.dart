@@ -773,7 +773,7 @@ class _RegisterEventState extends State<RegisterEvent> {
 
   Widget loadingButton() {
     return CircularProgressIndicator(
-      valueColor: new AlwaysStoppedAnimation<Color>(cPlanGoMarineBlue),
+      valueColor: new AlwaysStoppedAnimation<Color>(cPlanGoBlue),
     );
   }
 
