@@ -88,8 +88,6 @@ class _AdminViewState extends State<AdminView> {
           shortDynamicLinkPathLength: ShortDynamicLinkPathLength.unguessable),
     );
     return shortenedLink.shortUrl;
-    // final ShortDynamicLink shortDynamicLink = await parameters.buildShortLink();
-    // final Uri url = shortDynamicLink.shortUrl;
   }
 
   buildStream() {
@@ -115,7 +113,7 @@ class _AdminViewState extends State<AdminView> {
       },
     );
   }
-
+  //overwrites the _link variable with the value from _createDynamikLink method
   void getLink() async {
     var link = await _createDynamikLink(widget.documentId);
 
