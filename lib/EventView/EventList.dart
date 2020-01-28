@@ -358,7 +358,7 @@ class _EventListState extends State<EventList> {
           ],
           shape: BoxShape.circle,
           image: new DecorationImage(
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
               image: (document['imageUrl'] != 'null')
                   ? new NetworkImage(document['imageUrl'])
                   : new AssetImage(

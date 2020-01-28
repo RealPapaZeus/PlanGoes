@@ -156,7 +156,7 @@ class _AdminViewState extends State<AdminView> {
                               ),
                             ),
                             CircleAvatar(
-                              radius: 20,
+                              radius: 30,
                               foregroundColor: Color(_eventColor),
                               backgroundColor: Color(_eventColor),
                               child: ClipOval(
@@ -167,11 +167,11 @@ class _AdminViewState extends State<AdminView> {
                                   child: (_imageUrl != 'null')
                                       ? Image.network(
                                           _imageUrl,
-                                          fit: BoxFit.contain,
-                                          height: 32,
+                                          fit: BoxFit.cover,
+                                          height: 40,
                                         )
                                       : Image.asset('images/calendar.png',
-                                          fit: BoxFit.contain, height: 32),
+                                          fit: BoxFit.contain, height: 40),
                                 ),
                               ),
                             ),
@@ -235,7 +235,7 @@ class _AdminViewState extends State<AdminView> {
                 child: (_imageUrl != 'null')
                     ? Image.network(
                         _imageUrl,
-                        fit: BoxFit.contain,
+                        fit: BoxFit.cover,
                         height: 32,
                       )
                     : Image.asset('images/calendar.png',
