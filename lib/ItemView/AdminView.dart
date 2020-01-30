@@ -135,8 +135,8 @@ class _AdminViewState extends State<AdminView> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           IconButton(
-            splashColor: cPlanGoMarineBlueDark,
-            highlightColor: Colors.transparent,
+              splashColor: cPlanGoMarineBlueDark,
+              highlightColor: Colors.transparent,
               icon: Icon(Icons.share, color: cPlanGoWhiteBlue),
               onPressed: () async {
                 showDialog(
@@ -149,7 +149,7 @@ class _AdminViewState extends State<AdminView> {
                               padding:
                                   const EdgeInsets.only(top: 8.0, right: 8.0),
                               child: Text(
-                                'Sharing is caring',
+                                'Sharing is caring!',
                                 overflow: TextOverflow.ellipsis,
                                 style:
                                     TextStyle(fontFamily: 'MontserratRegular'),
@@ -196,6 +196,11 @@ class _AdminViewState extends State<AdminView> {
                                   new TextSpan(
                                       text:
                                           'if you like to share this event, please copy this link. \n',
+                                      style: TextStyle(
+                                          fontFamily: _montserratMedium)),
+                                  new TextSpan(
+                                      text:
+                                          'Your friends will be able to choose from your list. \n',
                                       style: TextStyle(
                                           fontFamily: _montserratMedium)),
                                 ])),

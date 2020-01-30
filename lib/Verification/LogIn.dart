@@ -39,6 +39,7 @@ class _MyLogInPageState extends State<MyLogInPage> {
   String _eventName;
   String _imageUrl = '';
   String _location = '';
+  int _countButtonTap = 0;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -178,11 +179,19 @@ class _MyLogInPageState extends State<MyLogInPage> {
   void signIn() async {
     final _formState = _formKey.currentState;
 
+    _countButtonTap++;
+
     setState(() {
       _isLoading = true;
     });
 
     if (_formState.validate()) {
+      if (_countButtonTap > 5) {
+        setState(() {
+          _authHint =
+              'Too many unsuccessful login attempts :( Please try again later.';
+        });
+      }
       //save current state
       _formState.save();
 
@@ -209,18 +218,26 @@ class _MyLogInPageState extends State<MyLogInPage> {
             _isLoading = false;
             _authHint = '';
           });
-
         } else {
           setState(() {
+            if (_countButtonTap > 5) {
+              _authHint =
+                  'Too many unsuccessful login attempts. Please try again later.';
+            } else {
+              _authHint = 'Please verify your email';
+            }
             _isLoading = false;
-            _authHint = 'Please verify your email';
           });
         }
       } catch (e) {
-
         setState(() {
+          if (_countButtonTap > 5) {
+            _authHint =
+                'Too many unsuccessful login attempts. Please try again later.';
+          } else {
+            _authHint = 'Email or password is invalid';
+          }
           _isLoading = false;
-          _authHint = 'Email or password is invalid';
         });
 
         print(e.message);
@@ -362,14 +379,13 @@ class _MyLogInPageState extends State<MyLogInPage> {
           Align(
               alignment: Alignment.center,
               child: Container(
-                  width: MediaQuery.of(context).size.width / 2.5,
-                  height: MediaQuery.of(context).size.height / 5.0,
+                  width: MediaQuery.of(context).size.width / 3.0,
+                  height: MediaQuery.of(context).size.height / 6.0,
                   decoration: new BoxDecoration(
                       shape: BoxShape.rectangle,
                       image: new DecorationImage(
                           fit: BoxFit.fill,
-                          image: new AssetImage(
-                              'images/PlanGo_Transparent.png'))))),
+                          image: new AssetImage('images/PlanGoes_Logo.png'))))),
           Container(
             width: MediaQuery.of(context).size.width / 1.0,
             height: MediaQuery.of(context).size.height / 10.0,

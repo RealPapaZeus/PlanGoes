@@ -278,6 +278,7 @@ class _RegisterEventState extends State<RegisterEvent> {
   //whenever user tries to submit and all input strings
   //are empty, _isLoading gets set to false
   String messageToDenyLoading(String message) {
+    _isLoading = false;
     return '$message';
   }
 
