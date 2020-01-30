@@ -34,6 +34,7 @@ dependencies:
   flutter_slidable: "^0.5.4"
   flutter_datetime_picker: ^1.2.8
   firebase_dynamic_links: ^0.5.0+9
+  flutter_launcher_icons: ^0.7.4
 
 dev_dependencies:
   flutter_test:
@@ -52,9 +53,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/PlanGo_Transparent.png
     - images/calendar.png
-    - images/calendar_icon.png
+    - images/PlanGoes_Logo.png
+    - images/PlanGoes_iOS.png
+    - images/PlanGoes_Android.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
